@@ -1,6 +1,6 @@
 
-import { db } from '../../../database';
-import { User } from '../../../types';
+import { db } from '../../database';
+import { User } from '../../types';
 
 /**
  * IdentityOrchestrator

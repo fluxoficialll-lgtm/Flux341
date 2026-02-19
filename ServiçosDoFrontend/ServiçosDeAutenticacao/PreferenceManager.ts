@@ -1,7 +1,7 @@
 
-import { apiClient } from '../../apiClient';
-import { db } from '../../../database';
-import { User, PaymentProviderConfig, NotificationSettings, SecuritySettings } from '../../../types';
+import { apiClient } from '../apiClient';
+import { db } from '../../database';
+import { User, PaymentProviderConfig, NotificationSettings, SecuritySettings } from '../../types';
 
 // Gerencia as preferências e configurações do usuário
 export const PreferenceManager = {

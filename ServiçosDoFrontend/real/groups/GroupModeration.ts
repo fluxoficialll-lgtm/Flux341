@@ -4,7 +4,7 @@ import { db } from '@/database';
 import { authService } from '../../authService';
 import { GroupCore } from './GroupCore';
 import { GroupLifeCycleService } from './GroupLifeCycleService';
-import { IdentityOrchestrator } from '../auth/IdentityOrchestrator';
+import { IdentityOrchestrator } from '../../ServiçosDeAutenticacao/IdentityOrchestrator';
 import { AtomicCounterService } from './AtomicCounterService';
 
 export const GroupModeration = {

@@ -1,8 +1,8 @@
 
-import { UserSession } from '../../../types';
+import { UserSession } from '../../types';
 import { db } from '@/database';
-import { API_BASE } from '../../../apiConfig';
-import { cryptoService } from '../../cryptoService';
+import { API_BASE } from '../../apiConfig';
+import { cryptoService } from '../cryptoService';
 
 const API_URL = `${API_BASE}/api/auth`;
 

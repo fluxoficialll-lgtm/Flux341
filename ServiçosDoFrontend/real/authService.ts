@@ -1,10 +1,10 @@
 
 import { UserProfile, NotificationSettings, SecuritySettings, PaymentProviderConfig, User } from '../../types';
-import { AuthFlow } from './auth/AuthFlow';
-import { UserDirectory } from './auth/UserDirectory';
-import { IdentitySecurity } from './auth/IdentitySecurity';
-import { ProfileManager } from './auth/ProfileManager';
-import { PreferenceManager } from './auth/PreferenceManager';
+import { AuthFlow } from '../ServiçosDeAutenticacao/AuthFlow';
+import { UserDirectory } from '../ServiçosDeAutenticacao/UserDirectory';
+import { IdentitySecurity } from '../ServiçosDeAutenticacao/IdentitySecurity';
+import { ProfileManager } from '../ServiçosDeAutenticacao/ProfileManager';
+import { PreferenceManager } from '../ServiçosDeAutenticacao/PreferenceManager';
 import { trackingService } from './trackingService';
 import { db } from '../../database';
 
