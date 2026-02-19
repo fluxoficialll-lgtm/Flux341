@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { paypalService } from '../../services/paypalService.js';
+import { paypalService } from '../../ServiçosDoFrontend/paypalService.js';
 import { dbManager } from '../../databaseManager.js';
 
 const router = express.Router();

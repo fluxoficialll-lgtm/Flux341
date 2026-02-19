@@ -1,9 +1,9 @@
 
 import React, { useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { marketplaceService } from '../services/marketplaceService';
-import { authService } from '../services/authService';
-import { postService } from '../services/postService';
+import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { postService } from '../ServiçosDoFrontend/postService';
 import { MarketplaceItem } from '../types';
 
 const SELECTABLE_CATEGORIES = [

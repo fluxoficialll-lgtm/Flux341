@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { relationshipService } from '../services/relationshipService';
-import { authService } from '../services/authService';
-import { chatService } from '../services/chatService';
+import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { chatService } from '../ServiçosDoFrontend/chatService';
 import { User } from '../types';
 import { db } from '@/database';
-import { useModal } from '../components/ModalSystem';
+import { useModal } from '../Componentes/ModalSystem';
 
 export const GlobalSearch: React.FC = () => {
   const navigate = useNavigate();

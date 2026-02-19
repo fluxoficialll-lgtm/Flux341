@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { CodeVerificationCard } from '../features/auth/components/CodeVerificationCard';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { CodeVerificationCard } from '../features/auth/Componentes/CodeVerificationCard';
 
 export const VerifyEmail: React.FC = () => {
   const navigate = useNavigate();

@@ -1,14 +1,14 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
+import { authService } from '../ServiçosDoFrontend/authService';
 import { Group } from '../types';
 import { useGroupRanking } from '../hooks/useGroupRanking';
 
 // Subcomponentes Modulares
-import { RankingTabs } from '../features/ranking/components/RankingTabs';
-import { RankingPodium } from '../features/ranking/components/RankingPodium';
-import { RankingListItem } from '../features/ranking/components/RankingListItem';
+import { RankingTabs } from '../features/ranking/Componentes/RankingTabs';
+import { RankingPodium } from '../features/ranking/Componentes/RankingPodium';
+import { RankingListItem } from '../features/ranking/Componentes/RankingListItem';
 
 export const TopGroups: React.FC = () => {
   const navigate = useNavigate();

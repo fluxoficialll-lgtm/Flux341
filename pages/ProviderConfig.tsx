@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../services/groupService';
-import { paypalService } from '../services/paypalService';
-import { stripeService } from '../services/stripeService';
-import { syncPayService } from '../services/syncPayService';
+import { groupService } from '../ServiçosDoFrontend/groupService';
+import { paypalService } from '../ServiçosDoFrontend/paypalService';
+import { stripeService } from '../ServiçosDoFrontend/stripeService';
+import { syncPayService } from '../ServiçosDoFrontend/syncPayService';
 import { Group } from '../types';
-import { SyncPayCard } from '../components/financial/provider_cards_connection/SyncPayCard';
-import { StripeCard } from '../components/financial/provider_cards_connection/StripeCard';
-import { PayPalCard } from '../components/financial/provider_cards_connection/PayPalCard';
+import { SyncPayCard } from '../Componentes/financial/provider_cards_connection/SyncPayCard';
+import { StripeCard } from '../Componentes/financial/provider_cards_connection/StripeCard';
+import { PayPalCard } from '../Componentes/financial/provider_cards_connection/PayPalCard';
 
 export const ProviderConfig: React.FC = () => {
     const navigate = useNavigate();

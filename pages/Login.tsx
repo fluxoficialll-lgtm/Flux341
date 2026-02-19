@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { trackingService } from '../services/trackingService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { trackingService } from '../ServiçosDoFrontend/trackingService';
 import { API_BASE } from '../apiConfig';
-import { LoginInitialCard } from '../features/auth/components/LoginInitialCard';
-import { LoginEmailCard } from '../features/auth/components/LoginEmailCard';
+import { LoginInitialCard } from '../features/auth/Componentes/LoginInitialCard';
+import { LoginEmailCard } from '../features/auth/Componentes/LoginEmailCard';
 
 declare const google: any;
 

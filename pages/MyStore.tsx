@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { marketplaceService } from '../services/marketplaceService';
-import { adService } from '../services/adService';
-import { authService } from '../services/authService';
-import { screenService, BusinessDashboardData } from '../services/screenService';
+import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
+import { adService } from '../ServiçosDoFrontend/adService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { screenService, BusinessDashboardData } from '../ServiçosDoFrontend/screenService';
 import { MarketplaceItem, AdCampaign } from '../types';
-import { useModal } from '../components/ModalSystem';
-import { ProductStoreList } from '../components/store/ProductStoreList';
-import { CampaignStoreList } from '../components/store/CampaignStoreList';
+import { useModal } from '../Componentes/ModalSystem';
+import { ProductStoreList } from '../Componentes/store/ProductStoreList';
+import { CampaignStoreList } from '../Componentes/store/CampaignStoreList';
 
 export const MyStore: React.FC = () => {
   const navigate = useNavigate();

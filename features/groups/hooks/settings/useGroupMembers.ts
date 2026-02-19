@@ -1,8 +1,8 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Group, User, GroupRole } from '../../../../types';
-import { groupService } from '../../../../services/groupService';
-import { authService } from '../../../../services/authService';
+import { groupService } from '../../../../ServiçosDoFrontend/groupService';
+import { authService } from '../../../../ServiçosDoFrontend/authService';
 import { db } from '../../../../database';
 
 export const useGroupMembers = (group: Group | null) => {

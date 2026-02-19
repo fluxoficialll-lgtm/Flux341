@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { reelsService } from '../services/reelsService';
-import { authService } from '../services/authService';
+import { reelsService } from '../ServiçosDoFrontend/reelsService';
+import { authService } from '../ServiçosDoFrontend/authService';
 import { Post } from '../types';
 
 type CategoryFilter = 'relevant' | 'recent' | 'watched' | 'unwatched' | 'liked';

@@ -1,6 +1,6 @@
 
 import React, { lazy } from 'react';
-import { ProtectedRoute } from '../../components/auth/ProtectedRoute';
+import { ProtectedRoute } from '../../Componentes/auth/ProtectedRoute';
 
 const FinancialPanel = lazy(() => import('../../pages/FinancialPanel').then(m => ({ default: m.FinancialPanel })));
 const ProviderConfig = lazy(() => import('../../pages/ProviderConfig').then(m => ({ default: m.ProviderConfig })));

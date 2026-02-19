@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // Import chatService from the service and ChatData from types
-import { chatService } from '../services/chatService';
+import { chatService } from '../ServiçosDoFrontend/chatService';
 import { ChatData } from '../types';
 
 export const BlockedUsers: React.FC = () => {

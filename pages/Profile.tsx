@@ -1,23 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { postService } from '../services/postService';
-import { relationshipService } from '../services/relationshipService';
-import { marketplaceService } from '../services/marketplaceService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { postService } from '../ServiçosDoFrontend/postService';
+import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
+import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
 import { Post, User, MarketplaceItem } from '../types';
 import { db } from '@/database';
-import { useModal } from '../components/ModalSystem';
-import { FollowListModal } from '../components/profile/FollowListModal';
-import { FeedItem } from '../components/feed/FeedItem';
-import { Footer } from '../components/layout/Footer';
-import { AvatarPreviewModal } from '../components/ui/AvatarPreviewModal';
+import { useModal } from '../Componentes/ModalSystem';
+import { FollowListModal } from '../Componentes/profile/FollowListModal';
+import { FeedItem } from '../Componentes/feed/FeedItem';
+import { Footer } from '../Componentes/layout/Footer';
+import { AvatarPreviewModal } from '../Componentes/ui/AvatarPreviewModal';
 
 // Novos componentes modulares
-import { ProfileHeader } from '../features/profile/components/ProfileHeader';
-import { ProfileInfoCard } from '../features/profile/components/ProfileInfoCard';
-import { ProfileTabNav } from '../features/profile/components/ProfileTabNav';
-import { ProfileReelsGrid } from '../features/profile/components/tabs/ProfileReelsGrid';
-import { ProfileProductsGrid } from '../features/profile/components/tabs/ProfileProductsGrid';
+import { ProfileHeader } from '../features/profile/Componentes/ProfileHeader';
+import { ProfileInfoCard } from '../features/profile/Componentes/ProfileInfoCard';
+import { ProfileTabNav } from '../features/profile/Componentes/ProfileTabNav';
+import { ProfileReelsGrid } from '../features/profile/Componentes/tabs/ProfileReelsGrid';
+import { ProfileProductsGrid } from '../features/profile/Componentes/tabs/ProfileProductsGrid';
 
 export const Profile: React.FC = () => {
   const navigate = useNavigate();

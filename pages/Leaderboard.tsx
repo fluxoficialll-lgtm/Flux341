@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { relationshipService } from '../services/relationshipService';
+import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
 import { User } from '../types';
-import { PodiumItem } from '../features/leaderboard/components/PodiumItem';
-import { LeaderboardListItem } from '../features/leaderboard/components/LeaderboardListItem';
+import { PodiumItem } from '../features/leaderboard/Componentes/PodiumItem';
+import { LeaderboardListItem } from '../features/leaderboard/Componentes/LeaderboardListItem';
 
 interface RankedUser extends User {
     followerCount: number;

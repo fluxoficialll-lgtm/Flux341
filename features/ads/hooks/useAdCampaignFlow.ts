@@ -2,11 +2,11 @@
 // Fix: Added React import to resolve namespace errors for ChangeEvent
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { authService } from '../../../services/authService';
-import { groupService } from '../../../services/groupService';
-import { adService } from '../../../services/adService';
+import { authService } from '../../../ServiçosDoFrontend/authService';
+import { groupService } from '../../../ServiçosDoFrontend/groupService';
+import { adService } from '../../../ServiçosDoFrontend/adService';
 import { AdCampaign, Group, Post } from '../../../types';
-import { useModal } from '../../../components/ModalSystem';
+import { useModal } from '../../../Componentes/ModalSystem';
 import { AdFlowStep } from '../constants/AdConstants';
 
 export const useAdCampaignFlow = () => {

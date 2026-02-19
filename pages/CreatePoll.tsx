@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postService } from '../services/postService';
-import { authService } from '../services/authService';
+import { postService } from '../ServiçosDoFrontend/postService';
+import { authService } from '../ServiçosDoFrontend/authService';
 import { Post, PollOption } from '../types';
 
 export const CreatePoll: React.FC = () => {

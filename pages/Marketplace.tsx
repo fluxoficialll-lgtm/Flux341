@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { marketplaceService } from '../services/marketplaceService';
-import { authService } from '../services/authService';
+import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
+import { authService } from '../ServiçosDoFrontend/authService';
 import { db } from '@/database';
 import { MarketplaceItem } from '../types';
 
 // Importação dos Componentes Isolados
-import { MarketplaceHeader } from '../components/marketplace/MarketplaceHeader';
-import { MarketplaceSearchBar } from '../components/marketplace/MarketplaceSearchBar';
-import { CategoryBar } from '../components/marketplace/CategoryBar';
-import { ProductsGrid } from '../components/marketplace/ProductsGrid';
-import { MarketplaceFAB } from '../components/marketplace/MarketplaceFAB';
-import { Footer } from '../components/layout/Footer';
+import { MarketplaceHeader } from '../Componentes/marketplace/MarketplaceHeader';
+import { MarketplaceSearchBar } from '../Componentes/marketplace/MarketplaceSearchBar';
+import { CategoryBar } from '../Componentes/marketplace/CategoryBar';
+import { ProductsGrid } from '../Componentes/marketplace/ProductsGrid';
+import { MarketplaceFAB } from '../Componentes/marketplace/MarketplaceFAB';
+import { Footer } from '../Componentes/layout/Footer';
 
 export const Marketplace: React.FC = () => {
   const navigate = useNavigate();

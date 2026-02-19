@@ -1,4 +1,4 @@
-import { MasterHealthService } from '../../../../services/admin/MasterHealthService.js';
+import { MasterHealthService } from '../../../../ServiçosDoFrontend/admin/MasterHealthService.js';
 
 /**
  * GET /api/admin/execute/system/master-health

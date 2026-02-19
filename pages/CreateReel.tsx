@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { reelsService } from '../services/reelsService';
-import { groupService } from '../services/groupService';
-import { contentSafetyService } from '../services/contentSafetyService';
-import { adService } from '../services/adService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { reelsService } from '../ServiçosDoFrontend/reelsService';
+import { groupService } from '../ServiçosDoFrontend/groupService';
+import { contentSafetyService } from '../ServiçosDoFrontend/contentSafetyService';
+import { adService } from '../ServiçosDoFrontend/adService';
 import { Post, Group } from '../types';
 
 const LOCATIONS: any = {

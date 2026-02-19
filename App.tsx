@@ -1,16 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { HashRouter } from 'react-router-dom';
-import { ModalProvider } from './components/ModalSystem';
-import { GlobalTracker } from './components/layout/GlobalTracker';
-import { DeepLinkHandler } from './components/layout/DeepLinkHandler';
+import { ModalProvider } from './Componentes/ModalSystem';
+import { GlobalTracker } from './Componentes/layout/GlobalTracker';
+import { DeepLinkHandler } from './Componentes/layout/DeepLinkHandler';
 import AppRoutes from './routes/AppRoutes';
 import { useAuthSync } from './hooks/useAuthSync';
 import { USE_MOCKS } from './mocks';
-import { GlobalErrorBoundary } from './components/GlobalErrorBoundary';
-import { configControl } from './services/admin/ConfigControl';
+import { GlobalErrorBoundary } from './Componentes/GlobalErrorBoundary';
+import { configControl } from './ServiçosDoFrontend/admin/ConfigControl';
 import { Maintenance } from './pages/Maintenance';
-import { hydrationManager } from './services/sync/HydrationManager';
+import { hydrationManager } from './ServiçosDoFrontend/sync/HydrationManager';
 
 const DemoModeBadge = () => {
     if (!USE_MOCKS) return null;

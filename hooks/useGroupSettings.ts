@@ -1,11 +1,11 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../services/groupService';
-import { authService } from '../services/authService';
+import { groupService } from '../ServiçosDoFrontend/groupService';
+import { authService } from '../ServiçosDoFrontend/authService';
 import { db } from '@/database';
 import { Group, User, GroupLink, VipMediaItem } from '../types';
-import { useModal } from '../components/ModalSystem';
+import { useModal } from '../Componentes/ModalSystem';
 
 export const useGroupSettings = () => {
     const navigate = useNavigate();

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
+import { authService } from '../ServiçosDoFrontend/authService';
 import { db } from '@/database';
 import { SecuritySettings as ISecuritySettings, UserSession } from '../types';
 

@@ -1,15 +1,15 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { chatService } from '../services/chatService';
-import { notificationService } from '../services/notificationService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { chatService } from '../ServiçosDoFrontend/chatService';
+import { notificationService } from '../ServiçosDoFrontend/notificationService';
 import { db } from '@/database';
-import { MessagesMenuModal } from '../components/chat/MessagesMenuModal';
-import { MainHeader } from '../components/layout/MainHeader';
-import { MessageListItem } from '../components/chat/MessageListItem';
-import { MessagesEmptyState } from '../components/chat/MessagesEmptyState';
-import { MessagesFooter } from '../components/chat/MessagesFooter';
+import { MessagesMenuModal } from '../Componentes/chat/MessagesMenuModal';
+import { MainHeader } from '../Componentes/layout/MainHeader';
+import { MessageListItem } from '../Componentes/chat/MessageListItem';
+import { MessagesEmptyState } from '../Componentes/chat/MessagesEmptyState';
+import { MessagesFooter } from '../Componentes/chat/MessagesFooter';
 
 interface Contact {
   id: string;

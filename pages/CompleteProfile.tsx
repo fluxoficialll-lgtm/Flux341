@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { postService } from '../services/postService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { postService } from '../ServiçosDoFrontend/postService';
 import { AuthError } from '../types';
-import { ImageCropModal } from '../components/ui/ImageCropModal';
+import { ImageCropModal } from '../Componentes/ui/ImageCropModal';
 
 export const CompleteProfile: React.FC = () => {
   const navigate = useNavigate();

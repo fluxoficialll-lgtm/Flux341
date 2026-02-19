@@ -1,16 +1,16 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
+import { authService } from '../ServiçosDoFrontend/authService';
 import { NotificationSettings as INotificationSettings } from '../types';
-import { useModal } from '../components/ModalSystem';
+import { useModal } from '../Componentes/ModalSystem';
 
 // Subcomponentes Modulares
-import { GlobalPauseCard } from '../features/notifications/components/settings/GlobalPauseCard';
-import { SocialSection } from '../features/notifications/components/settings/SocialSection';
-import { CommunicationSection } from '../features/notifications/components/settings/CommunicationSection';
-import { BusinessSection } from '../features/notifications/components/settings/BusinessSection';
-import { EmailPreferencesSection } from '../features/notifications/components/settings/EmailPreferencesSection';
+import { GlobalPauseCard } from '../features/notifications/Componentes/settings/GlobalPauseCard';
+import { SocialSection } from '../features/notifications/Componentes/settings/SocialSection';
+import { CommunicationSection } from '../features/notifications/Componentes/settings/CommunicationSection';
+import { BusinessSection } from '../features/notifications/Componentes/settings/BusinessSection';
+import { EmailPreferencesSection } from '../features/notifications/Componentes/settings/EmailPreferencesSection';
 
 export const NotificationSettings: React.FC = () => {
     const navigate = useNavigate();

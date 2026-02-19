@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
+import { authService } from '../ServiçosDoFrontend/authService';
 
 export const CreateGroup: React.FC = () => {
   const navigate = useNavigate();

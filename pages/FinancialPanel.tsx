@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { syncPayService } from '../services/syncPayService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { syncPayService } from '../ServiçosDoFrontend/syncPayService';
 import { AffiliateStats } from '../types';
-import { BalanceCard, CurrencyCode } from '../components/financial/BalanceCard';
-import { AffiliateCard } from '../components/financial/AffiliateCard';
-import { GatewayCard } from '../components/financial/GatewayCard';
-import { CashFlowCard } from '../components/financial/CashFlowCard';
-import { TransactionsCard } from '../components/financial/TransactionsCard';
+import { BalanceCard, CurrencyCode } from '../Componentes/financial/BalanceCard';
+import { AffiliateCard } from '../Componentes/financial/AffiliateCard';
+import { GatewayCard } from '../Componentes/financial/GatewayCard';
+import { CashFlowCard } from '../Componentes/financial/CashFlowCard';
+import { TransactionsCard } from '../Componentes/financial/TransactionsCard';
 
 export const FinancialPanel: React.FC = () => {
   const navigate = useNavigate();

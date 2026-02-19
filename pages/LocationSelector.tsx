@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePreciseLocation } from '../hooks/usePreciseLocation';
-import { RadiusSelector } from '../features/location/components/RadiusSelector';
+import { RadiusSelector } from '../features/location/Componentes/RadiusSelector';
 import { LocationFilter } from '../types/location.types';
 
 type PlacementType = 'feed' | 'reels' | 'marketplace';

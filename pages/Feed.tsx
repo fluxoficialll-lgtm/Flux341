@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { postService } from '../services/postService';
-import { recommendationService } from '../services/recommendationService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { postService } from '../ServiçosDoFrontend/postService';
+import { recommendationService } from '../ServiçosDoFrontend/recommendationService';
 import { Post } from '../types';
 import { db } from '@/database';
-import { useModal } from '../components/ModalSystem';
-import { FeedItem } from '../components/feed/FeedItem';
-import { Footer } from '../components/layout/Footer';
-import { MainHeader } from '../components/layout/MainHeader';
+import { useModal } from '../Componentes/ModalSystem';
+import { FeedItem } from '../Componentes/feed/FeedItem';
+import { Footer } from '../Componentes/layout/Footer';
+import { MainHeader } from '../Componentes/layout/MainHeader';
 
 export const Feed: React.FC = () => {
   const navigate = useNavigate();

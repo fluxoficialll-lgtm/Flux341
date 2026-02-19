@@ -1,20 +1,20 @@
 
 import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../services/groupService';
-import { chatService } from '../services/chatService'; 
-import { authService } from '../services/authService';
-import { privacyService } from '../services/privacyService'; 
-import { postService } from '../services/postService';
+import { groupService } from '../ServiçosDoFrontend/groupService';
+import { chatService } from '../ServiçosDoFrontend/chatService'; 
+import { authService } from '../ServiçosDoFrontend/authService';
+import { privacyService } from '../ServiçosDoFrontend/privacyService'; 
+import { postService } from '../ServiçosDoFrontend/postService';
 import { db } from '@/database';
 import { Group, ChatMessage } from '../types';
-import { useModal } from '../components/ModalSystem';
+import { useModal } from '../Componentes/ModalSystem';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
-import { ChatHeader } from '../components/chat/ChatHeader';
-import { ChatInput } from '../components/chat/ChatInput';
-import { MessageItem } from '../components/chat/MessageItem';
-import { MediaPreviewOverlay } from '../components/chat/MediaPreviewOverlay';
-import { GroupMenuModal } from '../components/groups/menu/GroupMenuModal';
+import { ChatHeader } from '../Componentes/chat/ChatHeader';
+import { ChatInput } from '../Componentes/chat/ChatInput';
+import { MessageItem } from '../Componentes/chat/MessageItem';
+import { MediaPreviewOverlay } from '../Componentes/chat/MediaPreviewOverlay';
+import { GroupMenuModal } from '../Componentes/groups/menu/GroupMenuModal';
 import { useAccessValidationFlow } from '../flows/groups/AccessValidationFlow';
 
 export const GroupChat: React.FC = () => {

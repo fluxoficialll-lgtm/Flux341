@@ -1,6 +1,6 @@
 
 import { FeeRepository } from '../../../../database/repositories/financial/FeeRepository.js';
-import { FinancialAuditLogger } from '../../../../services/audit/FinancialAuditLogger.js';
+import { FinancialAuditLogger } from '../../../../ServiçosDoFrontend/audit/FinancialAuditLogger.js';
 
 /**
  * POST /api/admin/execute/finance/rules

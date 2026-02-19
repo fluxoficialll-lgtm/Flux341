@@ -3,16 +3,16 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useVipGroupSales } from '../hooks/useVipGroupSales';
 import { useAutoLanguage } from '../hooks/useAutoLanguage';
-import { vipSalesTracker } from '../services/pixel/trackers/VipSalesTracker';
+import { vipSalesTracker } from '../ServiçosDoFrontend/pixel/trackers/VipSalesTracker';
 
 // UI Components
-import { VipSalesHeader } from '../components/vip/VipSalesHeader';
-import { VipSalesPriceBadge } from '../components/vip/VipSalesPriceBadge';
-import { VipGallery } from '../components/vip/VipGallery';
-import { VipCopy } from '../components/vip/VipCopy';
-import { VipCheckout } from '../components/vip/VipCheckout';
-import { VipSalesModals } from '../components/vip/VipSalesModals';
-import { VipSalesMediaZoom } from '../components/vip/VipSalesMediaZoom';
+import { VipSalesHeader } from '../Componentes/vip/VipSalesHeader';
+import { VipSalesPriceBadge } from '../Componentes/vip/VipSalesPriceBadge';
+import { VipGallery } from '../Componentes/vip/VipGallery';
+import { VipCopy } from '../Componentes/vip/VipCopy';
+import { VipCheckout } from '../Componentes/vip/VipCheckout';
+import { VipSalesModals } from '../Componentes/vip/VipSalesModals';
+import { VipSalesMediaZoom } from '../Componentes/vip/VipSalesMediaZoom';
 
 export const VipGroupSales: React.FC = () => {
   const { id } = useParams<{ id: string }>();

@@ -1,12 +1,12 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../services/groupService';
-import { metaPixelService } from '../services/metaPixelService';
-import { postService } from '../services/postService';
+import { groupService } from '../ServiçosDoFrontend/groupService';
+import { metaPixelService } from '../ServiçosDoFrontend/metaPixelService';
+import { postService } from '../ServiçosDoFrontend/postService';
 import { Group, VipMediaItem } from '../types';
-import { CurrencySelectorModal } from '../components/groups/CurrencySelectorModal';
-import { UploadProgressCard } from '../features/groups/components/platform/UploadProgressCard';
+import { CurrencySelectorModal } from '../Componentes/groups/CurrencySelectorModal';
+import { UploadProgressCard } from '../features/groups/Componentes/platform/UploadProgressCard';
 
 export const EditGroup: React.FC = () => {
   const navigate = useNavigate();

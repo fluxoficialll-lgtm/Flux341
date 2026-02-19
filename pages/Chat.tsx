@@ -1,19 +1,19 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { chatService } from '../services/chatService';
+import { chatService } from '../ServiçosDoFrontend/chatService';
 import { ChatMessage } from '../types';
-import { authService } from '../services/authService';
-import { postService } from '../services/postService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { postService } from '../ServiçosDoFrontend/postService';
 import { db } from '@/database';
-import { useModal } from '../components/ModalSystem';
+import { useModal } from '../Componentes/ModalSystem';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
-import { ChatHeader } from '../components/chat/ChatHeader';
-import { ChatInput } from '../components/chat/ChatInput';
-import { MessageItem } from '../components/chat/MessageItem';
-import { MediaPreviewOverlay } from '../components/chat/MediaPreviewOverlay';
-import { ChatMenuModal } from '../components/chat/ChatMenuModal';
-import { socketService } from '../services/socketService';
+import { ChatHeader } from '../Componentes/chat/ChatHeader';
+import { ChatInput } from '../Componentes/chat/ChatInput';
+import { MessageItem } from '../Componentes/chat/MessageItem';
+import { MediaPreviewOverlay } from '../Componentes/chat/MediaPreviewOverlay';
+import { ChatMenuModal } from '../Componentes/chat/ChatMenuModal';
+import { socketService } from '../ServiçosDoFrontend/socketService';
 
 export const Chat: React.FC = () => {
   const navigate = useNavigate();

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postService } from '../services/postService';
-import { authService } from '../services/authService';
+import { postService } from '../ServiçosDoFrontend/postService';
+import { authService } from '../ServiçosDoFrontend/authService';
 import { Post } from '../types';
 import { USE_MOCKS } from '../mocks';
 
 // Componentes Modulares
-import { AdSelectionHeader } from '../components/ads/selection/AdSelectionHeader';
-import { AdContentTabs } from '../components/ads/selection/AdContentTabs';
-import { PostSelectionCard } from '../components/ads/selection/PostSelectionCard';
-import { ReelSelectionCard } from '../components/ads/selection/ReelSelectionCard';
+import { AdSelectionHeader } from '../Componentes/ads/selection/AdSelectionHeader';
+import { AdContentTabs } from '../Componentes/ads/selection/AdContentTabs';
+import { PostSelectionCard } from '../Componentes/ads/selection/PostSelectionCard';
+import { ReelSelectionCard } from '../Componentes/ads/selection/ReelSelectionCard';
 
 export const AdContentSelector: React.FC = () => {
     const navigate = useNavigate();

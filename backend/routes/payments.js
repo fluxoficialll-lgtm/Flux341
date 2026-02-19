@@ -1,9 +1,9 @@
 
 import express from 'express';
 import { dbManager } from '../databaseManager.js';
-import { FeeEngine } from '../services/financial/FeeEngine.js';
-import { NotificationEmitter } from '../services/socket/NotificationEmitter.js';
-import { facebookCapi } from '../services/facebookCapi.js';
+import { FeeEngine } from '../ServiçosDoFrontend/financial/FeeEngine.js';
+import { NotificationEmitter } from '../ServiçosDoFrontend/socket/NotificationEmitter.js';
+import { facebookCapi } from '../ServiçosDoFrontend/facebookCapi.js';
 
 const router = express.Router();
 

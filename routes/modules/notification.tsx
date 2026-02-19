@@ -1,6 +1,6 @@
 
 import React, { lazy } from 'react';
-import { ProtectedRoute } from '../../components/auth/ProtectedRoute';
+import { ProtectedRoute } from '../../Componentes/auth/ProtectedRoute';
 
 const Notifications = lazy(() => import('../../pages/Notifications').then(m => ({ default: m.Notifications })));
 const Messages = lazy(() => import('../../pages/Messages').then(m => ({ default: m.Messages })));

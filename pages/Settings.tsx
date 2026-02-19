@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { useModal } from '../components/ModalSystem';
-import { Footer } from '../components/layout/Footer';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { useModal } from '../Componentes/ModalSystem';
+import { Footer } from '../Componentes/layout/Footer';
 
 // Novos Componentes Modulares
-import { AccountGroup } from '../components/settings/AccountGroup';
-import { PrivacyGroup } from '../components/settings/PrivacyGroup';
-import { GeneralGroup } from '../components/settings/GeneralGroup';
+import { AccountGroup } from '../Componentes/settings/AccountGroup';
+import { PrivacyGroup } from '../Componentes/settings/PrivacyGroup';
+import { GeneralGroup } from '../Componentes/settings/GeneralGroup';
 
 export const Settings: React.FC = () => {
   const navigate = useNavigate();

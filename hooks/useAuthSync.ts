@@ -1,10 +1,10 @@
 
 import { useEffect } from 'react';
-import { authService } from '../services/authService';
-import { AccountSyncService } from '../services/sync/AccountSyncService';
-import { SyncState } from '../services/sync/SyncState';
-import { socketService } from '../services/socketService';
-import { RealtimePaymentHandler } from '../services/real/notifications/RealtimePaymentHandler';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { AccountSyncService } from '../ServiçosDoFrontend/sync/AccountSyncService';
+import { SyncState } from '../ServiçosDoFrontend/sync/SyncState';
+import { socketService } from '../ServiçosDoFrontend/socketService';
+import { RealtimePaymentHandler } from '../ServiçosDoFrontend/real/notifications/RealtimePaymentHandler';
 
 export const useAuthSync = () => {
   useEffect(() => {

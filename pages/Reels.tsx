@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { reelsService } from '../services/reelsService';
-import { postService } from '../services/postService';
-import { authService } from '../services/authService';
-import { recommendationService } from '../services/recommendationService';
+import { reelsService } from '../ServiçosDoFrontend/reelsService';
+import { postService } from '../ServiçosDoFrontend/postService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { recommendationService } from '../ServiçosDoFrontend/recommendationService';
 import { db } from '@/database';
-import { useModal } from '../components/ModalSystem';
+import { useModal } from '../Componentes/ModalSystem';
 import { Post, Comment } from '../types';
 
-import { ReelItem } from '../features/reels/components/ReelItem';
-import { CommentSheet } from '../components/ui/comments/CommentSheet';
+import { ReelItem } from '../features/reels/Componentes/ReelItem';
+import { CommentSheet } from '../Componentes/ui/comments/CommentSheet';
 
 export const Reels: React.FC = () => {
   const navigate = useNavigate();

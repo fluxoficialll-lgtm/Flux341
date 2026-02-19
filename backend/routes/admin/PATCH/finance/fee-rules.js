@@ -1,7 +1,7 @@
 
 import { FeeRepository } from '../../../../database/repositories/financial/FeeRepository.js';
 import { dbManager } from '../../../../databaseManager.js';
-import { FinancialAuditLogger } from '../../../../services/audit/FinancialAuditLogger.js';
+import { FinancialAuditLogger } from '../../../../ServiçosDoFrontend/audit/FinancialAuditLogger.js';
 
 /**
  * PATCH /api/admin/execute/finance/fee-rules

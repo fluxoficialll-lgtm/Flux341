@@ -1,8 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AdSelectionHeader } from '../components/ads/selection/AdSelectionHeader';
-import { AdSelectionCard } from '../components/ads/selection/AdSelectionCard';
-import { AdSelectionInfoBox } from '../components/ads/selection/AdSelectionInfoBox';
+import { AdSelectionHeader } from '../Componentes/ads/selection/AdSelectionHeader';
+import { AdSelectionCard } from '../Componentes/ads/selection/AdSelectionCard';
+import { AdSelectionInfoBox } from '../Componentes/ads/selection/AdSelectionInfoBox';
 
 export const AdCampaignTypeSelector: React.FC = () => {
     const navigate = useNavigate();

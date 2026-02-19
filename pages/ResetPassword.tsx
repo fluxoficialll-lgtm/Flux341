@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthLayout } from '../components/Layout';
-import { Input } from '../components/Input';
-import { Button } from '../components/Button';
-import { authService } from '../services/authService';
+import { AuthLayout } from '../Componentes/Layout';
+import { Input } from '../Componentes/Input';
+import { Button } from '../Componentes/Button';
+import { authService } from '../ServiçosDoFrontend/authService';
 import { AuthError } from '../types';
 
 export const ResetPassword: React.FC = () => {

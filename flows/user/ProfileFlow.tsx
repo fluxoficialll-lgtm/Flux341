@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../../services/authService';
+import { authService } from '../../ServiçosDoFrontend/authService';
 
 /**
  * Flow: Profile

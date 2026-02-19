@@ -1,22 +1,22 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { adService } from '../services/adService';
-import { postService } from '../services/postService';
-import { CampaignInfoCard } from '../components/ads/performance/CampaignInfoCard';
-import { DeliveryMetrics } from '../components/ads/performance/DeliveryMetrics';
-import { ClickMetrics } from '../components/ads/performance/ClickMetrics';
-import { ConversionMetrics } from '../components/ads/performance/ConversionMetrics';
-import { FinancialMetrics } from '../components/ads/performance/FinancialMetrics';
-import { AudienceMetrics } from '../components/ads/performance/AudienceMetrics';
-import { CreativeMetrics } from '../components/ads/performance/CreativeMetrics';
-import { FunnelMetrics } from '../components/ads/performance/FunnelMetrics';
-import { SystemMetrics } from '../components/ads/performance/SystemMetrics';
-import { AdPreview } from '../components/ads/AdPreview';
+import { adService } from '../ServiçosDoFrontend/adService';
+import { postService } from '../ServiçosDoFrontend/postService';
+import { CampaignInfoCard } from '../Componentes/ads/performance/CampaignInfoCard';
+import { DeliveryMetrics } from '../Componentes/ads/performance/DeliveryMetrics';
+import { ClickMetrics } from '../Componentes/ads/performance/ClickMetrics';
+import { ConversionMetrics } from '../Componentes/ads/performance/ConversionMetrics';
+import { FinancialMetrics } from '../Componentes/ads/performance/FinancialMetrics';
+import { AudienceMetrics } from '../Componentes/ads/performance/AudienceMetrics';
+import { CreativeMetrics } from '../Componentes/ads/performance/CreativeMetrics';
+import { FunnelMetrics } from '../Componentes/ads/performance/FunnelMetrics';
+import { SystemMetrics } from '../Componentes/ads/performance/SystemMetrics';
+import { AdPreview } from '../Componentes/ads/AdPreview';
 // Fix: Import CTA_OPTIONS_CONFIG from constants instead of AdPlacementSelector
 import { CTA_OPTIONS_CONFIG } from '../features/ads/constants/AdConstants';
 import { AdCampaign } from '../types';
-import { useModal } from '../components/ModalSystem';
+import { useModal } from '../Componentes/ModalSystem';
 
 export const CampaignPerformance: React.FC = () => {
     const navigate = useNavigate();

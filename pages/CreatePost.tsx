@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { postService } from '../services/postService';
-import { authService } from '../services/authService';
-import { groupService } from '../services/groupService';
-import { contentSafetyService } from '../services/contentSafetyService';
-import { adService } from '../services/adService';
+import { postService } from '../ServiçosDoFrontend/postService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { groupService } from '../ServiçosDoFrontend/groupService';
+import { contentSafetyService } from '../ServiçosDoFrontend/contentSafetyService';
+import { adService } from '../ServiçosDoFrontend/adService';
 import { Post, Group } from '../types';
 
 interface MediaPreview {

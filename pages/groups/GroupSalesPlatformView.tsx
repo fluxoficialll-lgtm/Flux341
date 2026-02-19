@@ -1,13 +1,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../../services/groupService';
-import { authService } from '../../services/authService';
+import { groupService } from '../../ServiçosDoFrontend/groupService';
+import { authService } from '../../ServiçosDoFrontend/authService';
 import { Group } from '../../types';
 
 // Subcomponentes
-import { OwnerControls } from '../../features/groups/components/platform/OwnerControls';
-import { PlatformGroupCard } from '../../features/groups/components/platform/PlatformGroupCard';
+import { OwnerControls } from '../../features/groups/Componentes/platform/OwnerControls';
+import { PlatformGroupCard } from '../../features/groups/Componentes/platform/PlatformGroupCard';
 
 export const GroupSalesPlatformView: React.FC = () => {
     const navigate = useNavigate();

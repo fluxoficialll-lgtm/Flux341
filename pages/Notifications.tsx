@@ -1,22 +1,22 @@
 
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { notificationService } from '../services/notificationService';
-import { relationshipService } from '../services/relationshipService';
-import { groupService } from '../services/groupService';
-import { geoService, GeoData } from '../services/geoService';
-import { currencyService, ConversionResult } from '../services/currencyService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { notificationService } from '../ServiçosDoFrontend/notificationService';
+import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
+import { groupService } from '../ServiçosDoFrontend/groupService';
+import { geoService, GeoData } from '../ServiçosDoFrontend/geoService';
+import { currencyService, ConversionResult } from '../ServiçosDoFrontend/currencyService';
 import { NotificationItem, Group } from '../types';
 import { db } from '@/database';
-import { Footer } from '../components/layout/Footer';
-import { FilterBar } from '../components/notifications/FilterBar';
-import { NotificationCard } from '../components/notifications/NotificationCard';
-import { MainHeader } from '../components/layout/MainHeader';
-import { ExpiringVipNotificationCard } from '../features/notifications/components/ExpiringVipNotificationCard';
+import { Footer } from '../Componentes/layout/Footer';
+import { FilterBar } from '../Componentes/notifications/FilterBar';
+import { NotificationCard } from '../Componentes/notifications/NotificationCard';
+import { MainHeader } from '../Componentes/layout/MainHeader';
+import { ExpiringVipNotificationCard } from '../features/notifications/Componentes/ExpiringVipNotificationCard';
 
 // Lazy loading do modal de pagamento para manter performance
-const PaymentFlowModal = lazy(() => import('../components/payments/PaymentFlowModal').then(m => ({ default: m.PaymentFlowModal })));
+const PaymentFlowModal = lazy(() => import('../Componentes/payments/PaymentFlowModal').then(m => ({ default: m.PaymentFlowModal })));
 
 interface EnrichedNotificationItem extends NotificationItem {
     displayName?: string;

@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../services/authService';
-import { postService } from '../services/postService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { postService } from '../ServiçosDoFrontend/postService';
 import { AuthError, UserProfile } from '../types';
 import { db } from '@/database';
-import { ImageCropModal } from '../components/ui/ImageCropModal';
+import { ImageCropModal } from '../Componentes/ui/ImageCropModal';
 
 export const EditProfile: React.FC = () => {
   const navigate = useNavigate();

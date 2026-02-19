@@ -1,27 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { chatService } from '../services/chatService';
-import { relationshipService } from '../services/relationshipService';
-import { authService } from '../services/authService';
-import { postService } from '../services/postService';
-import { notificationService } from '../services/notificationService';
-import { marketplaceService } from '../services/marketplaceService';
+import { chatService } from '../ServiçosDoFrontend/chatService';
+import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { postService } from '../ServiçosDoFrontend/postService';
+import { notificationService } from '../ServiçosDoFrontend/notificationService';
+import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
 import { Post, MarketplaceItem } from '../types';
 import { db } from '@/database';
-import { useModal } from '../components/ModalSystem';
-import { FeedItem } from '../components/feed/FeedItem';
-import { AvatarPreviewModal } from '../components/ui/AvatarPreviewModal';
-import { Footer } from '../components/layout/Footer';
+import { useModal } from '../Componentes/ModalSystem';
+import { FeedItem } from '../Componentes/feed/FeedItem';
+import { AvatarPreviewModal } from '../Componentes/ui/AvatarPreviewModal';
+import { Footer } from '../Componentes/layout/Footer';
 
 // Novos componentes modulares para visitante
-import { VisitorHeader } from '../features/user-profile/components/VisitorHeader';
-import { VisitorInfoCard } from '../features/user-profile/components/VisitorInfoCard';
-import { VisitorBlockedState, VisitorPrivateState } from '../features/user-profile/components/VisitorStates';
+import { VisitorHeader } from '../features/user-profile/Componentes/VisitorHeader';
+import { VisitorInfoCard } from '../features/user-profile/Componentes/VisitorInfoCard';
+import { VisitorBlockedState, VisitorPrivateState } from '../features/user-profile/Componentes/VisitorStates';
 
 // Componentes reaproveitados do perfil
-import { ProfileTabNav } from '../features/profile/components/ProfileTabNav';
-import { ProfileReelsGrid } from '../features/profile/components/tabs/ProfileReelsGrid';
-import { ProfileProductsGrid } from '../features/profile/components/tabs/ProfileProductsGrid';
+import { ProfileTabNav } from '../features/profile/Componentes/ProfileTabNav';
+import { ProfileReelsGrid } from '../features/profile/Componentes/tabs/ProfileReelsGrid';
+import { ProfileProductsGrid } from '../features/profile/Componentes/tabs/ProfileProductsGrid';
 
 export const UserProfile: React.FC = () => {
   const navigate = useNavigate();

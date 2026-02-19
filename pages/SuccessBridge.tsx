@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../services/groupService';
-import { authService } from '../services/authService';
-import { RedirectResolver } from '../services/sync/RedirectResolver';
-import { PurchaseIntention } from '../services/sync/PurchaseIntention';
+import { groupService } from '../ServiçosDoFrontend/groupService';
+import { authService } from '../ServiçosDoFrontend/authService';
+import { RedirectResolver } from '../ServiçosDoFrontend/sync/RedirectResolver';
+import { PurchaseIntention } from '../ServiçosDoFrontend/sync/PurchaseIntention';
 import { db } from '../database';
 
 export const SuccessBridge: React.FC = () => {

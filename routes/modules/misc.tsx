@@ -1,6 +1,6 @@
 
 import React, { lazy } from 'react';
-import { ProtectedRoute } from '../../components/auth/ProtectedRoute';
+import { ProtectedRoute } from '../../Componentes/auth/ProtectedRoute';
 
 const Chat = lazy(() => import('../../pages/Chat').then(m => ({ default: m.Chat })));
 const GlobalSearch = lazy(() => import('../../pages/GlobalSearch').then(m => ({ default: m.GlobalSearch })));
