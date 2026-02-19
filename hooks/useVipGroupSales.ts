@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { vipSalesTracker } from '../ServiçosDoFrontend/pixel/trackers/VipSalesTracker';
 import { VipPlaybackController } from '../ServiçosDoFrontend/real/vip/VipPlaybackController';
 import { useVipPricing } from './useVipPricing';

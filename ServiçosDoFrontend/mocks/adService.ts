@@ -1,7 +1,7 @@
 
 import { AdCampaign } from '../../types';
 import { db } from '../../database';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { MOCK_CAMPAIGNS } from '../../mocks';
 
 export const adService = {

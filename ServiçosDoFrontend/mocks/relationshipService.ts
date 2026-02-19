@@ -1,7 +1,7 @@
 
 import { Relationship } from '../../types';
 import { db } from '../../database';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { MOCK_USERS } from '../../mocks';
 
 export const relationshipService = {

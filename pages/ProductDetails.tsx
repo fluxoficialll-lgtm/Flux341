@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { chatService } from '../ServiçosDoFrontend/chatService';
 import { db } from '@/database';
 import { MarketplaceItem, Comment, ChatMessage } from '../types';

@@ -1,6 +1,6 @@
 import { BusinessDashboardData } from '../real/screenService';
 import { db } from '../../database';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { MOCK_PRODUCTS, MOCK_CAMPAIGNS } from '../../mocks';
 
 export const MockScreenService = {

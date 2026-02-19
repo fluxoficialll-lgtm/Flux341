@@ -2,7 +2,7 @@
 import { Comment } from '../../../types';
 import { API_BASE } from '../../../apiConfig';
 import { db } from '../../../database';
-import { authService } from '../../authService';
+import { authService } from '../../ServiçosDeAutenticacao/authService';
 import { PostMetricsService } from '../PostMetricsService';
 
 const API_URL = `${API_BASE}/api/posts`;

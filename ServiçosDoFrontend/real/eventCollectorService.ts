@@ -1,6 +1,6 @@
 import { API_BASE } from '../../apiConfig';
 import { AppEvent, AppEventType, AppEventSource } from '../../types';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 
 const API_URL = `${API_BASE}/api/events/ingest`;
 

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { Group } from '../types';
 import { db } from '@/database';
 import { GroupCapacityBadge } from '../Componentes/groups/ui/GroupCapacityBadge';

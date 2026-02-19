@@ -4,7 +4,7 @@ import { FeedEngine } from './engines/FeedEngine';
 import { ReelsEngine } from './engines/ReelsEngine';
 import { MarketEngine } from './engines/MarketEngine';
 import { EngineContext } from './types';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 
 export const DiscoveryHub = {
     // Fix: Removed async as FeedEngine.rank is synchronous

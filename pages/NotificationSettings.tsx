@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { NotificationSettings as INotificationSettings } from '../types';
 import { useModal } from '../Componentes/ModalSystem';
 

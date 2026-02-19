@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { stripeService } from '../../ServiçosDoFrontend/stripeService';
-import { authService } from '../../ServiçosDoFrontend/authService';
+import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { GeoData } from '../../ServiçosDoFrontend/geoService';
 import { ConversionResult } from '../../ServiçosDoFrontend/currencyService';
 import { vipSalesTracker } from '../../ServiçosDoFrontend/pixel/trackers/VipSalesTracker';

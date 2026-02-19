@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { groupService } from '../ServiçosDoFrontend/groupService';
 import { postService } from '../ServiçosDoFrontend/postService';
 import { Group } from '../types';

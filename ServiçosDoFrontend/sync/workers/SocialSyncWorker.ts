@@ -2,7 +2,7 @@
 import { groupService } from '../../groupService';
 import { chatService } from '../../chatService';
 import { relationshipService } from '../../relationshipService';
-import { authService } from '../../authService';
+import { authService } from '../../ServiçosDeAutenticacao/authService';
 import { hydrationManager } from '../HydrationManager';
 
 export const SocialSyncWorker = {

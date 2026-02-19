@@ -1,7 +1,7 @@
 
 import { db } from '../../database';
 import { ChatMessage, ChatData } from '../../types';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { MOCK_CHATS } from '../../mocks';
 
 /**

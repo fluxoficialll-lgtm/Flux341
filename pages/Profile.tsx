@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { postService } from '../ServiçosDoFrontend/postService';
 import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
 import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';

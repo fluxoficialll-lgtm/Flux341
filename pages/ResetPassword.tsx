@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthLayout } from '../Componentes/Layout';
 import { Input } from '../Componentes/Input';
 import { Button } from '../Componentes/Button';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { AuthError } from '../types';
 
 export const ResetPassword: React.FC = () => {

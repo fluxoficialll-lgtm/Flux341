@@ -1,6 +1,6 @@
 
 import { Relationship, User } from '../../types';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { db } from '@/database';
 import { API_BASE } from '../../apiConfig';
 

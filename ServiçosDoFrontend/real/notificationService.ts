@@ -1,5 +1,5 @@
 import { NotificationItem } from '../../types';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { db } from '@/database';
 import { USE_MOCKS } from '../../mocks';
 import { sqlite } from '../../database/engine';

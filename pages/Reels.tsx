@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { reelsService } from '../ServiçosDoFrontend/reelsService';
 import { postService } from '../ServiçosDoFrontend/postService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { recommendationService } from '../ServiçosDoFrontend/recommendationService';
 import { db } from '@/database';
 import { useModal } from '../Componentes/ModalSystem';

@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { postService } from '../ServiçosDoFrontend/postService';
 import { MarketplaceItem } from '../types';
 

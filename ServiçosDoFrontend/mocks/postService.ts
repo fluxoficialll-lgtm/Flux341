@@ -1,6 +1,6 @@
 import { Post, Comment, PaginatedResponse } from '../../types';
 import { db } from '../../database';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { MOCK_POSTS } from '../../mocks';
 
 export const postService = {

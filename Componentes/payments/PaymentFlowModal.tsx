@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { SyncPayModel } from './SyncPayModel';
 import { PayPalModel } from './PayPalModel';
 import { StripeModel } from './StripeModel';
-import { authService } from '../../ServiçosDoFrontend/authService';
+import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { GeoData } from '../../ServiçosDoFrontend/geoService';
 import { ConversionResult } from '../../ServiçosDoFrontend/currencyService';
 import { Group } from '../../types';

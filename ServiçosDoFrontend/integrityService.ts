@@ -2,7 +2,7 @@
 import { GoogleGenAI } from "@google/genai";
 import { ViolationType, IntegrityLog } from '../types/integrity.types';
 import { API_BASE } from '../apiConfig';
-import { authService } from './authService';
+import { authService } from './ServiçosDeAutenticacao/authService';
 
 // Cache local de mensagens para detecção de spam por frequência
 const messageTimestamps: Record<string, number[]> = {};

@@ -2,7 +2,7 @@ import { MarketplaceItem, Comment, User } from '../../types';
 import { db } from '@/database';
 import { DiscoveryHub } from '../discovery/DiscoveryHub';
 import { API_BASE } from '../../apiConfig';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { sqlite } from '../../database/engine';
 
 const API_URL = `${API_BASE}/api/marketplace`;

@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { postService } from '../ServiçosDoFrontend/postService';
 import { AuthError } from '../types';
 import { ImageCropModal } from '../Componentes/ui/ImageCropModal';

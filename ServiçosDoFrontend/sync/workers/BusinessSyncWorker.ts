@@ -2,7 +2,7 @@
 import { syncPayService } from '../../syncPayService';
 import { adService } from '../../adService';
 import { marketplaceService } from '../../marketplaceService';
-import { authService } from '../../authService';
+import { authService } from '../../ServiçosDeAutenticacao/authService';
 import { db } from '../../../database';
 import { hydrationManager } from '../HydrationManager';
 

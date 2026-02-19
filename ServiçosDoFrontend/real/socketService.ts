@@ -1,6 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 import { API_BASE } from '../../apiConfig';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 
 let socket: Socket | null = null;
 

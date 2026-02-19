@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postService } from '../ServiçosDoFrontend/postService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { Post, User } from '../types';
 import { FeedSearchHeader } from '../Componentes/feed/search/FeedSearchHeader';
 import { FeedSearchFilters } from '../Componentes/feed/search/FeedSearchFilters';

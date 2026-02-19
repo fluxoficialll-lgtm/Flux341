@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { reelsService } from '../ServiçosDoFrontend/reelsService';
 import { groupService } from '../ServiçosDoFrontend/groupService';
 import { contentSafetyService } from '../ServiçosDoFrontend/contentSafetyService';

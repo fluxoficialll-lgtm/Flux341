@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { postService } from '../ServiçosDoFrontend/postService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { groupService } from '../ServiçosDoFrontend/groupService';
 import { contentSafetyService } from '../ServiçosDoFrontend/contentSafetyService';
 import { adService } from '../ServiçosDoFrontend/adService';

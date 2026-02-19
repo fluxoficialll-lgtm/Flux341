@@ -2,7 +2,7 @@
 // Fix: Added React import to resolve namespace errors for ChangeEvent
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { authService } from '../../../ServiçosDoFrontend/authService';
+import { authService } from '../../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { groupService } from '../../../ServiçosDoFrontend/groupService';
 import { adService } from '../../../ServiçosDoFrontend/adService';
 import { AdCampaign, Group, Post } from '../../../types';

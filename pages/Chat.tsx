@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { chatService } from '../ServiçosDoFrontend/chatService';
 import { ChatMessage } from '../types';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { postService } from '../ServiçosDoFrontend/postService';
 import { db } from '@/database';
 import { useModal } from '../Componentes/ModalSystem';

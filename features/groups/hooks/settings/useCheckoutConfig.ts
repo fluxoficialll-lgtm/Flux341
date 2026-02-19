@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { groupService } from '../../../../ServiçosDoFrontend/groupService';
-import { authService } from '../../../../ServiçosDoFrontend/authService';
+import { authService } from '../../../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { useModal } from '../../../../Componentes/ModalSystem';
 import { Group, CheckoutConfig } from '../../../../types';
 import { PROVIDER_METHODS } from '../../Componentes/settings/checkout/CheckoutMethodData';

@@ -5,7 +5,7 @@ import { MarketplaceItem, Group } from '../../types';
 import { metaPixelService } from '../../ServiçosDoFrontend/metaPixelService';
 import { geoService } from '../../ServiçosDoFrontend/geoService';
 import { currencyService } from '../../ServiçosDoFrontend/currencyService';
-import { authService } from '../../ServiçosDoFrontend/authService';
+import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 
 export const useCheckoutFlow = () => {
     const navigate = useNavigate();

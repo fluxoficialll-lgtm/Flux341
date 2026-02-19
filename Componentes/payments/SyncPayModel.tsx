@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { syncPayService } from '../../ServiçosDoFrontend/syncPayService';
-import { authService } from '../../ServiçosDoFrontend/authService';
+import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { currencyService } from '../../ServiçosDoFrontend/currencyService';
 import { vipSalesTracker } from '../../ServiçosDoFrontend/pixel/trackers/VipSalesTracker';
 import { Group, User } from '../../types';

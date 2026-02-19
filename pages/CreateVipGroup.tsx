@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { postService } from '../ServiçosDoFrontend/postService';
 import { Group, VipMediaItem } from '../types';
 import { PixelSettingsModal } from '../Componentes/groups/PixelSettingsModal';

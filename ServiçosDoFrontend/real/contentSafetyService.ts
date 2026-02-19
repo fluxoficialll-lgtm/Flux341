@@ -1,5 +1,5 @@
 import { API_BASE } from '../../apiConfig';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 
 export const contentSafetyService = {
     /**

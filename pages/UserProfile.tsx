@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { chatService } from '../ServiçosDoFrontend/chatService';
 import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { postService } from '../ServiçosDoFrontend/postService';
 import { notificationService } from '../ServiçosDoFrontend/notificationService';
 import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';

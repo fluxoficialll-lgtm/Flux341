@@ -1,6 +1,6 @@
 
 import { notificationService } from '../../notificationService';
-import { authService } from '../../authService';
+import { authService } from '../../ServiçosDeAutenticacao/authService';
 import { API_BASE } from '../../../apiConfig';
 import { db } from '../../../database';
 import { hydrationManager } from '../HydrationManager';

@@ -1,6 +1,6 @@
 import { Capacitor } from '@capacitor/core';
 import { PushNotifications } from '@capacitor/push-notifications';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { API_BASE } from '../../apiConfig';
 
 export const pushNotificationService = {

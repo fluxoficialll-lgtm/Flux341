@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { chatService } from '../ServiçosDoFrontend/chatService';
 import { notificationService } from '../ServiçosDoFrontend/notificationService';
 import { db } from '@/database';

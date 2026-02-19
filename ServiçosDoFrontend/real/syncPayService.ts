@@ -1,7 +1,7 @@
 
 import { API_BASE } from '../../apiConfig';
 import { User, Group, AffiliateStats } from '../../types';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { getCookie } from '../metaPixelService';
 import { trackingService } from '../trackingService'; 
 

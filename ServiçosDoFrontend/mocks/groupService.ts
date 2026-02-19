@@ -1,7 +1,7 @@
 
 import { Group, User, GroupLink } from '../../types';
 import { db } from '../../database';
-import { authService } from '../authService';
+import { authService } from '../ServiçosDeAutenticacao/authService';
 import { IGroupService } from '../groupService.interface';
 import { MOCK_GROUPS, MOCK_USERS } from '../../mocks';
 

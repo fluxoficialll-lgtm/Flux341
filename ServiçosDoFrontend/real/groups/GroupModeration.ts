@@ -1,7 +1,7 @@
 
 import { Group, User } from '../../../types';
 import { db } from '@/database';
-import { authService } from '../../authService';
+import { authService } from '../../ServiçosDeAutenticacao/authService';
 import { GroupCore } from './GroupCore';
 import { GroupLifeCycleService } from './GroupLifeCycleService';
 import { IdentityOrchestrator } from '../../ServiçosDeAutenticacao/IdentityOrchestrator';

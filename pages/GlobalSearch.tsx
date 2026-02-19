@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { chatService } from '../ServiçosDoFrontend/chatService';
 import { User } from '../types';
 import { db } from '@/database';

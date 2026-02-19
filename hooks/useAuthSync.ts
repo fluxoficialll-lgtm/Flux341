@@ -1,6 +1,6 @@
 
 import { useEffect } from 'react';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { AccountSyncService } from '../ServiçosDoFrontend/sync/AccountSyncService';
 import { SyncState } from '../ServiçosDoFrontend/sync/SyncState';
 import { socketService } from '../ServiçosDoFrontend/socketService';

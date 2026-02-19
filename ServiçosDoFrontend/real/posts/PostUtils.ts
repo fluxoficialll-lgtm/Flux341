@@ -1,6 +1,6 @@
 
 import { Post } from '../../../types';
-import { authService } from '../../authService';
+import { authService } from '../../ServiçosDeAutenticacao/authService';
 
 export const PostUtils = {
     /**

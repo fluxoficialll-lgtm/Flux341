@@ -1,5 +1,5 @@
 
-import { authService } from './authService';
+import { authService } from './ServiçosDeAutenticacao/authService';
 
 /**
  * API Interceptor (Resiliência de Dados)

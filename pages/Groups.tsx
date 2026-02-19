@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef, useState, useCallback, Suspense, lazy } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { groupService } from '../ServiçosDoFrontend/groupService';
 import { chatService } from '../ServiçosDoFrontend/chatService';
 import { Group } from '../types';

@@ -1,6 +1,6 @@
 
 import { PixelUserData, PixelEventData } from '../../../types/pixel.types';
-import { authService } from '../../authService';
+import { authService } from '../../ServiçosDeAutenticacao/authService';
 import { geoService } from '../../geoService';
 import { trafficSource } from '../context/TrafficSource';
 import { anonymizeUserData } from '../utils/pixelHasher';

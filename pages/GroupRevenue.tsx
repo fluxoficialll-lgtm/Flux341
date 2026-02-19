@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/authService';
+import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { syncPayService } from '../ServiçosDoFrontend/syncPayService';
 import { currencyService } from '../ServiçosDoFrontend/currencyService';
 import { Group } from '../types';

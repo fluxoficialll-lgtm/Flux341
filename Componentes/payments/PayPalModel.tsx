@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { paypalService } from '../../ServiçosDoFrontend/paypalService';
-import { authService } from '../../ServiçosDoFrontend/authService';
+import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { metaPixelService } from '../../ServiçosDoFrontend/metaPixelService';
 import { Group } from '../../types';
 import { ConversionResult } from '../../ServiçosDoFrontend/currencyService';

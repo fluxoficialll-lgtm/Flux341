@@ -1,7 +1,7 @@
 
 import { Group } from '../../../types';
 import { db } from '@/database';
-import { authService } from '../../authService';
+import { authService } from '../../ServiçosDeAutenticacao/authService';
 import { API_BASE } from '../../../apiConfig';
 import { ValidationRules } from '../../../constants/ValidationRules';
 import { StructurePolicy } from '../../policy/StructurePolicy';
