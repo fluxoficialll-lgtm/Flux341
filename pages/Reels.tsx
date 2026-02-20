@@ -8,7 +8,7 @@ import { db } from '@/database';
 import { useModal } from '../Componentes/ModalSystem';
 import { Post, Comment } from '../types';
 
-import { ReelItem } from '../features/reels/Componentes/ReelItem';
+import { ReelItem } from '../Componentes/ComponentesDeReels/Componentes/ReelItem';
 import { CommentSheet } from '../Componentes/ui/comments/CommentSheet';
 
 export const Reels: React.FC = () => {
