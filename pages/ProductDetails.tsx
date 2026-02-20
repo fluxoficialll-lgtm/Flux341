@@ -9,13 +9,13 @@ import { MarketplaceItem, Comment, ChatMessage } from '../types';
 import { useModal } from '../Componentes/ModalSystem';
 
 // Modular Components
-import { ProductHeader } from '../features/marketplace/Componentes/details/ProductHeader';
-import { ProductMediaGallery } from '../features/marketplace/Componentes/details/ProductMediaGallery';
-import { ProductInfo } from '../features/marketplace/Componentes/details/ProductInfo';
-import { ProductSellerCard } from '../features/marketplace/Componentes/details/ProductSellerCard';
-import { ProductDescription } from '../features/marketplace/Componentes/details/ProductDescription';
-import { ProductBottomBar } from '../features/marketplace/Componentes/details/ProductBottomBar';
-import { ProductLightbox } from '../features/marketplace/Componentes/details/ProductLightbox';
+import { ProductHeader } from '../Componentes/ComponentesDeMarketplace/Componentes/details/ProductHeader';
+import { ProductMediaGallery } from '../Componentes/ComponentesDeMarketplace/Componentes/details/ProductMediaGallery';
+import { ProductInfo } from '../Componentes/ComponentesDeMarketplace/Componentes/details/ProductInfo';
+import { ProductSellerCard } from '../Componentes/ComponentesDeMarketplace/Componentes/details/ProductSellerCard';
+import { ProductDescription } from '../Componentes/ComponentesDeMarketplace/Componentes/details/ProductDescription';
+import { ProductBottomBar } from '../Componentes/ComponentesDeMarketplace/Componentes/details/ProductBottomBar';
+import { ProductLightbox } from '../Componentes/ComponentesDeMarketplace/Componentes/details/ProductLightbox';
 import { CommentSheet } from '../Componentes/ui/comments/CommentSheet';
 
 export const ProductDetails: React.FC = () => {
