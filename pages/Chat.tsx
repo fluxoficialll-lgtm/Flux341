@@ -8,12 +8,14 @@ import { postService } from '../ServiçosDoFrontend/postService';
 import { db } from '@/database';
 import { useModal } from '../Componentes/ModalSystem';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
-import { ChatHeader } from '../Componentes/chat/ChatHeader';
-import { ChatInput } from '../Componentes/chat/ChatInput';
-import { MessageItem } from '../Componentes/chat/MessageItem';
-import { MediaPreviewOverlay } from '../Componentes/chat/MediaPreviewOverlay';
-import { ChatMenuModal } from '../Componentes/chat/ChatMenuModal';
+import { ChatHeader } from '../Componentes/ComponentesDeChats/ChatHeader';
+import { ChatInput } from '../Componentes/ComponentesDeChats/ChatInput';
+import { MessageItem } from '../Componentes/ComponentesDeChats/MessageItem';
+import { MediaPreviewOverlay } from '../Componentes/ComponentesDeChats/MediaPreviewOverlay';
+import { ChatMenuModal } from '../Componentes/ComponentesDeChats/ChatMenuModal';
 import { socketService } from '../ServiçosDoFrontend/socketService';
+import { ModalGradeDeAcoes, Acao } from '../Componentes/ComponentesDeChats/ModalGradeDeAcoes';
+import { faPencilAlt, faThumbtack, faCopy, faShare, faReply } from '@fortawesome/free-solid-svg-icons';
 
 export const Chat: React.FC = () => {
   const navigate = useNavigate();
@@ -47,6 +49,14 @@ export const Chat: React.FC = () => {
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
 
   const currentUserEmail = authService.getCurrentUserEmail()?.toLowerCase();
+
+  const acoesDeSelecao: Acao[] = [
+    { id: 'editar', label: 'Editar', icon: faPencilAlt, onClick: () => { /* Lógica para editar */ } },
+    { id: 'fixar', label: 'Fixar', icon: faThumbtack, onClick: () => { /* Lógica para fixar */ } },
+    { id: 'copiar', label: 'Copiar', icon: faCopy, onClick: () => { /* Lógica para copiar */ } },
+    { id: 'encaminhar', label: 'Encaminhar', icon: faShare, onClick: () => { /* Lógica para encaminhar */ } },
+    { id: 'responder', label: 'Responder', icon: faReply, onClick: () => { /* Lógica para responder */ } },
+  ];
 
   const loadChatData = useCallback((isSilent = false) => {
       const chatData = chatService.getChat(chatId);
@@ -85,7 +95,6 @@ export const Chat: React.FC = () => {
       const rawMessages = chatData.messages || [];
       const uniqueMap = new Map();
       rawMessages.forEach(m => {
-          // Filtragem de Mensagem Deletada para Mim
           const deletedBy = m.deletedBy || [];
           if (!deletedBy.includes(currentUserEmail || '')) {
               uniqueMap.set(m.id, m);
@@ -99,7 +108,6 @@ export const Chat: React.FC = () => {
   useEffect(() => {
       loadChatData();
       
-      // Listeners de Socket para Sincronização de Deleção
       const unsubDeleteChat = socketService.on('chat_deleted_globally', (data: any) => {
           if (data.chatId === chatId) {
               navigate('/messages', { replace: true });
@@ -151,7 +159,6 @@ export const Chat: React.FC = () => {
   const handleStartSelection = (msgId: number) => {
       setIsSelectionMode(true);
       setSelectedIds([msgId]);
-      // Feedback tátil leve se possível
       if (navigator.vibrate) navigator.vibrate(10);
   };
 
@@ -195,28 +202,29 @@ export const Chat: React.FC = () => {
       />
 
       <main style={{ flexGrow: 1, width: '100%', display: 'flex', flexDirection: 'column', paddingTop: '60px' }}>
-            <Virtuoso
-                ref={virtuosoRef}
-                style={{ height: '100%', paddingBottom: '80px' }}
-                data={filteredMessages}
-                initialTopMostItemIndex={filteredMessages.length - 1}
-                followOutput="smooth"
-                itemContent={(index, msg) => (
-                    <MessageItem
-                        key={msg.id}
-                        msg={msg}
-                        isMe={msg.senderEmail?.toLowerCase() === currentUserEmail}
-                        isSelectionMode={isSelectionMode}
-                        isSelected={selectedIds.includes(msg.id)}
-                        onSelect={handleToggleSelection}
-                        onStartSelection={handleStartSelection}
-                        onMediaClick={(url, type) => setZoomedMedia({ url, type })}
-                        onProductClick={(pid) => navigate(`/marketplace/product/${pid}`)}
-                        playingAudioId={playingAudioId}
-                        onPlayAudio={() => {}}
-                    />
-                )}
-            />
+          <ModalGradeDeAcoes acoes={acoesDeSelecao} visible={isSelectionMode} />
+          <Virtuoso
+              ref={virtuosoRef}
+              style={{ height: '100%', paddingBottom: '80px' }}
+              data={filteredMessages}
+              initialTopMostItemIndex={filteredMessages.length - 1}
+              followOutput="smooth"
+              itemContent={(index, msg) => (
+                  <MessageItem
+                      key={msg.id}
+                      msg={msg}
+                      isMe={msg.senderEmail?.toLowerCase() === currentUserEmail}
+                      isSelectionMode={isSelectionMode}
+                      isSelected={selectedIds.includes(msg.id)}
+                      onSelect={handleToggleSelection}
+                      onStartSelection={handleStartSelection}
+                      onMediaClick={(url, type) => setZoomedMedia({ url, type })}
+                      onProductClick={(pid) => navigate(`/marketplace/product/${pid}`)}
+                      playingAudioId={playingAudioId}
+                      onPlayAudio={() => {}}
+                  />
+              )}
+          />
       </main>
 
       {!isSelectionMode && (

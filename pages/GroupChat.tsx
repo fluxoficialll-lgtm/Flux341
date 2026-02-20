@@ -10,12 +10,14 @@ import { db } from '@/database';
 import { Group, ChatMessage } from '../types';
 import { useModal } from '../Componentes/ModalSystem';
 import { Virtuoso, VirtuosoHandle } from 'react-virtuoso';
-import { ChatHeader } from '../Componentes/chat/ChatHeader';
-import { ChatInput } from '../Componentes/chat/ChatInput';
-import { MessageItem } from '../Componentes/chat/MessageItem';
-import { MediaPreviewOverlay } from '../Componentes/chat/MediaPreviewOverlay';
+import { ChatHeader } from '../Componentes/ComponentesDeChats/ChatHeader';
+import { ChatInput } from '../Componentes/ComponentesDeChats/ChatInput';
+import { MessageItem } from '../Componentes/ComponentesDeChats/MessageItem';
+import { MediaPreviewOverlay } from '../Componentes/ComponentesDeChats/MediaPreviewOverlay';
 import { GroupMenuModal } from '../Componentes/groups/menu/GroupMenuModal';
 import { useAccessValidationFlow } from '../flows/groups/AccessValidationFlow';
+import { ModalGradeDeAcoes, Acao } from '../Componentes/ComponentesDeChats/ModalGradeDeAcoes';
+import { faPencilAlt, faThumbtack, faCopy, faShare, faReply } from '@fortawesome/free-solid-svg-icons';
 
 export const GroupChat: React.FC = () => {
   const navigate = useNavigate();
@@ -52,6 +54,14 @@ export const GroupChat: React.FC = () => {
   const currentUserId = authService.getCurrentUserId();
 
   const currentChatId = useMemo(() => `${id}_${activeChannelId}`, [id, activeChannelId]);
+
+  const acoesDeSelecao: Acao[] = [
+    { id: 'editar', label: 'Editar', icon: faPencilAlt, onClick: () => { /* Lógica para editar */ } },
+    { id: 'fixar', label: 'Fixar', icon: faThumbtack, onClick: () => { /* Lógica para fixar */ } },
+    { id: 'copiar', label: 'Copiar', icon: faCopy, onClick: () => { /* Lógica para copiar */ } },
+    { id: 'encaminhar', label: 'Encaminhar', icon: faShare, onClick: () => { /* Lógica para encaminhar */ } },
+    { id: 'responder', label: 'Responder', icon: faReply, onClick: () => { /* Lógica para responder */ } },
+  ];
 
   const loadMessages = useCallback(() => { 
     if (currentChatId) {
@@ -156,6 +166,7 @@ export const GroupChat: React.FC = () => {
       />
 
       <main style={{ flexGrow: 1, width: '100%', display: 'flex', flexDirection: 'column', paddingTop: '60px' }}>
+          <ModalGradeDeAcoes acoes={acoesDeSelecao} visible={isSelectionMode} />
           <Virtuoso
               ref={virtuosoRef}
               style={{ height: '100%', paddingBottom: '80px' }}

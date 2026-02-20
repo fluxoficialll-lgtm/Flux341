@@ -5,11 +5,11 @@ import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/auth
 import { chatService } from '../ServiçosDoFrontend/chatService';
 import { notificationService } from '../ServiçosDoFrontend/notificationService';
 import { db } from '@/database';
-import { MessagesMenuModal } from '../Componentes/chat/MessagesMenuModal';
+import { MessagesMenuModal } from '../Componentes/ComponentesDeChats/MessagesMenuModal';
 import { MainHeader } from '../Componentes/layout/MainHeader';
-import { MessageListItem } from '../Componentes/chat/MessageListItem';
-import { MessagesEmptyState } from '../Componentes/chat/MessagesEmptyState';
-import { MessagesFooter } from '../Componentes/chat/MessagesFooter';
+import { MessageListItem } from '../Componentes/ComponentesDeChats/MessageListItem';
+import { MessagesEmptyState } from '../Componentes/ComponentesDeChats/MessagesEmptyState';
+import { MessagesFooter } from '../Componentes/ComponentesDeChats/MessagesFooter';
 
 interface Contact {
   id: string;
