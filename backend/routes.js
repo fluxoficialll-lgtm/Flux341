@@ -1,5 +1,6 @@
 
 import express from 'express';
+
 import authRoutes from './routes/auth.js';
 import usersRoutes from './routes/users.js';
 import groupsRoutes from './routes/groups.js';
@@ -25,9 +26,12 @@ import paypalRoutes from './routes/gateways/paypal.js';
 
 const router = express.Router();
 
+// O middleware de Trace ID já é aplicado globalmente no server.js
+
 // Handshake Route (Batimento)
-// Como este router é montado em /api no server.js, esta rota será /api/ping
-router.get('/ping', (req, res) => res.send('pong'));
+router.get('/ping', (req, res) => {
+    res.send('pong');
+});
 
 // BFF / Screens Aggregator
 router.use('/screens', screensRoutes);
@@ -37,7 +41,7 @@ router.use('/auth', authRoutes);
 router.use('/users', usersRoutes);
 router.use('/groups', groupsRoutes);
 router.use('/messages', messagesRoutes);
-router.use('/admin', adminRoutes); // Única rota para ações administrativas internas
+router.use('/admin', adminRoutes);
 router.use('/events', eventRoutes);
 router.use('/marketplace', marketplaceRoutes);
 router.use('/posts', postsRoutes);

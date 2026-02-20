@@ -1,8 +1,8 @@
 
 /**
- * TRAFFIC LOGGER - Fluxo de Dados e Payloads
+ * AUDITOR DE TRÁFEGO - Fluxo de Dados e Payloads
  */
-export const trafficLogger = {
+export const AuditorDeTrafego = {
     logInbound: (req) => {
         const isHealthCheck = (req.path === '/' || req.path === '/api/ping') && (req.method === 'GET' || req.method === 'HEAD');
         const traceId = req.headers['x-flux-trace-id'] || 'no-trace';

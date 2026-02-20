@@ -4,7 +4,7 @@ import cors from 'cors';
 import compression from 'compression';
 import helmet from 'helmet';
 import { bridgeLogger } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/bridgeLogger.js';
-import { trafficLogger } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/trafficLogger.js';
+import { AuditorDeTrafego } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/AuditorDeTrafego.js';
 import { heartbeatLogger } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/heartbeatLogger.js';
 
 export const setupMiddlewares = (app, io) => {
@@ -48,9 +48,9 @@ export const setupMiddlewares = (app, io) => {
 
         // 1. Log de Entrada
         if (req.method === 'OPTIONS') {
-            trafficLogger.logCors(req);
+            AuditorDeTrafego.logCors(req);
         } else {
-            trafficLogger.logInbound(req);
+            AuditorDeTrafego.logInbound(req);
         }
 
         if (clientId) {
@@ -69,7 +69,7 @@ export const setupMiddlewares = (app, io) => {
             }
 
             // Log de Tráfego de Saída
-            trafficLogger.logOutbound(req, res, duration);
+            AuditorDeTrafego.logOutbound(req, res, duration);
         });
         
         req.io = io;
