@@ -6,10 +6,10 @@ import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/a
 import { Group } from '../../types';
 
 // Subcomponentes Modulares
-import { ChannelsHero } from '../../features/groups/Componentes/channels/ChannelsHero';
-import { ChannelListRenderer } from '../../features/groups/Componentes/channels/ChannelListRenderer';
-import { ChannelsFooter } from '../../features/groups/Componentes/channels/ChannelsFooter';
-import { OwnerControls } from '../../features/groups/Componentes/platform/OwnerControls';
+import { ChannelsHero } from '../../Componentes/ComponentesDeGroups/Componentes/channels/ChannelsHero';
+import { ChannelListRenderer } from '../../Componentes/ComponentesDeGroups/Componentes/channels/ChannelListRenderer';
+import { ChannelsFooter } from '../../Componentes/ComponentesDeGroups/Componentes/channels/ChannelsFooter';
+import { OwnerControls } from '../../Componentes/ComponentesDeGroups/Componentes/platform/OwnerControls';
 
 export const GroupChannelsList: React.FC = () => {
     const navigate = useNavigate();

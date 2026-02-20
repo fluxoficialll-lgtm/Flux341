@@ -11,7 +11,7 @@ import { CurrencySelectorModal, CurrencyType } from '../Componentes/groups/Curre
 import { ProviderSelectorModal } from '../Componentes/groups/ProviderSelectorModal';
 import { ImageCropModal } from '../Componentes/ui/ImageCropModal';
 import { GATEWAY_CURRENCIES, DEFAULT_CURRENCY_FOR_GATEWAY } from '../ServiçosDoFrontend/gatewayConfig';
-import { UploadProgressCard } from '../features/groups/Componentes/platform/UploadProgressCard';
+import { UploadProgressCard } from '../Componentes/ComponentesDeGroups/Componentes/platform/UploadProgressCard';
 
 export const CreateVipGroup: React.FC = () => {
   const navigate = useNavigate();

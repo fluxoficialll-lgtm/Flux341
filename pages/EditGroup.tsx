@@ -6,7 +6,7 @@ import { metaPixelService } from '../ServiçosDoFrontend/metaPixelService';
 import { postService } from '../ServiçosDoFrontend/postService';
 import { Group, VipMediaItem } from '../types';
 import { CurrencySelectorModal } from '../Componentes/groups/CurrencySelectorModal';
-import { UploadProgressCard } from '../features/groups/Componentes/platform/UploadProgressCard';
+import { UploadProgressCard } from '../Componentes/ComponentesDeGroups/Componentes/platform/UploadProgressCard';
 
 export const EditGroup: React.FC = () => {
   const navigate = useNavigate();

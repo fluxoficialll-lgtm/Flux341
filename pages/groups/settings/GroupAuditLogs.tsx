@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGroupAuditLogs } from '../../../features/groups/hooks/settings/useGroupAuditLogs';
-import { AuditLogList } from '../../../features/groups/Componentes/settings/audit/AuditLogList';
+import { useGroupAuditLogs } from '../../../Componentes/ComponentesDeGroups/hooks/settings/useGroupAuditLogs';
+import { AuditLogList } from '../../../Componentes/ComponentesDeGroups/Componentes/settings/audit/AuditLogList';
 
 export const GroupAuditLogs: React.FC = () => {
     const navigate = useNavigate();

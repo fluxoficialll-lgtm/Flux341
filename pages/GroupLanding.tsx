@@ -6,7 +6,7 @@ import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/auth
 import { Group } from '../types';
 import { db } from '@/database';
 import { GroupCapacityBadge } from '../Componentes/groups/ui/GroupCapacityBadge';
-import { CapacityValidator } from '../features/groups/logic/CapacityValidator';
+import { CapacityValidator } from '../Componentes/ComponentesDeGroups/logic/CapacityValidator';
 
 export const GroupLanding: React.FC = () => {
   const navigate = useNavigate();

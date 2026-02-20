@@ -6,12 +6,12 @@ import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/a
 import { Group, SalesFolder, Infoproduct } from '../../types';
 
 // Subcomponentes
-import { FolderContentHeader } from '../../features/groups/Componentes/platform/FolderContentHeader';
-import { InfoproductCard } from '../../features/groups/Componentes/platform/InfoproductCard';
-import { EmptyFolderState } from '../../features/groups/Componentes/platform/EmptyFolderState';
-import { InfoproductPreviewModal } from '../../features/groups/Componentes/platform/InfoproductPreviewModal';
-import { AddFileSophisticatedButton } from '../../features/groups/Componentes/platform/AddFileSophisticatedButton';
-import { UploadProgressCard } from '../../features/groups/Componentes/platform/UploadProgressCard';
+import { FolderContentHeader } from '../../Componentes/ComponentesDeGroups/Componentes/platform/FolderContentHeader';
+import { InfoproductCard } from '../../Componentes/ComponentesDeGroups/Componentes/platform/InfoproductCard';
+import { EmptyFolderState } from '../../Componentes/ComponentesDeGroups/Componentes/platform/EmptyFolderState';
+import { InfoproductPreviewModal } from '../../Componentes/ComponentesDeGroups/Componentes/platform/InfoproductPreviewModal';
+import { AddFileSophisticatedButton } from '../../Componentes/ComponentesDeGroups/Componentes/platform/AddFileSophisticatedButton';
+import { UploadProgressCard } from '../../Componentes/ComponentesDeGroups/Componentes/platform/UploadProgressCard';
 
 export const SalesFolderContentPage: React.FC = () => {
     const navigate = useNavigate();

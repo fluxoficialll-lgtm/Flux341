@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGroupSettings } from '../../../features/groups/hooks/useGroupSettings';
-import { VipMonetizationSection } from '../../../features/groups/Componentes/settings/VipMonetizationSection';
+import { useGroupSettings } from '../../../Componentes/ComponentesDeGroups/hooks/useGroupSettings';
+import { VipMonetizationSection } from '../../../Componentes/ComponentesDeGroups/Componentes/settings/VipMonetizationSection';
 import { PixelSettingsModal } from '../../../Componentes/groups/PixelSettingsModal';
 import { ProviderSelectorModal } from '../../../Componentes/groups/ProviderSelectorModal';
 import { postService } from '../../../ServiçosDoFrontend/postService';
-import { UploadProgressCard } from '../../../features/groups/Componentes/platform/UploadProgressCard';
+import { UploadProgressCard } from '../../../Componentes/ComponentesDeGroups/Componentes/platform/UploadProgressCard';
 
 export const GroupVipPage: React.FC = () => {
     const navigate = useNavigate();

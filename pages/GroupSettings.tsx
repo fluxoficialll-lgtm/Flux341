@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGroupSettings } from '../features/groups/hooks/useGroupSettings';
+import { useGroupSettings } from '../Componentes/ComponentesDeGroups/hooks/useGroupSettings';
 import { SettingItem } from '../Componentes/settings/SettingItem';
 
 export const GroupSettings: React.FC = () => {
