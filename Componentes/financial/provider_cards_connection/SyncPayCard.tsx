@@ -1,60 +1,101 @@
 
 import React, { useState } from 'react';
-import { ProviderCredentialsModal } from '../ProviderCredentialsModal';
+import { Group } from '../../../types';
 
-export const SyncPayCard = ({ group, activeProviderId, onCredentialsSubmit, onDisconnect, onSelectProvider }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+interface SyncPayCardProps {
+    group: Group | null;
+    activeProviderId: string | null;
+    onCredentialsSubmit: (providerId: string, credentials: any) => Promise<void>;
+    onDisconnect: (providerId: string) => Promise<void>;
+    onSelectProvider: (providerId: string) => Promise<void>;
+}
 
-    const isConnected = group?.paymentConfig?.syncpay?.isConnected;
+export const SyncPayCard: React.FC<SyncPayCardProps> = ({ group, activeProviderId, onCredentialsSubmit, onDisconnect, onSelectProvider }) => {
+    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [publicKey, setPublicKey] = useState('');
+    const [privateKey, setPrivateKey] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleConnectClick = () => {
-        setIsModalOpen(true);
+    const config = group?.paymentConfig?.syncpay;
+    const isConnected = !!config?.isConnected;
+    const isActive = activeProviderId === 'syncpay';
+
+    const handleToggleForm = () => setIsFormVisible(!isFormVisible);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try {
+            await onCredentialsSubmit('syncpay', { publicKey, privateKey });
+            setIsFormVisible(false);
+        } catch (error) {
+            console.error("Falha ao salvar credenciais do SyncPay", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
-    const handleDisconnectClick = (e) => {
-        e.stopPropagation();
-        onDisconnect('syncpay');
-    };
-
-    const handleUpdateClick = (e) => {
-        e.stopPropagation();
-        setIsModalOpen(true);
-    };
-
-    const handleCardClick = () => {
-        if (isConnected) {
-            onSelectProvider('syncpay');
+    const handleDisconnect = async () => {
+        if (window.confirm("Tem certeza que deseja desconectar o SyncPay?")) {
+            await onDisconnect('syncpay');
         }
     };
 
     return (
-        <>
-            <div className={`provider-card ${isConnected ? 'clickable' : ''}`} onClick={handleCardClick}>
-                <div className="provider-icon"><i className="fa-solid fa-bolt"></i></div>
-                <div className="provider-name">SyncPay</div>
-                {activeProviderId === 'syncpay' && <div className="active-indicator">Ativo</div>}
-
-                <div className="provider-card-buttons">
-                    {!isConnected ? (
-                        <button onClick={handleConnectClick} className="connect-button">Conectar</button>
-                    ) : (
-                        <>
-                            <button onClick={handleUpdateClick} className="update-button">Atualizar</button>
-                            <button onClick={handleDisconnectClick} className="disconnect-button">Desconectar</button>
-                        </>
-                    )}
+        <div className={`provider-card ${isActive ? 'active-card' : ''}`}>
+            <div className="provider-header">
+                <div className="provider-title">
+                    <i className="fa-solid fa-bolt"></i>
+                    <span>SyncPay</span>
+                </div>
+                <div className={`status-indicator ${isConnected ? 'connected' : 'disconnected'}`}>
+                    <div className={`status-dot ${isConnected ? 'connected' : 'disconnected'}`}></div>
+                    <span>{isConnected ? 'Conectado' : 'Desconectado'}</span>
                 </div>
             </div>
 
-            <ProviderCredentialsModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                providerId="syncpay"
-                providerName="SyncPay"
-                onConnect={(credentials) => onCredentialsSubmit('syncpay', credentials)}
-                onDisconnect={() => onDisconnect('syncpay')}
-                existingConfig={group?.paymentConfig?.syncpay}
-            />
-        </>
+            <div className="provider-actions flex flex-col gap-3">
+                {!isConnected ? (
+                    <button onClick={handleToggleForm} className="action-button primary">
+                        CONECTAR
+                    </button>
+                ) : (
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-white/60">Selecionar</span>
+                            <div onClick={() => onSelectProvider('syncpay')} className={`select-switch ${isActive ? 'selected' : ''}`}>
+                                <div className="select-switch-handle"></div>
+                            </div>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={handleToggleForm} className="action-button">
+                                {isFormVisible ? 'CANCELAR' : 'ATUALIZAR'}
+                            </button>
+                            <button onClick={handleDisconnect} className="action-button danger">
+                                DESCONECTAR
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {isFormVisible && (
+                <form onSubmit={handleSubmit} className="credentials-form animate-fade-in">
+                    <div className="form-group">
+                        <label htmlFor="syncpay-publickey">Public Key</label>
+                        <input id="syncpay-publickey" type="text" value={publicKey} onChange={e => setPublicKey(e.target.value)} placeholder='pk_live_...' />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="syncpay-privatekey">Private Key</label>
+                        <input id="syncpay-privatekey" type="password" value={privateKey} onChange={e => setPrivateKey(e.target.value)} placeholder='••••••••' />
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit" className="form-button save" disabled={isSubmitting}>
+                            {isSubmitting ? 'Salvando...' : 'Salvar Chaves'}
+                        </button>
+                    </div>
+                </form>
+            )}
+        </div>
     );
 };

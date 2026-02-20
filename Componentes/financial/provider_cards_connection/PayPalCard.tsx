@@ -1,60 +1,101 @@
 
 import React, { useState } from 'react';
-import { ProviderCredentialsModal } from '../ProviderCredentialsModal';
+import { Group } from '../../../types';
 
-export const PayPalCard = ({ group, activeProviderId, onCredentialsSubmit, onDisconnect, onSelectProvider }) => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+interface PayPalCardProps {
+    group: Group | null;
+    activeProviderId: string | null;
+    onCredentialsSubmit: (providerId: string, credentials: any) => Promise<void>;
+    onDisconnect: (providerId: string) => Promise<void>;
+    onSelectProvider: (providerId: string) => Promise<void>;
+}
 
-    const isConnected = group?.paymentConfig?.paypal?.isConnected;
+export const PayPalCard: React.FC<PayPalCardProps> = ({ group, activeProviderId, onCredentialsSubmit, onDisconnect, onSelectProvider }) => {
+    const [isFormVisible, setIsFormVisible] = useState(false);
+    const [clientId, setClientId] = useState('');
+    const [secretKey, setSecretKey] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleConnectClick = () => {
-        setIsModalOpen(true);
+    const config = group?.paymentConfig?.paypal;
+    const isConnected = !!config?.isConnected;
+    const isActive = activeProviderId === 'paypal';
+
+    const handleToggleForm = () => setIsFormVisible(!isFormVisible);
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try {
+            await onCredentialsSubmit('paypal', { clientId, secretKey });
+            setIsFormVisible(false);
+        } catch (error) {
+            console.error("Falha ao salvar credenciais do PayPal", error);
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
-    const handleDisconnectClick = (e) => {
-        e.stopPropagation();
-        onDisconnect('paypal');
-    };
-
-    const handleUpdateClick = (e) => {
-        e.stopPropagation();
-        setIsModalOpen(true);
-    };
-
-    const handleCardClick = () => {
-        if (isConnected) {
-            onSelectProvider('paypal');
+    const handleDisconnect = async () => {
+        if (window.confirm("Tem certeza que deseja desconectar o PayPal?")) {
+            await onDisconnect('paypal');
         }
     };
 
     return (
-        <>
-            <div className={`provider-card ${isConnected ? 'clickable' : ''}`} onClick={handleCardClick}>
-                <div className="provider-icon"><i className="fa-brands fa-paypal"></i></div>
-                <div className="provider-name">PayPal</div>
-                {activeProviderId === 'paypal' && <div className="active-indicator">Ativo</div>}
-
-                <div className="provider-card-buttons">
-                    {!isConnected ? (
-                        <button onClick={handleConnectClick} className="connect-button">Conectar</button>
-                    ) : (
-                        <>
-                            <button onClick={handleUpdateClick} className="update-button">Atualizar</button>
-                            <button onClick={handleDisconnectClick} className="disconnect-button">Desconectar</button>
-                        </>
-                    )}
+        <div className={`provider-card ${isActive ? 'active-card' : ''}`}>
+            <div className="provider-header">
+                <div className="provider-title">
+                    <i className="fa-brands fa-paypal"></i>
+                    <span>PayPal</span>
+                </div>
+                <div className={`status-indicator ${isConnected ? 'connected' : 'disconnected'}`}>
+                    <div className={`status-dot ${isConnected ? 'connected' : 'disconnected'}`}></div>
+                    <span>{isConnected ? 'Conectado' : 'Desconectado'}</span>
                 </div>
             </div>
 
-            <ProviderCredentialsModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                providerId="paypal"
-                providerName="PayPal"
-                onConnect={(credentials) => onCredentialsSubmit('paypal', credentials)}
-                onDisconnect={() => onDisconnect('paypal')}
-                existingConfig={group?.paymentConfig?.paypal}
-            />
-        </>
+            <div className="provider-actions flex flex-col gap-3">
+                {!isConnected ? (
+                    <button onClick={handleToggleForm} className="action-button primary">
+                        CONECTAR
+                    </button>
+                ) : (
+                    <div className="flex items-center justify-between">
+                         <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-white/60">Selecionar</span>
+                            <div onClick={() => onSelectProvider('paypal')} className={`select-switch ${isActive ? 'selected' : ''}`}>
+                                <div className="select-switch-handle"></div>
+                            </div>
+                        </div>
+                        <div className="flex gap-2">
+                            <button onClick={handleToggleForm} className="action-button">
+                                {isFormVisible ? 'CANCELAR' : 'ATUALIZAR'}
+                            </button>
+                            <button onClick={handleDisconnect} className="action-button danger">
+                                DESCONECTAR
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+
+            {isFormVisible && (
+                <form onSubmit={handleSubmit} className="credentials-form animate-fade-in">
+                    <div className="form-group">
+                        <label htmlFor="paypal-clientid">Client ID</label>
+                        <input id="paypal-clientid" type="text" value={clientId} onChange={e => setClientId(e.target.value)} placeholder='AY...' />
+                    </div>
+                     <div className="form-group">
+                        <label htmlFor="paypal-secretkey">Secret Key</label>
+                        <input id="paypal-secretkey" type="password" value={secretKey} onChange={e => setSecretKey(e.target.value)} placeholder='••••••••' />
+                    </div>
+                    <div className="form-actions">
+                        <button type="submit" className="form-button save" disabled={isSubmitting}>
+                            {isSubmitting ? 'Salvando...' : 'Salvar Chaves'}
+                        </button>
+                    </div>
+                </form>
+            )}
+        </div>
     );
 };

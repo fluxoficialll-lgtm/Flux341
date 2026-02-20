@@ -1,64 +1,107 @@
 
 .provider-card {
-    display: flex;
-    align-items: center;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    position: relative;
-    cursor: pointer;
+    @apply bg-white/5 border border-white/10 rounded-[20px] p-6 shadow-2xl transition-all duration-300;
 }
 
-.provider-card.clickable:hover {
-    background-color: #f0f0f0;
+.provider-card.active-card {
+    @apply border-[#00c2ff] shadow-[0_0_15px_rgba(0,194,255,0.3)];
 }
 
-.provider-icon {
-    font-size: 2rem;
-    margin-right: 1rem;
+.provider-header {
+    @apply flex items-center justify-between mb-4;
 }
 
-.provider-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    flex-grow: 1;
+.provider-title {
+    @apply flex items-center text-[16px] font-bold text-white;
 }
 
-.active-indicator {
-    background-color: #4caf50;
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8rem;
+.provider-title .fa-solid {
+    @apply mr-2 text-[#00c2ff];
 }
 
-.provider-card-buttons {
-    display: flex;
-    gap: 0.5rem;
+.status-indicator {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase;
 }
 
-.connect-button,
-.update-button,
-.disconnect-button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
+.status-indicator.connected {
+    @apply bg-[#00ff82]/10 text-[#00ff82];
 }
 
-.connect-button {
-    background-color: #3b82f6;
-    color: white;
+.status-indicator.disconnected {
+    @apply bg-red-500/10 text-red-500;
 }
 
-.update-button {
-    background-color: #f59e0b;
-    color: white;
+.status-dot {
+    @apply w-1.5 h-1.5 rounded-full;
 }
 
-.disconnect-button {
-    background-color: #ef4444;
-    color: white;
+.status-dot.connected {
+    @apply bg-[#00ff82] shadow-[0_0_5px_#00ff82];
+}
+
+.status-dot.disconnected {
+    @apply bg-red-500 shadow-[0_0_5px_#ff4d4d];
+}
+
+.provider-actions .action-button {
+    @apply w-full py-3 px-4 bg-transparent border border-white/20 text-white/80 text-[14px] font-bold rounded-xl cursor-pointer transition-all duration-300 hover:bg-white/10 hover:text-white;
+}
+
+.provider-actions .action-button.primary {
+    @apply bg-[#1e2531] border-[#00c2ff] text-[#00c2ff] hover:bg-[#00c2ff]/10;
+}
+
+.provider-actions .action-button.danger {
+    @apply border-red-500/50 text-red-500 hover:bg-red-500/10;
+}
+
+.credentials-form {
+    @apply mt-4 pt-4 border-t border-white/10 flex flex-col gap-4;
+}
+
+.credentials-form .form-group {
+    @apply flex flex-col gap-1;
+}
+
+.credentials-form label {
+    @apply text-sm font-medium text-white/60;
+}
+
+.credentials-form input {
+    @apply bg-white/5 border border-white/20 rounded-lg px-3 py-2 text-white placeholder-white/40 focus:outline-none focus:border-[#00c2ff] focus:ring-1 focus:ring-[#00c2ff];
+}
+
+.form-actions {
+    @apply flex gap-3 mt-2;
+}
+
+.form-actions .form-button {
+    @apply flex-1 py-3 px-4 text-[14px] font-bold rounded-xl cursor-pointer transition-all duration-300;
+}
+
+.form-actions .form-button.save {
+    @apply bg-[#00c2ff] text-black;
+}
+
+.form-actions .form-button.cancel {
+    @apply bg-white/10 text-white/80 hover:bg-white/20;
+}
+
+/* Estilo para o switch de seleção */
+.select-switch {
+    @apply relative inline-flex items-center h-6 rounded-full w-11 cursor-pointer transition-colors duration-300;
+    background: #333;
+}
+
+.select-switch.selected {
+    background: #00c2ff;
+}
+
+.select-switch-handle {
+    @apply inline-block w-4 h-4 transform bg-white rounded-full transition-transform duration-300;
+    transform: translateX(4px);
+}
+
+.select-switch.selected .select-switch-handle {
+    transform: translateX(24px);
 }
