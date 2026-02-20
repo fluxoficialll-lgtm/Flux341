@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { AuthError } from '../types';
-import { RegisterCard } from '../features/auth/Componentes/RegisterCard';
+import { RegisterCard } from '../Componentes/ComponentesDeAuth/Componentes/RegisterCard';
 
 export const Register: React.FC = () => {
   const navigate = useNavigate();

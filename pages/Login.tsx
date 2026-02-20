@@ -4,8 +4,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { trackingService } from '../ServiçosDoFrontend/trackingService';
 import { API_BASE } from '@/ServiçosDoFrontend/ServiçosDeApi/apiConfig';
-import { LoginInitialCard } from '../features/auth/Componentes/LoginInitialCard';
-import { LoginEmailCard } from '../features/auth/Componentes/LoginEmailCard';
+import { LoginInitialCard } from '../Componentes/ComponentesDeAuth/Componentes/LoginInitialCard';
+import { LoginEmailCard } from '../Componentes/ComponentesDeAuth/Componentes/LoginEmailCard';
 
 declare const google: any;
 
