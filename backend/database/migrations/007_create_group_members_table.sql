@@ -1,6 +1,6 @@
 -- 007_create_group_members_table.sql: Tabela para associar usuários a grupos
 
-CREATE TABLE group_members (
+CREATE TABLE IF NOT EXISTS group_members (
     group_id VARCHAR(255) NOT NULL REFERENCES groups(id) ON DELETE CASCADE,
     user_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     role VARCHAR(50) DEFAULT 'member', -- Ex: 'member', 'admin', 'moderator'
@@ -11,4 +11,4 @@ CREATE TABLE group_members (
 );
 
 -- Índice para buscar rapidamente os grupos de um usuário
-CREATE INDEX idx_group_members_user_id ON group_members(user_id);
+CREATE INDEX IF NOT EXISTS idx_group_members_user_id ON group_members(user_id);

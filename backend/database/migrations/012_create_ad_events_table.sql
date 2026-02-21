@@ -1,8 +1,12 @@
 -- 012_create_ad_events_table.sql: Tabela para registrar eventos de interação com anúncios
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ad_event_type') THEN
+        CREATE TYPE ad_event_type AS ENUM ('impression', 'click', 'conversion');
+    END IF;
+END$$;
 
-CREATE TYPE ad_event_type AS ENUM ('impression', 'click', 'conversion');
-
-CREATE TABLE ad_events (
+CREATE TABLE IF NOT EXISTS ad_events (
     id BIGSERIAL PRIMARY KEY,
     campaign_id VARCHAR(255) NOT NULL REFERENCES ad_campaigns(id) ON DELETE CASCADE,
     -- Opcional, nem todos os eventos terão um usuário associado
@@ -16,6 +20,6 @@ CREATE TABLE ad_events (
 );
 
 -- Índice essencial para analisar a performance de uma campanha
-CREATE INDEX idx_ad_events_campaign_id_event_type ON ad_events(campaign_id, event_type);
+CREATE INDEX IF NOT EXISTS idx_ad_events_campaign_id_event_type ON ad_events(campaign_id, event_type);
 -- Índice para analisar o comportamento de um usuário com anúncios
-CREATE INDEX idx_ad_events_user_id ON ad_events(user_id);
+CREATE INDEX IF NOT EXISTS idx_ad_events_user_id ON ad_events(user_id);

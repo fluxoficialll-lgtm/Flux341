@@ -1,6 +1,6 @@
 -- 011_create_ad_campaigns_table.sql: Tabela para armazenar campanhas de anúncios
 
-CREATE TABLE ad_campaigns (
+CREATE TABLE IF NOT EXISTS ad_campaigns (
     id VARCHAR(255) PRIMARY KEY,
     owner_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
@@ -21,6 +21,6 @@ CREATE TABLE ad_campaigns (
 );
 
 -- Índice para buscar rapidamente as campanhas de um usuário
-CREATE INDEX idx_ad_campaigns_owner_id ON ad_campaigns(owner_id);
+CREATE INDEX IF NOT EXISTS idx_ad_campaigns_owner_id ON ad_campaigns(owner_id);
 -- Índice para buscar campanhas por status
-CREATE INDEX idx_ad_campaigns_status ON ad_campaigns(status);
+CREATE INDEX IF NOT EXISTS idx_ad_campaigns_status ON ad_campaigns(status);

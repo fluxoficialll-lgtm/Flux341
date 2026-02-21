@@ -1,6 +1,6 @@
 -- 001_create_auth_tables.sql: Tabela de usuários com campos essenciais para autenticação
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id VARCHAR(255) PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     handle VARCHAR(255) UNIQUE,

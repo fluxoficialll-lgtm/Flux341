@@ -1,9 +1,15 @@
 -- 014_create_reports_table.sql: Tabela para armazenar denúncias de usuários/conteúdo
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'report_target_type') THEN
+        CREATE TYPE report_target_type AS ENUM ('user', 'group', 'message', 'marketplace_item', 'comment');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'report_status') THEN
+        CREATE TYPE report_status AS ENUM ('pending', 'reviewed', 'action_taken', 'dismissed');
+    END IF;
+END$$;
 
-CREATE TYPE report_target_type AS ENUM ('user', 'group', 'message', 'marketplace_item', 'comment');
-CREATE TYPE report_status AS ENUM ('pending', 'reviewed', 'action_taken', 'dismissed');
-
-CREATE TABLE reports (
+CREATE TABLE IF NOT EXISTS reports (
     id BIGSERIAL PRIMARY KEY,
     -- Quem fez a denúncia
     reporter_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -22,6 +28,6 @@ CREATE TABLE reports (
 );
 
 -- Índice para buscar todas as denúncias feitas por um usuário
-CREATE INDEX idx_reports_reporter_id ON reports(reporter_id);
+CREATE INDEX IF NOT EXISTS idx_reports_reporter_id ON reports(reporter_id);
 -- Índice para buscar denúncias pendentes de um tipo específico
-CREATE INDEX idx_reports_target_type_status ON reports(target_type, status);
+CREATE INDEX IF NOT EXISTS idx_reports_target_type_status ON reports(target_type, status);

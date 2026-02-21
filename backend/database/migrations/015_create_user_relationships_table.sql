@@ -1,6 +1,6 @@
 -- 015_create_user_relationships_table.sql: Tabela para as relações de 'seguir' entre usuários
 
-CREATE TABLE user_relationships (
+CREATE TABLE IF NOT EXISTS user_relationships (
     -- Quem está seguindo
     follower_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     -- Quem está sendo seguido
@@ -12,6 +12,6 @@ CREATE TABLE user_relationships (
 );
 
 -- Índice para encontrar rapidamente todos os seguidores de um usuário
-CREATE INDEX idx_user_relationships_following_id ON user_relationships(following_id);
+CREATE INDEX IF NOT EXISTS idx_user_relationships_following_id ON user_relationships(following_id);
 -- Índice para encontrar rapidamente todos os usuários que alguém segue
-CREATE INDEX idx_user_relationships_follower_id ON user_relationships(follower_id);
+CREATE INDEX IF NOT EXISTS idx_user_relationships_follower_id ON user_relationships(follower_id);

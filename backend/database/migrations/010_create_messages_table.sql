@@ -1,6 +1,6 @@
 -- 010_create_messages_table.sql: Tabela para armazenar as mensagens individuais
 
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
     id VARCHAR(255) PRIMARY KEY,
     conversation_id VARCHAR(255) NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
     sender_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -14,6 +14,6 @@ CREATE TABLE messages (
 );
 
 -- Índice essencial para buscar mensagens de uma conversa em ordem cronológica
-CREATE INDEX idx_messages_conversation_id_created_at ON messages(conversation_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_messages_conversation_id_created_at ON messages(conversation_id, created_at DESC);
 -- Índice para buscar mensagens enviadas por um usuário específico
-CREATE INDEX idx_messages_sender_id ON messages(sender_id);
+CREATE INDEX IF NOT EXISTS idx_messages_sender_id ON messages(sender_id);

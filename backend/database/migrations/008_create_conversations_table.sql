@@ -1,6 +1,6 @@
 -- 008_create_conversations_table.sql: Tabela para representar conversas (chats)
 
-CREATE TABLE conversations (
+CREATE TABLE IF NOT EXISTS conversations (
     id VARCHAR(255) PRIMARY KEY,
     -- 'private' para DMs, 'group' para chats em grupo
     conversation_type VARCHAR(50) NOT NULL,
@@ -12,4 +12,4 @@ CREATE TABLE conversations (
 );
 
 -- Índice para buscar conversas de grupo
-CREATE INDEX idx_conversations_group_id ON conversations(group_id);
+CREATE INDEX IF NOT EXISTS idx_conversations_group_id ON conversations(group_id);
