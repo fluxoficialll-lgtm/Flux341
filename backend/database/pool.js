@@ -1,7 +1,7 @@
 
 import pg from 'pg';
 import dotenv from 'dotenv';
-import { isLocal } from '../config/ambiente.js';
+import { backendConfig } from '../config/ambiente.js';
 
 dotenv.config();
 
@@ -13,7 +13,7 @@ if (!process.env.DATABASE_URL) {
 
 export const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: !isLocal ? { rejectUnauthorized: false } : false,
+    ssl: backendConfig.isProducao ? { rejectUnauthorized: false } : false,
     connectionTimeoutMillis: 30000,
     idleTimeoutMillis: 30000,
     max: 25

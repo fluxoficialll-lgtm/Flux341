@@ -2,7 +2,7 @@
 import pg from 'pg';
 import { pool } from '../pool.js'; // Importa o pool centralizado
 import { LogDeOperacoes } from '../../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
-import { isLocal } from '../../config/ambiente.js';
+import { backendConfig } from '../../config/ambiente.js';
 
 const { Client } = pg;
 
@@ -31,7 +31,7 @@ const checkDatabaseStatus = async (dbName) => {
     const connectionString = createConnectionString(dbName);
     const client = new Client({
         connectionString,
-        ssl: !isLocal ? { rejectUnauthorized: false } : false,
+        ssl: backendConfig.isProducao ? { rejectUnauthorized: false } : false,
         connectionTimeoutMillis: 5000,
     });
 

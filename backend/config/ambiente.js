@@ -2,109 +2,131 @@
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { VARIAVEIS_BACKEND } from './variaveis.js'; 
 
 // --- Configuração de Caminho Robusta para dotenv ---
-// Em módulos ES, __dirname não é definido. Esta é a maneira moderna de obtê-lo.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-// Constrói o caminho para a raiz do projeto subindo dois níveis (a partir de /backend/config)
 const projectRoot = path.resolve(__dirname, '..', '..');
 const envPath = path.join(projectRoot, '.env');
-
-// Carrega o arquivo .env da raiz do projeto
 dotenv.config({ path: envPath });
 
-console.log('\n=======================================================');
-console.log('=== INICIANDO CONFIGURAÇÃO DE AMBIENTE (BACKEND) ===');
-console.log('=======================================================');
+// --- Classe para Construção de Logs ---
+class LogBuilder {
+    constructor() {
+        this.logs = [];
+        this.contadores = {
+            identificadas: 0,
+            consumidas: 0,
+        };
+    }
 
-export const Ambientes = Object.freeze({ 
-  PRODUCAO: 'producao',
-  LOCAL: 'local',
-});
+    add(level, message) {
+        this.logs.push({ level, message });
+    }
 
-export const Provedores = Object.freeze({
-  RENDER: 'Render',
-  VERCEL: 'Vercel',
-  OUTRO: 'Outro',
-  NENHUM: 'Nenhum',
-});
+    addVariavelLog(type, nome, status, details = '') {
+        this.add('info', `  [${type}] Variável [${nome}] ${status}. ${details}`);
+    }
+
+    getContador(tipo) {
+        return this.contadores[tipo];
+    }
+
+    incrementarContador(tipo) {
+        if (this.contadores.hasOwnProperty(tipo)) {
+            this.contadores[tipo]++;
+        }
+    }
+
+    imprimir() {
+        this.logs.forEach(log => console[log.level](log.message));
+    }
+}
+
+const logBuilder = new LogBuilder();
+
+// --- Detecção de Ambiente ---
+logBuilder.add('log', '\n=======================================================');
+logBuilder.add('log', '=== INICIANDO CONFIGURAÇÃO DE AMBIENTE (BACKEND) ===');
+logBuilder.add('log', '=======================================================');
 
 const detectarAmbiente = () => {
-  if (process.env.RENDER === 'true') {
-    return { ambiente: Ambientes.PRODUCAO, provedor: Provedores.RENDER };
-  }
-  if (process.env.VERCEL === 'true') {
-    return { ambiente: Ambientes.PRODUCAO, provedor: Provedores.VERCEL };
-  }
-  if (process.env.NODE_ENV === 'production') {
-    return { ambiente: Ambientes.PRODUCAO, provedor: Provedores.OUTRO };
-  }
-  return { ambiente: Ambientes.LOCAL, provedor: Provedores.NENHUM };
+    if (process.env.RENDER === 'true') return { ambiente: 'producao', provedor: 'Render' };
+    if (process.env.VERCEL === 'true') return { ambiente: 'producao', provedor: 'Vercel' };
+    if (process.env.NODE_ENV === 'production') return { ambiente: 'producao', provedor: 'Outro' };
+    return { ambiente: 'local', provedor: 'Nenhum' };
 };
 
 const { ambiente: ambienteAtual, provedor: provedorAtual } = detectarAmbiente();
-const isProducao = ambienteAtual === Ambientes.PRODUCAO;
-export const isLocal = ambienteAtual === Ambientes.LOCAL;
+const isProducao = ambienteAtual === 'producao';
 
-console.log(`[INFO] Ambiente detectado: ${ambienteAtual.toUpperCase()}`);
+logBuilder.add('info', `[INFO] Ambiente detectado: ${ambienteAtual.toUpperCase()}`);
 if (isProducao) {
-  console.log(`[INFO] Provedor de hospedagem: ${provedorAtual}`);
+    logBuilder.add('info', `[INFO] Provedor de hospedagem: ${provedorAtual}`);
 }
 
-console.log('\n--- Carregando variáveis de ambiente ---');
+logBuilder.add('log', '\n--- Carregando variáveis de ambiente ---');
 
-const getVariavelObrigatoria = (nome) => {
-  const valor = process.env[nome];
-  if (!valor) {
-    console.error(`[ERRO FATAL] Variável "${nome}" não definida. Verifique seu arquivo .env na raiz do projeto.`);
-    process.exit(1);
-  }
-  console.log(`  [OK] Variável [${nome}] carregada.`);
-  return valor;
+// --- Processamento de Variáveis ---
+const backendConfig = {
+    ambiente: ambienteAtual,
+    provedor: provedorAtual,
+    isProducao,
 };
 
-const getVariavelComFallback = (nome, fallback) => {
+VARIAVEIS_BACKEND.obrigatorias.forEach(nome => {
     const valor = process.env[nome];
-    if (valor) {
-        console.log(`  [OK] Variável [${nome}] encontrada.`);
-        return valor;
+    logBuilder.incrementarContador('identificadas');
+    if (!valor) {
+        logBuilder.add('error', `[ERRO FATAL] Variável obrigatória "${nome}" não definida.`);
+        logBuilder.imprimir();
+        process.exit(1);
     }
-    console.log(`  [INFO] Variável [${nome}] não definida. Usando valor padrão: ${fallback}`);
-    return fallback;
-}
+    backendConfig[nome] = valor;
+    logBuilder.incrementarContador('consumidas');
+    logBuilder.addVariavelLog('OK', nome, 'carregada');
+});
 
-export const backendConfig = {
-  ambiente: ambienteAtual,
-  provedor: provedorAtual,
-  isProducao: isProducao,
-  porta: getVariavelComFallback('PORT', 3001),
-  corsOrigin: getVariavelComFallback('CORS_ORIGIN', isProducao ? undefined : 'http://localhost:5173'),
-  databaseUrl: getVariavelObrigatoria('DATABASE_URL'),
-  jwtSecret: getVariavelObrigatoria('JWT_SECRET'),
-  googleClientId: getVariavelObrigatoria('GOOGLE_CLIENT_ID'),
-  googleClientSecret: getVariavelObrigatoria('GOOGLE_CLIENT_SECRET'),
-  stripeSecretKey: process.env.STRIPE_SECRET_KEY,
-};
+Object.entries(VARIAVEIS_BACKEND.comFallback).forEach(([nome, fallback]) => {
+    const valor = process.env[nome];
+    logBuilder.incrementarContador('identificadas');
+    if (valor) {
+        backendConfig[nome] = valor;
+        logBuilder.incrementarContador('consumidas');
+        logBuilder.addVariavelLog('OK', nome, 'encontrada');
+    } else {
+        backendConfig[nome] = fallback;
+        logBuilder.incrementarContador('consumidas');
+        logBuilder.addVariavelLog('INFO', nome, 'não definida', `Usando valor padrão: ${fallback}`);
+    }
+});
 
-if (backendConfig.stripeSecretKey) {
-    console.log(`  [OK] Variável [STRIPE_SECRET_KEY] encontrada.`);
-} else {
-    console.log(`  [INFO] Variável [STRIPE_SECRET_KEY] não definida.`);
-}
+VARIAVEIS_BACKEND.opcionais.forEach(nome => {
+    const valor = process.env[nome];
+    logBuilder.incrementarContador('identificadas');
+    if (valor) {
+        backendConfig[nome] = valor;
+        logBuilder.incrementarContador('consumidas');
+        logBuilder.addVariavelLog('OK', nome, 'encontrada');
+    } else {
+        logBuilder.addVariavelLog('INFO', nome, 'não definida');
+    }
+});
 
-// --- Checklist de Sucesso Personalizado e Dinâmico ---
+// --- Logs de Resumo ---
 if (isProducao) {
-  console.log('\n--- Checklist de Sucesso da Implantação ---');
-  console.log(`Hospedagem em ${provedorAtual} identificada. ✅`);
-  console.log('Variáveis identificadas. ✅');
-  console.log('Variáveis de ambiente carregadas ✅');
-  console.log('Quantidade de variáveis identificadas.✅');
-  console.log('Consumindo variáveis de ambiente ✅');
-  console.log('Quantidade de variáveis consumidas.✅');
+    logBuilder.add('log', '\n--- Checklist de Sucesso da Implantação ---');
+    logBuilder.add('info', `Hospedagem em ${provedorAtual} identificada. ✅`);
+    logBuilder.add('info', `Quantidade de variáveis identificadas: ${logBuilder.getContador('identificadas')} ✅`);
+    logBuilder.add('info', `Quantidade de variáveis consumidas: ${logBuilder.getContador('consumidas')} ✅`);
 }
 
-console.log('\n========================================================');
-console.log('=== CONFIGURAÇÃO DO BACKEND FINALIZADA COM SUCESSO ===');
-console.log('========================================================\n');
+logBuilder.add('log', '\n========================================================');
+logBuilder.add('log', '=== CONFIGURAÇÃO DO BACKEND FINALIZADA COM SUCESSO ===');
+logBuilder.add('log', '========================================================\n');
+
+logBuilder.imprimir();
+
+// --- Exportação da Configuração ---
+export { backendConfig };
