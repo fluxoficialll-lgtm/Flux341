@@ -24,20 +24,11 @@ export const marketplaceRepositorio = {
 
     async create(itemData) {
         const { sellerId, name, description, priceInCents, category, condition, images, location } = itemData;
-        const id = itemData.id || gerarId(ID_PREFIX.ITEM_DO_MARKETPLACE);
+        // CORREÇÃO: O repositório deve ser sempre responsável por gerar o ID.
+        const id = gerarId(ID_PREFIX.ITEM_DO_MARKETPLACE);
         const query = `
             INSERT INTO marketplace_items (id, seller_id, name, description, price_in_cents, category, condition, images, location, status)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'available')
-            ON CONFLICT (id) DO UPDATE SET
-                name = EXCLUDED.name,
-                description = EXCLUDED.description,
-                price_in_cents = EXCLUDED.price_in_cents,
-                category = EXCLUDED.category,
-                condition = EXCLUDED.condition,
-                images = EXCLUDED.images,
-                location = EXCLUDED.location,
-                status = EXCLUDED.status,
-                updated_at = CURRENT_TIMESTAMP
             RETURNING *;
         `;
         const values = [id, sellerId, name, description, priceInCents, category, condition, images, location];

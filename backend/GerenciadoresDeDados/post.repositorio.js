@@ -57,9 +57,12 @@ export const postRepositorio = {
      * @returns {Promise<object>} O post recém-criado.
      */
     async create(postData) {
-        const { id, authorId, parentPostId, content, mediaUrl } = postData;
+        const { authorId, parentPostId, content, mediaUrl } = postData;
+        // CORREÇÃO: Gerar o ID do post dentro do repositório.
+        const newPostId = gerarId(ID_PREFIX.POST);
+
         const query = 'INSERT INTO posts (id, author_id, parent_post_id, content, media_url) VALUES ($1, $2, $3, $4, $5) RETURNING *';
-        const res = await pool.query(query, [id, authorId, parentPostId, content, mediaUrl]);
+        const res = await pool.query(query, [newPostId, authorId, parentPostId, content, mediaUrl]);
         return toPostObject(res.rows[0]);
     },
 

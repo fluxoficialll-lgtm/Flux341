@@ -1,5 +1,6 @@
 
 import { pool } from '../database/pool.js';
+import { gerarId, ID_PREFIX } from '../ServiçosBackEnd/idService.js'; // Importar o gerador de ID
 
 const toEventObject = (row) => {
     if (!row) return null;
@@ -18,12 +19,14 @@ const toEventObject = (row) => {
 export const eventRepositorio = {
     async storeEvent(event) {
         const {
-            event_id: id,
             source,
             type,
             payload,
             timestamp
         } = event;
+
+        // CORREÇÃO: Gerar um UUID para o evento aqui dentro.
+        const newEventId = gerarId(ID_PREFIX.EVENTO); 
 
         // O timestamp do cliente geralmente vem em milissegundos
         const clientTimestamp = new Date(timestamp);
@@ -31,11 +34,11 @@ export const eventRepositorio = {
         const query = `
             INSERT INTO events (id, source, type, payload, client_timestamp, status)
             VALUES ($1, $2, $3, $4, $5, 'received')
-            ON CONFLICT (id) DO NOTHING -- Garante a idempotência no nível do banco de dados
+            ON CONFLICT (id) DO NOTHING
             RETURNING *;
         `;
 
-        const values = [id, source, type, payload, clientTimestamp];
+        const values = [newEventId, source, type, payload, clientTimestamp];
         
         const res = await pool.query(query, values);
         return toEventObject(res.rows[0]);

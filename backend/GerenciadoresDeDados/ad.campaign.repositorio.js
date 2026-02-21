@@ -24,12 +24,18 @@ export const adCampaignRepositorio = {
     async create(campaignData) {
         const { ownerId, name, totalBudget, creatives, targeting, startDate, endDate, status } = campaignData;
         const id = gerarId(ID_PREFIX.CAMPANHA_DE_ANUNCIO);
+        const budgetInCents = totalBudget * 100; // Calcular centavos uma vez
+
         const query = `
-            INSERT INTO ad_campaigns (id, owner_id, name, total_budget, remaining_budget, creatives, targeting, start_date, end_date, status)
-            VALUES ($1, $2, $3, $4, $4, $5, $6, $7, $8, $9) 
+            INSERT INTO ad_campaigns 
+                (id, owner_id, name, total_budget, remaining_budget, creatives, targeting, start_date, end_date, status)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) -- Use 10 distinct placeholders
             RETURNING *
         `;
-        const values = [id, ownerId, name, totalBudget * 100, creatives, targeting, startDate, endDate, status || 'draft'];
+        
+        // Fornecer 10 valores, um para cada coluna
+        const values = [id, ownerId, name, budgetInCents, budgetInCents, creatives, targeting, startDate, endDate, status || 'draft'];
+        
         const res = await pool.query(query, values);
         return toCampaignObject(res.rows[0]);
     },

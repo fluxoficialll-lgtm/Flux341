@@ -1,5 +1,6 @@
 
 import { pool } from '../database/pool.js';
+import { gerarId, ID_PREFIX } from '../ServiçosBackEnd/idService.js'; // Importar o gerador de ID
 
 // Mapeia uma linha do banco de dados para um objeto de usuário mais limpo
 const toUserObject = (row) => {
@@ -54,10 +55,13 @@ export const authRepositorio = {
      * @returns {Promise<object>} O usuário recém-criado.
      */
     async create(user) {
-        const { id, name, username, email, passwordHash, googleId } = user;
+        const { name, username, email, passwordHash, googleId } = user;
+        // CORREÇÃO: Gerar o UUID para o novo usuário aqui, dentro do repositório.
+        const newUserId = gerarId(ID_PREFIX.USUARIO);
+        
         const res = await pool.query(
             'INSERT INTO users (id, name, handle, email, password_hash, google_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
-            [id, name, username, email, passwordHash, googleId]
+            [newUserId, name, username, email, passwordHash, googleId]
         );
         return toUserObject(res.rows[0]);
     },

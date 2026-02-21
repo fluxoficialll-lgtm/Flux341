@@ -32,7 +32,9 @@ export const financialRepositorio = {
             currency, type, status, provider, providerTransactionId, metadata
         } = txData;
 
-        const id = txData.id || gerarId(ID_PREFIX.TRANSACAO);
+        // CORREÇÃO: Gerar um novo ID de transação (UUID) de forma explícita.
+        // Isso garante que nunca usaremos um ID externo na chave primária.
+        const newTransactionId = gerarId(ID_PREFIX.TRANSACAO);
 
         const query = `
             INSERT INTO transactions (
@@ -48,9 +50,14 @@ export const financialRepositorio = {
         `;
 
         const values = [
-            id, userId, relatedEntityId, relatedEntityType,
+            // CORREÇÃO: Passar o novo UUID gerado como o primeiro parâmetro.
+            newTransactionId,
+            userId, relatedEntityId, relatedEntityType,
             grossAmount, platformFee, providerFee, netAmount,
-            currency, type, status, provider, providerTransactionId, metadata
+            currency, type, status, provider, 
+            // Garantir que o ID do provedor vá para a coluna correta.
+            providerTransactionId,
+            metadata
         ];
 
         const res = await pool.query(query, values);
