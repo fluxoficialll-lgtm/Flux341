@@ -1,14 +1,15 @@
 
 import pg from 'pg';
 import dotenv from 'dotenv';
+import { LogDeOperacoes } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
 
-// Carrega as variáveis de ambiente do arquivo .env
 dotenv.config();
 
 const { Pool } = pg;
 
-const contarBancosDeDados = async () => {
-    console.log('Iniciando script para contagem de bancos de dados...');
+// A função agora é exportada para poder ser usada em outros módulos
+export const contarBancosDeDados = async () => {
+    LogDeOperacoes.log('DB_COUNT_START', { message: 'Iniciando script para contagem de bancos de dados...' });
 
     const config = {
         user: process.env.DB_USER,
@@ -32,22 +33,26 @@ const contarBancosDeDados = async () => {
             
             const numeroDeBancos = res.rowCount;
             
-            console.log(`📊 Quantidade de tipos de bancos identificados = ${numeroDeBancos}`);
+            LogDeOperacoes.info('DB_COUNT_SUCCESS', { 
+                count: numeroDeBancos,
+                message: `📊 Quantidade de tipos de bancos identificados = ${numeroDeBancos}`
+            });
 
         } finally {
             client.release();
         }
     } catch (error) {
-        console.error('❌ Erro ao tentar contar os bancos de dados:');
-        // Imprime a mensagem de erro para facilitar a depuração
-        console.error(`   Detalhes: ${error.message}`);
-        console.log('--------------------------------------------------');
-        console.log('💡 DICA: Verifique se as variáveis de ambiente (DB_USER, DB_PASSWORD, etc.) estão corretas no seu arquivo .env ou se o serviço do banco de dados está rodando.');
-        console.log('--------------------------------------------------');
+        const errorMessage = `❌ Erro ao tentar contar os bancos de dados: ${error.message}\n💡 DICA: Verifique se as variáveis de ambiente (DB_USER, DB_PASSWORD, etc.) estão corretas no seu arquivo .env ou se o serviço do banco de dados está rodando.`;
+        LogDeOperacoes.error('DB_COUNT_FAILURE', {
+            message: errorMessage,
+            errorDetails: {
+                name: error.name,
+                message: error.message,
+                stack: error.stack,
+            }
+        });
     } finally {
         await pool.end();
-        console.log('Script finalizado.');
+        LogDeOperacoes.log('DB_COUNT_END', { message: 'Script finalizado.' });
     }
 };
-
-contarBancosDeDados();
