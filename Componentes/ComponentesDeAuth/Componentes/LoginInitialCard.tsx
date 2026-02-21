@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 
 interface LoginInitialCardProps {
     onSelectEmail: () => void;
-    googleButtonId: string;
+    googleButtonSlot: React.ReactNode; // Alterado de googleButtonId para googleButtonSlot
     loading: boolean;
     googleProcessing: boolean;
 }
 
 export const LoginInitialCard: React.FC<LoginInitialCardProps> = ({ 
     onSelectEmail, 
-    googleButtonId, 
+    googleButtonSlot, // Usando a nova prop
     loading, 
     googleProcessing 
 }) => {
@@ -28,14 +28,8 @@ export const LoginInitialCard: React.FC<LoginInitialCardProps> = ({
             </p>
 
             <div className="w-full space-y-4">
-                {/* Container do Google Button Real */}
-                <div className="relative min-h-[50px]">
-                    <div className="w-full h-[50px] bg-white text-gray-700 border border-gray-300 rounded-lg font-bold flex items-center justify-center gap-3 shadow-sm pointer-events-none">
-                        <i className="fa-brands fa-google text-lg"></i>
-                        <span className="text-sm">Entrar com Google</span>
-                    </div>
-                    <div id={googleButtonId} className="absolute inset-0 z-10 opacity-0 overflow-hidden cursor-pointer"></div>
-                </div>
+                {/* O novo Google Button é renderizado diretamente aqui */}
+                {googleButtonSlot}
 
                 <button 
                     onClick={onSelectEmail}
