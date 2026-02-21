@@ -1,15 +1,23 @@
 -- 016_create_transactions_table.sql: Tabela para armazenar todas as transações financeiras
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'transaction_type') THEN
+        CREATE TYPE transaction_type AS ENUM ('sale', 'withdrawal', 'refund', 'fee', 'adjustment', 'payout');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'transaction_status') THEN
+        CREATE TYPE transaction_status AS ENUM ('pending', 'completed', 'failed', 'cancelled', 'disputed');
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'payment_provider') THEN
+        CREATE TYPE payment_provider AS ENUM ('stripe', 'paypal', 'syncpay', 'manual');
+    END IF;
+END$$;
 
-CREATE TYPE transaction_type AS ENUM ('sale', 'withdrawal', 'refund', 'fee', 'adjustment', 'payout');
-CREATE TYPE transaction_status AS ENUM ('pending', 'completed', 'failed', 'cancelled', 'disputed');
-CREATE TYPE payment_provider AS ENUM ('stripe', 'paypal', 'syncpay', 'manual');
-
-CREATE TABLE transactions (
-    id VARCHAR(255) PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS transactions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     -- O usuário associado a esta transação (vendedor em uma venda, usuário em um saque)
-    user_id VARCHAR(255) NOT NULL REFERENCES users(id),
+    user_id UUID NOT NULL REFERENCES users(id),
     -- Entidade relacionada, como um grupo, anúncio ou item do marketplace
-    related_entity_id VARCHAR(255),
+    related_entity_id UUID,
     -- Tipo da entidade relacionada
     related_entity_type VARCHAR(100),
 
@@ -36,7 +44,7 @@ CREATE TABLE transactions (
 );
 
 -- Índices para consultas comuns
-CREATE INDEX idx_transactions_user_id ON transactions(user_id);
-CREATE INDEX idx_transactions_status ON transactions(status);
-CREATE INDEX idx_transactions_type ON transactions(type);
-CREATE INDEX idx_transactions_related_entity ON transactions(related_entity_id, related_entity_type);
+CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_status ON transactions(status);
+CREATE INDEX IF NOT EXISTS idx_transactions_type ON transactions(type);
+CREATE INDEX IF NOT EXISTS idx_transactions_related_entity ON transactions(related_entity_id, related_entity_type);

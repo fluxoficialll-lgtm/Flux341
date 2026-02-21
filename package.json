@@ -10,7 +10,7 @@
     "build:prod": "npm run clean && vite build",
     "start": "node server.js",
     "clean": "rm -rf dist node_modules",
-    "migrate": "node backend/run-migrations.js"
+    "migrate": "node scripts/executar-migracoes.js"
   },
   "engines": {
     "node": ">=20.11.0"

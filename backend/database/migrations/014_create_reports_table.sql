@@ -2,7 +2,7 @@
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'report_target_type') THEN
-        CREATE TYPE report_target_type AS ENUM ('user', 'group', 'message', 'marketplace_item', 'comment');
+        CREATE TYPE report_target_type AS ENUM ('user', 'post', 'group', 'message', 'marketplace_item', 'comment');
     END IF;
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'report_status') THEN
         CREATE TYPE report_status AS ENUM ('pending', 'reviewed', 'action_taken', 'dismissed');
@@ -12,9 +12,9 @@ END$$;
 CREATE TABLE IF NOT EXISTS reports (
     id BIGSERIAL PRIMARY KEY,
     -- Quem fez a denúncia
-    reporter_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    reporter_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     -- O que está sendo denunciado
-    target_id VARCHAR(255) NOT NULL,
+    target_id UUID NOT NULL,
     -- O tipo de entidade sendo denunciada
     target_type report_target_type NOT NULL,
     -- A razão da denúncia

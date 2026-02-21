@@ -2,9 +2,9 @@
 
 CREATE TABLE IF NOT EXISTS user_relationships (
     -- Quem está seguindo
-    follower_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    follower_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     -- Quem está sendo seguido
-    following_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    following_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     -- Data de quando a relação começou
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     -- Chave primária composta para garantir que um usuário só pode seguir outro uma vez

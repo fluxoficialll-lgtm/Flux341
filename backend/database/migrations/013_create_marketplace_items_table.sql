@@ -10,8 +10,8 @@ BEGIN
 END$$;
 
 CREATE TABLE IF NOT EXISTS marketplace_items (
-    id VARCHAR(255) PRIMARY KEY,
-    seller_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    seller_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     -- Preço em centavos para precisão financeira

@@ -1,9 +1,9 @@
 -- 010_create_messages_table.sql: Tabela para armazenar as mensagens individuais
 
 CREATE TABLE IF NOT EXISTS messages (
-    id VARCHAR(255) PRIMARY KEY,
-    conversation_id VARCHAR(255) NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
-    sender_id VARCHAR(255) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    conversation_id UUID NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+    sender_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     -- O conteúdo da mensagem pode ser texto, links para imagens, etc.
     content TEXT NOT NULL,
     -- Rastreia se a mensagem foi editada
