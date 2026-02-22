@@ -1,89 +1,57 @@
 
-import { reportRepositorio } from '../GerenciadoresDeDados/report.repositorio.js';
-import { relationshipRepositorio } from '../GerenciadoresDeDados/relationship.repositorio.js';
-import { LogDeOperacoes } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
+import { socialService } from '../ServiçosBackEnd/socialService.js';
 
 const socialControle = {
-    // Endpoint para criar uma denúncia
     createReport: async (req, res) => {
-        const reporterId = req.userId;
-        const { targetId, targetType, reason } = req.body;
-
-        if (!targetId || !targetType || !reason) {
-            return res.status(400).json({ error: "Dados obrigatórios (targetId, targetType, reason) ausentes." });
-        }
-        LogDeOperacoes.log('TENTATIVA_CRIAR_DENUNCIA', { reporterId, ...req.body }, req.traceId);
-
         try {
-            await reportRepositorio.create({ reporterId, targetId, targetType, reason });
-            res.status(202).json({ success: true, message: 'Denúncia recebida.' });
+            const result = await socialService.createReport(req.userId, req.body, req.traceId);
+            res.status(202).json(result);
         } catch (e) {
-            LogDeOperacoes.error('FALHA_CRIAR_DENUNCIA', { reporterId, error: e }, req.traceId);
-            res.status(500).json({ error: e.message });
+            res.status(e.statusCode || 500).json({ error: e.message });
         }
     },
 
-    // Seguir um usuário
     followUser: async (req, res) => {
-        const followerId = req.userId;
-        const { followingId } = req.body;
-
-        if (!followingId) return res.status(400).json({ error: "ID do usuário a ser seguido (followingId) é obrigatório." });
-        LogDeOperacoes.log('TENTATIVA_SEGUIR_USUARIO', { followerId, followingId }, req.traceId);
-
         try {
-            await relationshipRepositorio.follow(followerId, followingId);
-            res.json({ success: true, message: `Agora você está seguindo ${followingId}.` });
+            const result = await socialService.followUser(req.userId, req.body.followingId, req.traceId);
+            res.json(result);
         } catch (e) {
-            LogDeOperacoes.error('FALHA_SEGUIR_USUARIO', { followerId, followingId, error: e }, req.traceId);
-            res.status(500).json({ error: e.message });
+            res.status(e.statusCode || 500).json({ error: e.message });
         }
     },
 
-    // Deixar de seguir um usuário
     unfollowUser: async (req, res) => {
-        const followerId = req.userId;
-        const { followingId } = req.body;
-
-        if (!followingId) return res.status(400).json({ error: "ID do usuário a ser deixado de seguir (followingId) é obrigatório." });
-        LogDeOperacoes.log('TENTATIVA_DEIXAR_DE_SEGUIR_USUARIO', { followerId, followingId }, req.traceId);
-
         try {
-            await relationshipRepositorio.unfollow(followerId, followingId);
-            res.json({ success: true, message: `Você deixou de seguir ${followingId}.` });
+            const result = await socialService.unfollowUser(req.userId, req.body.followingId, req.traceId);
+            res.json(result);
         } catch (e) {
-            LogDeOperacoes.error('FALHA_DEIXAR_DE_SEGUIR_USUARIO', { followerId, followingId, error: e }, req.traceId);
-            res.status(500).json({ error: e.message });
+            res.status(e.statusCode || 500).json({ error: e.message });
         }
     },
 
-    // Listar quem o usuário logado segue
     getFollowing: async (req, res) => {
-        const followerId = req.userId;
         try {
-            const followingList = await relationshipRepositorio.findFollowing(followerId);
-            res.json({ following: followingList });
+            const result = await socialService.getFollowing(req.userId, req.traceId);
+            res.json(result);
         } catch (e) {
             res.status(500).json({ error: e.message });
         }
     },
 
-    // Listar seguidores de um usuário
     getFollowers: async (req, res) => {
         try {
-            const followersList = await relationshipRepositorio.findFollowers(req.params.userId);
-            res.json({ followers: followersList });
+            const result = await socialService.getFollowers(req.params.userId, req.traceId);
+            res.json(result);
         } catch (e) {
             res.status(500).json({ error: e.message });
         }
     },
 
-    // Obter ranking de top criadores
     getTopCreators: async (req, res) => {
         try {
             const limit = parseInt(req.query.limit, 10) || 10;
-            const topCreators = await relationshipRepositorio.getTopCreators(limit);
-            res.json({ data: topCreators });
+            const result = await socialService.getTopCreators(limit, req.traceId);
+            res.json(result);
         } catch (e) {
             res.status(500).json({ error: e.message });
         }

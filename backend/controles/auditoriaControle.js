@@ -1,5 +1,5 @@
 
-import { auditorDoPostgreSQL } from '../database/AuditoresDeBancos/index.js';
+import { auditoriaService } from '../ServiçosBackEnd/auditoriaService.js';
 
 const auditoriaControle = {
     /**
@@ -9,11 +9,10 @@ const auditoriaControle = {
      */
     inspectDatabases: async (req, res) => {
         try {
-            const report = await auditorDoPostgreSQL.inspectDatabases();
+            const report = await auditoriaService.inspectDatabases();
             res.status(200).json(report);
         } catch (error) {
-            console.error(`Falha ao auditar os bancos de dados: ${error.stack}`);
-            res.status(500).json({ error: 'Falha ao auditar os bancos de dados.' });
+            res.status(500).json({ error: error.message });
         }
     }
 };

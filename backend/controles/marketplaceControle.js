@@ -1,12 +1,11 @@
 
-import { marketplaceRepositorio } from '../GerenciadoresDeDados/marketplace.repositorio.js';
-import { LogDeOperacoes } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
+import { marketplaceService } from '../ServiçosBackEnd/marketplaceService.js';
 
 const marketplaceControle = {
     // Listar itens do marketplace com filtros
     listItems: async (req, res) => {
         try {
-            const items = await marketplaceRepositorio.list(req.query);
+            const items = await marketplaceService.listItems(req.query);
             res.json({ data: items });
         } catch (e) {
             res.status(500).json({ error: e.message });
@@ -16,7 +15,7 @@ const marketplaceControle = {
     // Buscar item específico
     getItemById: async (req, res) => {
         try {
-            const item = await marketplaceRepositorio.findById(req.params.id);
+            const item = await marketplaceService.getItemById(req.params.id);
             if (!item) return res.status(404).json({ error: 'Item não encontrado' });
             res.json({ item });
         } catch (e) {
@@ -26,44 +25,31 @@ const marketplaceControle = {
 
     // Criar ou atualizar item
     createItem: async (req, res) => {
-        const sellerId = req.userId;
-        LogDeOperacoes.log('TENTATIVA_CRIAR_ITEM_MARKETPLACE', { sellerId, body: req.body }, req.traceId);
         try {
-            const item = await marketplaceRepositorio.create({ sellerId, ...req.body });
+            const item = await marketplaceService.createItem(req.body, req.userId, req.traceId);
             res.status(201).json(item);
         } catch (e) {
-            LogDeOperacoes.error('FALHA_CRIAR_ITEM_MARKETPLACE', { sellerId, error: e }, req.traceId);
             res.status(500).json({ error: e.message });
         }
     },
 
     // Endpoint de atualização parcial
     updateItem: async (req, res) => {
-        LogDeOperacoes.log('TENTATIVA_ATUALIZAR_ITEM_MARKETPLACE', { itemId: req.params.id, updates: req.body }, req.traceId);
         try {
-            const updatedItem = await marketplaceRepositorio.update(req.params.id, req.body);
+            const updatedItem = await marketplaceService.updateItem(req.params.id, req.body, req.traceId);
             res.json(updatedItem);
         } catch (e) {
-            LogDeOperacoes.error('FALHA_ATUALIZAR_ITEM_MARKETPLACE', { itemId: req.params.id, error: e }, req.traceId);
             res.status(500).json({ error: e.message });
         }
     },
 
     // Deletar item
     deleteItem: async (req, res) => {
-        LogDeOperacoes.log('TENTATIVA_DELETAR_ITEM_MARKETPLACE', { itemId: req.params.id }, req.traceId);
         try {
-            // Adicionar verificação de permissão (apenas o vendedor ou admin pode deletar)
-            const item = await marketplaceRepositorio.findById(req.params.id);
-            if (item && item.sellerId !== req.userId /* && !req.user.isAdmin */) {
-                return res.status(403).json({ error: 'Permissão negada.' });
-            }
-
-            await marketplaceRepositorio.delete(req.params.id);
+            await marketplaceService.deleteItem(req.params.id, req.userId, req.traceId);
             res.status(204).send();
         } catch (e) {
-            LogDeOperacoes.error('FALHA_DELETAR_ITEM_MARKETPLACE', { itemId: req.params.id, error: e }, req.traceId);
-            res.status(500).json({ error: e.message });
+            res.status(e.statusCode || 500).json({ error: e.message });
         }
     }
 };

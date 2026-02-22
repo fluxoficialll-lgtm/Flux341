@@ -1,5 +1,5 @@
 
-import { userRepositorio } from '../GerenciadoresDeDados/user.repositorio.js';
+import { rankingService } from '../ServiçosBackEnd/rankingService.js';
 
 const rankingControle = {
     /**
@@ -8,13 +8,11 @@ const rankingControle = {
     getFollowerRanking: async (req, res) => {
         try {
             const limit = parseInt(req.query.limit, 10) || 10;
-
-            const ranking = await userRepositorio.getFollowerRanking({ limit });
-
+            const ranking = await rankingService.getFollowerRanking({ limit }, req.traceId);
             res.json(ranking);
         } catch (e) {
-            console.error(`[Ranking Route Error]: ${e.message}`);
-            res.status(500).json({ error: 'Failed to fetch ranking' });
+            // O erro já foi logado no serviço
+            res.status(500).json({ error: e.message });
         }
     }
 };

@@ -1,6 +1,5 @@
 
-import { facebookCapi } from '../ServiçosBackEnd/facebookCapi.js';
-import { userRepositorio } from '../GerenciadoresDeDados/user.repositorio.js';
+import { trackingService } from '../ServiçosBackEnd/trackingService.js';
 
 const trackingControle = {
     /**
@@ -8,48 +7,24 @@ const trackingControle = {
      */
     handleCapiEvent: async (req, res) => {
         try {
-            const { platform, pixelId, accessToken, eventName, eventData, userData, eventId, url } = req.body;
-
-            if (platform === 'meta' || !platform) {
-                const result = await facebookCapi.sendEvent({
-                    pixelId,
-                    accessToken,
-                    eventName,
-                    eventData,
-                    userData,
-                    eventId,
-                    url
-                });
-                return res.json({ success: true, platform: 'meta', trace_id: result.fb_trace_id });
-            }
-
-            res.status(400).json({ error: "PLATFORM_NOT_SUPPORTED" });
+            const result = await trackingService.handleCapiEvent(req.body, req.traceId);
+            res.json(result);
         } catch (e) {
-            console.warn(`[Tracking Hub Error]: ${e.message}`);
-            res.status(202).json({ status: "FAILED", error: e.message });
+            // O serviço pode definir um statusCode específico (ex: 202 para falhas de CAPI)
+            res.status(e.statusCode || 500).json({ status: "FAILED", error: e.message });
         }
     },
 
     /**
-     * Refatorado para usar o userRepositorio.
+     * Obtém informações de pixel de marketing para um usuário.
      */
     getPixelInfo: async (req, res) => {
         try {
             const { ref } = req.query;
-            if (!ref) return res.status(400).json({ error: "REF_REQUIRED" });
-
-            const user = await userRepositorio.findByEmail(ref) || await userRepositorio.findByHandle(ref);
-
-            if (user && user.marketingConfig?.pixelId) {
-                return res.json({
-                    pixelId: user.marketingConfig.pixelId,
-                    tiktokId: user.marketingConfig.tiktokId
-                });
-            }
-
-            res.json({ pixelId: process.env.VITE_PIXEL_ID || "" });
+            const pixelInfo = await trackingService.getPixelInfo(ref, req.traceId);
+            res.json(pixelInfo);
         } catch (e) {
-            res.status(500).json({ error: e.message });
+            res.status(e.statusCode || 500).json({ error: e.message });
         }
     }
 };
