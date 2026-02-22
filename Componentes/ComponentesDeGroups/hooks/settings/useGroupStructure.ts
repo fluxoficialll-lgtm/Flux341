@@ -1,19 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Group, Channel, SalesSection, GroupLink, ChannelSection } from '../../../../types';
+import { Group, Channel, SalesSection, GroupLink, ChannelSection, ScheduledMessage } from '../../../../types';
 
 export const useGroupStructure = (group: Group | null) => {
   const [channels, setChannels] = useState<Channel[]>([]);
-  // Add: Support for channel sections used in ChannelsEditor
   const [channelSections, setChannelSections] = useState<ChannelSection[]>([]);
-  // Rename: isPlatform to isSalesPlatformEnabled for UI consistency
   const [isSalesPlatformEnabled, setIsSalesPlatformEnabled] = useState(false);
-  // Rename: sections to salesPlatformSections for UI consistency
   const [salesPlatformSections, setSalesPlatformSections] = useState<SalesSection[]>([]);
-  // Add: Missing platform permissions
   const [salesPlatformAllowDownload, setSalesPlatformAllowDownload] = useState(true);
   const [salesPlatformAllowMemberUpload, setSalesPlatformAllowMemberUpload] = useState(false);
-  // Add: Group links state missing from form object
   const [links, setLinks] = useState<GroupLink[]>([]);
+  const [schedules, setSchedules] = useState<ScheduledMessage[]>([]);
 
   useEffect(() => {
     if (group) {
@@ -24,11 +20,11 @@ export const useGroupStructure = (group: Group | null) => {
       setSalesPlatformAllowDownload(group.salesPlatformAllowDownload ?? true);
       setSalesPlatformAllowMemberUpload(group.salesPlatformAllowMemberUpload ?? false);
       setLinks(group.links || []);
+      setSchedules(group.scheduledMessages || []);
     }
   }, [group]);
 
   return {
-    // Return: Synced field names to fix "Property does not exist on type form" errors
     state: { 
       channels, 
       channelSections,
@@ -36,7 +32,8 @@ export const useGroupStructure = (group: Group | null) => {
       salesPlatformSections,
       salesPlatformAllowDownload,
       salesPlatformAllowMemberUpload,
-      links 
+      links,
+      schedules
     },
     actions: { 
       setChannels, 
@@ -45,7 +42,8 @@ export const useGroupStructure = (group: Group | null) => {
       setSalesPlatformSections,
       setSalesPlatformAllowDownload,
       setSalesPlatformAllowMemberUpload,
-      setLinks
+      setLinks,
+      setSchedules
     },
     getStructurePayload: () => ({
       channels,
@@ -54,7 +52,8 @@ export const useGroupStructure = (group: Group | null) => {
       salesPlatformSections,
       salesPlatformAllowDownload,
       salesPlatformAllowMemberUpload,
-      links
+      links,
+      scheduledMessages: schedules
     })
   };
 };

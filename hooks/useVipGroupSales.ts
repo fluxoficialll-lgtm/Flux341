@@ -40,7 +40,6 @@ export const useVipGroupSales = (groupId: string | undefined) => {
           const ownerFlag = !!user && (foundGroup.creatorId === user.id || foundGroup.creatorEmail === user.email);
           setIsCreator(ownerFlag);
 
-          // DISPARO DE PAGE VIEW E VIEW CONTENT
           vipSalesTracker.trackLanding(foundGroup);
 
           setIsPurchaseEnabled(foundGroup.status === 'active' || foundGroup.status === undefined);
@@ -57,11 +56,17 @@ export const useVipGroupSales = (groupId: string | undefined) => {
     loadData();
   }, [groupId]);
 
-  // Lógica de Vídeo delegada ao Controller
+  useEffect(() => {
+    if (group && !loading) {
+      const timer = setTimeout(() => {
+        vipSalesTracker.trackTimeStay60s(group);
+      }, 60000);
+      return () => clearTimeout(timer);
+    }
+  }, [group, loading]);
+
   const handleToggleVideo = useCallback((index: number) => {
     setPlayingIndex(prev => VipPlaybackController.togglePlayback(prev, index));
-    
-    // Rastreia interação com galeria ao dar play em vídeo
     if (group) {
         vipSalesTracker.trackGalleryInteraction(group);
     }
@@ -75,12 +80,9 @@ export const useVipGroupSales = (groupId: string | undefined) => {
       
       if (index !== currentSlide) {
         setCurrentSlide(index);
-        
-        // Rastreia interação ao trocar de mídia na galeria
         if (group) {
             vipSalesTracker.trackGalleryInteraction(group);
         }
-
         if (VipPlaybackController.shouldStopOnScroll(index, playingIndex)) {
             setPlayingIndex(null);
         }
@@ -93,11 +95,9 @@ export const useVipGroupSales = (groupId: string | undefined) => {
       setModals(prev => ({ ...prev, email: true }));
       return;
     }
-    
     if (group) {
         vipSalesTracker.trackCheckoutIntent(group);
     }
-    
     setModals(prev => ({ ...prev, pix: true }));
   };
 
@@ -118,7 +118,6 @@ export const useVipGroupSales = (groupId: string | undefined) => {
 
   const setZoom = (index: number) => {
     setModals(prev => ({ ...prev, zoomIndex: index }));
-    // Rastreia interação ao abrir zoom
     if (group) {
         vipSalesTracker.trackGalleryInteraction(group);
     }

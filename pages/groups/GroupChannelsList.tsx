@@ -1,37 +1,13 @@
 
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../../ServiçosDoFrontend/groupService';
-import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { Group } from '../../types';
-
-// Subcomponentes Modulares
+import React from 'react';
+import { useGroupChannels } from '../../hooks/useGroupChannels';
 import { ChannelsHero } from '../../Componentes/ComponentesDeGroups/Componentes/channels/ChannelsHero';
 import { ChannelListRenderer } from '../../Componentes/ComponentesDeGroups/Componentes/channels/ChannelListRenderer';
 import { ChannelsFooter } from '../../Componentes/ComponentesDeGroups/Componentes/channels/ChannelsFooter';
 import { OwnerControls } from '../../Componentes/ComponentesDeGroups/Componentes/ComponentesModoHub/OwnerControls';
 
 export const GroupChannelsList: React.FC = () => {
-    const navigate = useNavigate();
-    const { id } = useParams<{ id: string }>();
-    const [group, setGroup] = useState<Group | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    useEffect(() => {
-        if (id) {
-            const foundGroup = groupService.getGroupById(id);
-            if (foundGroup) {
-                setGroup(foundGroup);
-                const currentUserId = authService.getCurrentUserId();
-                const isAdm = foundGroup.creatorId === currentUserId || foundGroup.adminIds?.includes(currentUserId || '');
-                setIsAdmin(!!isAdm);
-            } else {
-                navigate('/groups');
-            }
-            setLoading(false);
-        }
-    }, [id, navigate]);
+    const { group, loading, isAdmin, handleChannelClick, handleBack } = useGroupChannels();
 
     if (loading || !group) {
         return (
@@ -41,13 +17,9 @@ export const GroupChannelsList: React.FC = () => {
         );
     }
 
-    const handleChannelClick = (channelId: string) => {
-        navigate(`/group-chat/${id}/${channelId}`);
-    };
-
     return (
         <div className="min-h-screen bg-[#0a0c10] text-white font-['Inter'] flex flex-col">
-            <style>{`
+             <style>{`
                 .platform-header {
                     height: 75px;
                     padding: 0 24px;
@@ -92,7 +64,7 @@ export const GroupChannelsList: React.FC = () => {
             `}</style>
 
             <header className="platform-header">
-                <button onClick={() => navigate('/groups')} className="text-[#00c2ff] text-xl p-2 -ml-4">
+                <button onClick={handleBack} className="text-[#00c2ff] text-xl p-2 -ml-4">
                     <i className="fa-solid fa-arrow-left"></i>
                 </button>
                 <div className="ml-2 flex flex-col">

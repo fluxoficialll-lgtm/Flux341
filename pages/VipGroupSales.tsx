@@ -1,9 +1,8 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useVipGroupSales } from '../hooks/useVipGroupSales';
 import { useAutoLanguage } from '../hooks/useAutoLanguage';
-import { vipSalesTracker } from '../ServiçosDoFrontend/pixel/trackers/VipSalesTracker';
 
 // UI Components
 import { VipSalesHeader } from '../Componentes/ComponentesDePaginasDeVendas/VipSalesHeader';
@@ -52,15 +51,6 @@ export const VipGroupSales: React.FC = () => {
     }
     return items;
   }, [group?.vipDoor]);
-
-  useEffect(() => {
-    if (group && !loading) {
-      const timer = setTimeout(() => {
-        vipSalesTracker.trackTimeStay60s(group);
-      }, 60000);
-      return () => clearTimeout(timer);
-    }
-  }, [group, loading]);
 
   if (loading) {
     return (

@@ -5,7 +5,6 @@ import { useGroupSettings } from '../../../Componentes/ComponentesDeGroups/hooks
 import { VipMonetizationSection } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/VipMonetizationSection';
 import { PixelSettingsModal } from '../../../Componentes/groups/PixelSettingsModal';
 import { ProviderSelectorModal } from '../../../Componentes/groups/ProviderSelectorModal';
-import { postService } from '../../../ServiçosDoFrontend/postService';
 import { UploadProgressCard } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesModoHub/UploadProgressCard';
 
 export const GroupVipPage: React.FC = () => {
@@ -18,63 +17,11 @@ export const GroupVipPage: React.FC = () => {
     const [isProviderModalOpen, setIsProviderModalOpen] = useState(false);
     const [selectedPlatform, setSelectedPlatform] = useState<string | undefined>(undefined);
 
-    // Upload States
-    const [isUploading, setIsUploading] = useState(false);
-    const [uploadProgress, setUploadProgress] = useState(0);
-    const [uploadCurrent, setUploadCurrent] = useState(0);
-    const [uploadTotal, setUploadTotal] = useState(0);
-
     if (loading || !group) return null;
 
     const handleOpenPixel = (platform?: string) => {
         setSelectedPlatform(platform);
         setIsPixelModalOpen(true);
-    };
-
-    const handleGalleryMediaAdd = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (!files || files.length === 0) return;
-
-        const fileArray = Array.from(files) as File[];
-        const availableSlots = 10 - form.vipMediaItems.length;
-        const toUpload = fileArray.slice(0, availableSlots);
-
-        if (toUpload.length === 0) {
-            alert("Limite de 10 mídias atingido.");
-            return;
-        }
-
-        setIsUploading(true);
-        setUploadTotal(toUpload.length);
-        setUploadCurrent(0);
-        setUploadProgress(0);
-
-        const newItems = [];
-
-        for (let i = 0; i < toUpload.length; i++) {
-            const file = toUpload[i];
-            setUploadCurrent(i + 1);
-            setUploadProgress(Math.round((i / toUpload.length) * 100));
-
-            try {
-                const url = await postService.uploadMedia(file, 'vips_doors');
-                const type = file.type.startsWith('video') ? 'video' as const : 'image' as const;
-                
-                newItems.push({ url, type });
-                setUploadProgress(Math.round(((i + 1) / toUpload.length) * 100));
-            } catch (err) {
-                console.error("Erro no upload de mídia VIP:", err);
-            }
-        }
-
-        if (newItems.length > 0) {
-            form.setVipMediaItems([...form.vipMediaItems, ...newItems]);
-        }
-
-        setTimeout(() => {
-            setIsUploading(false);
-            setUploadProgress(0);
-        }, 1000);
     };
 
     return (
@@ -121,16 +68,16 @@ export const GroupVipPage: React.FC = () => {
                     className="btn-save-fixed" 
                     style={{background: '#FFD700', color: '#000'}} 
                     onClick={handleSave}
-                    disabled={isUploading}
+                    disabled={form.isUploading}
                 >
-                    {isUploading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : 'Salvar Estrutura de Vendas'}
+                    {form.isUploading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : 'Salvar Estrutura de Vendas'}
                 </button>
 
                 <UploadProgressCard 
-                    progress={uploadProgress}
-                    current={uploadCurrent}
-                    total={uploadTotal}
-                    isVisible={isUploading}
+                    progress={form.uploadProgress}
+                    current={form.uploadCurrent}
+                    total={form.uploadTotal}
+                    isVisible={form.isUploading}
                 />
             </main>
 
@@ -205,18 +152,18 @@ export const GroupVipPage: React.FC = () => {
                                     <button 
                                         onClick={() => document.getElementById('mediaSubVip')?.click()} 
                                         className="w-[96px] h-[120px] rounded-2xl border-2 border-dashed border-white/10 flex flex-col items-center justify-center text-white/20 hover:text-[#00c2ff] hover:border-[#00c2ff]/30 transition-all"
-                                        disabled={isUploading}
+                                        disabled={form.isUploading}
                                     >
-                                        {isUploading ? <i className="fa-solid fa-circle-notch fa-spin text-xl"></i> : (
+                                        {form.isUploading ? <i className="fa-solid fa-circle-notch fa-spin text-xl"></i> : (
                                             <>
                                                 <i className="fa-solid fa-plus text-xl mb-1"></i>
                                                 <span className="text-[8px] font-black uppercase">Adicionar</span>
-                                            </>
+                                            </> 
                                         )}
                                     </button>
                                 )}
                             </div>
-                            <input type="file" id="mediaSubVip" hidden accept="image/*,video/*" multiple onChange={handleGalleryMediaAdd} />
+                            <input type="file" id="mediaSubVip" hidden accept="image/*,video/*" multiple onChange={(e) => form.handleGalleryMediaAdd(e.target.files)} />
                         </div>
                     </div>
                     <div className="p-6 bg-[#0c0f14] border-t border-white/5">

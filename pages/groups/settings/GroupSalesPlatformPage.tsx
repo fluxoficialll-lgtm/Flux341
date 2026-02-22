@@ -1,26 +1,23 @@
 
-import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useGroupSettings } from '../../../Componentes/ComponentesDeGroups/hooks/useGroupSettings';
+import React from 'react';
+import { useGroupSalesPlatform } from '../../../hooks/useGroupSalesPlatform';
 import { useModal } from '../../../Componentes/ModalSystem';
 import { PlatformStatusCard } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/sales-platform/PlatformStatusCard';
 import { PlatformStructureEditor } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/sales-platform/PlatformStructureEditor';
 import { PlatformInfoBox } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/sales-platform/PlatformInfoBox';
 import { FolderOptionsModal } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/sales-platform/FolderOptionsModal';
 import { ModalDeOpcoesDoCanal } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/ComponentesDeCanalDeGrupo/ModalDeOpcoesDoCanal';
-import { SalesFolder, SalesSection, Channel } from '../../../types';
+import { Channel, SalesFolder, SalesSection } from '../../../types';
 
 export const GroupSalesPlatformPage: React.FC = () => {
-    const navigate = useNavigate();
-    const { id } = useParams<{ id: string }>();
-    const { group, loading, handleSave, form } = useGroupSettings();
+    const {
+        group, loading, form, optionsModal, handleSave, handleBack,
+        handleToggleStatus, handleOpenOptions, handleCloseOptions,
+        handleUpdateChannelProperties, handleUpdateFolderProperties,
+        handleAddFolderInside, handleAddChannelInside
+    } = useGroupSalesPlatform();
+    
     const { showPrompt } = useModal();
-
-    const [optionsModal, setOptionsModal] = useState<{
-        isOpen: boolean;
-        target: SalesFolder | SalesSection | Channel | null;
-        type: 'folder' | 'section' | 'channel';
-    }>({ isOpen: false, target: null, type: 'folder' });
 
     if (loading || !group) {
         return (
@@ -30,99 +27,24 @@ export const GroupSalesPlatformPage: React.FC = () => {
         );
     }
 
-    const handleToggleStatus = async () => {
-        form.setIsSalesPlatformEnabled(!form.isSalesPlatformEnabled);
-    };
-
-    const handleOpenOptions = (target: SalesFolder | SalesSection | Channel, type: 'folder' | 'section' | 'channel') => {
-        setOptionsModal({ isOpen: true, target, type });
-    };
-
-    const handleUpdateChannelProperties = (updates: Partial<Channel>) => {
-        if (optionsModal.type !== 'channel' || !optionsModal.target) return;
-        
-        const cid = optionsModal.target.id;
-        const newSections = form.salesPlatformSections.map(sec => ({
-            ...sec,
-            channels: sec.channels?.map(c => c.id === cid ? { ...c, ...updates } : c)
-        }));
-        
-        form.setSalesPlatformSections(newSections);
-        setOptionsModal(prev => ({
-            ...prev,
-            target: { ...prev.target as Channel, ...updates }
-        }));
-    };
-
-    const handleUpdateFolderProperties = (updates: Partial<SalesFolder>) => {
-        if (optionsModal.type !== 'folder' || !optionsModal.target) return;
-        
-        const folderId = optionsModal.target.id;
-        const newSections = form.salesPlatformSections.map(sec => ({
-            ...sec,
-            folders: sec.folders.map(f => f.id === folderId ? { ...f, ...updates } : f)
-        }));
-        
-        form.setSalesPlatformSections(newSections);
-        setOptionsModal(prev => ({
-            ...prev,
-            target: { ...prev.target as SalesFolder, ...updates }
-        }));
-    };
-
-    const handleAddFolderInside = async () => {
-        if (optionsModal.type !== 'section' || !optionsModal.target) return;
-        const sectionId = optionsModal.target.id;
-
+    const handleAddFolderWithPrompt = async () => {
         const name = await showPrompt('Nome da Pasta', 'Ex: Material Complementar');
-        if (!name) return;
-
-        const newFolder: SalesFolder = {
-            id: `fold_${Date.now()}`,
-            name,
-            itemsCount: 0,
-            allowDownload: true,
-            allowMemberUpload: false
-        };
-
-        const newSections = form.salesPlatformSections.map(sec => {
-            if (sec.id === sectionId) {
-                return { ...sec, folders: [...sec.folders, newFolder] };
-            }
-            return sec;
-        });
-
-        form.setSalesPlatformSections(newSections);
+        if (name) {
+            handleAddFolderInside(name);
+        }
     };
 
-    const handleAddChannelInside = async () => {
-        if (optionsModal.type !== 'section' || !optionsModal.target) return;
-        const sectionId = optionsModal.target.id;
-        
+    const handleAddChannelWithPrompt = async () => {
         const name = await showPrompt('Nome do Canal de Chat', 'Ex: Suporte VIP');
-        if (!name) return;
-
-        const newChannel: Channel = {
-            id: `ch_plt_${Date.now()}`,
-            name,
-            onlyAdminsPost: false,
-            type: 'text'
-        };
-        
-        const newSections = form.salesPlatformSections.map(sec => {
-            if (sec.id === sectionId) {
-                return { ...sec, channels: [...(sec.channels || []), newChannel] };
-            }
-            return sec;
-        });
-
-        form.setSalesPlatformSections(newSections);
+        if (name) {
+            handleAddChannelInside(name);
+        }
     };
 
     return (
         <div className="min-h-screen bg-[#0a0c10] text-white font-['Inter'] flex flex-col overflow-hidden">
             <header className="flex items-center p-4 bg-[#0c0f14] border-b border-white/10 h-[65px] sticky top-0 z-50">
-                <button onClick={() => navigate(`/group-settings/${id}`)} className="mr-4 text-white text-xl">
+                <button onClick={handleBack} className="mr-4 text-white text-xl">
                     <i className="fa-solid fa-arrow-left"></i>
                 </button>
                 <h1 className="font-bold">Configuração do Modo Hub</h1>
@@ -159,7 +81,7 @@ export const GroupSalesPlatformPage: React.FC = () => {
             {optionsModal.isOpen && optionsModal.type === 'channel' && (
                 <ModalDeOpcoesDoCanal 
                     isOpen={optionsModal.isOpen}
-                    onClose={() => setOptionsModal({ ...optionsModal, isOpen: false })}
+                    onClose={handleCloseOptions}
                     title={(optionsModal.target as Channel).name}
                     type="channel"
                     target={optionsModal.target as Channel}
@@ -170,13 +92,13 @@ export const GroupSalesPlatformPage: React.FC = () => {
             {optionsModal.isOpen && (optionsModal.type === 'folder' || optionsModal.type === 'section') && (
                 <FolderOptionsModal 
                     isOpen={optionsModal.isOpen}
-                    onClose={() => setOptionsModal({ ...optionsModal, isOpen: false })}
+                    onClose={handleCloseOptions}
                     title={(optionsModal.target as any).name || (optionsModal.target as any).title}
                     type={optionsModal.type as any}
                     target={optionsModal.target as any}
                     onUpdateFolder={handleUpdateFolderProperties}
-                    onAddFolderInside={handleAddFolderInside}
-                    onAddChannelInside={handleAddChannelInside}
+                    onAddFolderInside={handleAddFolderWithPrompt}
+                    onAddChannelInside={handleAddChannelWithPrompt}
                 />
             )}
             

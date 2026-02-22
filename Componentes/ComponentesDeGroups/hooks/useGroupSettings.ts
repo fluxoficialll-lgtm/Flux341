@@ -5,7 +5,7 @@ import { groupService } from '../../../ServiçosDoFrontend/groupService';
 import { authService } from '../../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { db } from '../../../database';
 import { useModal } from '../../../Componentes/ModalSystem';
-import { Group } from '../../../types';
+import { Group, ScheduledMessage } from '../../../types';
 import { GroupLifeCycleService } from '../../../ServiçosDoFrontend/real/groups/GroupLifeCycleService';
 
 // Sub-hooks modulares
@@ -30,6 +30,13 @@ export const useGroupSettings = () => {
     const vip = useGroupVIP(group);
     const structure = useGroupStructure(group);
     const members = useGroupMembers(group);
+
+    // Schedule Modal State
+    const [isAddingSchedule, setIsAddingSchedule] = useState(false);
+    const [newScheduleText, setNewScheduleText] = useState('');
+    const [newScheduleDate, setNewScheduleDate] = useState('');
+    const [newScheduleTime, setNewScheduleTime] = useState('');
+    const [newScheduleChannelId, setNewScheduleChannelId] = useState('general');
 
     useEffect(() => {
         if (id) {
@@ -110,7 +117,6 @@ export const useGroupSettings = () => {
         members.actions.refreshMembers(id);
     };
 
-    // --- FIX: Missing handlePendingAction implementation for GroupAccessPage ---
     const handlePendingAction = async (userId: string, action: 'accept' | 'deny') => {
         if (!id) return;
         if (action === 'accept') {
@@ -121,7 +127,6 @@ export const useGroupSettings = () => {
         members.actions.refreshMembers(id);
     };
 
-    // --- FIX: Missing handleManualRelease implementation for GroupVipPage ---
     const handleManualRelease = async (username: string): Promise<boolean> => {
         if (!username.trim() || !group) return false;
         const cleanHandle = username.replace('@', '').toLowerCase().trim();
@@ -145,12 +150,49 @@ export const useGroupSettings = () => {
         }
     };
 
+    const handleAddSchedule = () => {
+        if (!newScheduleText || !newScheduleDate || !newScheduleTime) return;
+        const ts = new Date(`${newScheduleDate}T${newScheduleTime}`).getTime();
+        const newMessage: ScheduledMessage = {
+            id: Date.now().toString(),
+            channelId: newScheduleChannelId,
+            text: newScheduleText,
+            scheduledTime: ts,
+            isSent: false
+        };
+        const updated = [newMessage, ...structure.state.schedules];
+        structure.actions.setSchedules(updated);
+        setIsAddingSchedule(false);
+        setNewScheduleText('');
+    };
+
+    const handleDeleteSchedule = async (sid: string) => {
+        if (await showConfirm('Cancelar Agendamento?')) {
+            const updated = structure.state.schedules.filter(s => s.id !== sid);
+            structure.actions.setSchedules(updated);
+        }
+    };
+
     const form = {
         ...identity.state, ...identity.actions,
         ...moderation.state, ...moderation.actions,
         ...vip.state, ...vip.actions,
         ...structure.state, ...structure.actions,
         ...members.state, ...members.actions,
+
+        // Schedule state and actions
+        isAddingSchedule,
+        newScheduleText,
+        newScheduleDate,
+        newScheduleTime,
+        newScheduleChannelId,
+        setIsAddingSchedule,
+        setNewScheduleText,
+        setNewScheduleDate,
+        setNewScheduleTime,
+        setNewScheduleChannelId,
+        handleAddSchedule,
+        handleDeleteSchedule
     };
 
     return { 
@@ -161,8 +203,8 @@ export const useGroupSettings = () => {
         handleSave, 
         handleLeaveDelete, 
         handleMemberAction, 
-        handlePendingAction, // Fixed: Added to return object
-        handleManualRelease, // Fixed: Added to return object
+        handlePendingAction,
+        handleManualRelease,
         form 
     };
 };
