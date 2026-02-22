@@ -59,10 +59,9 @@ const run = async () => {
         await client.query('ROLLBACK');
         console.error('⏪ Transação revertida. Nenhuma alteração foi feita no banco de dados.');
     } finally {
-        // Libera o cliente de volta para o pool e encerra a conexão.
+        // Libera o cliente de volta para o pool.
         client.release();
-        await pool.end();
-        console.log('🔌 Conexão com o banco de dados encerrada.');
+        console.log('🔌 Conexão com o banco de dados liberada.');
     }
 };
 
