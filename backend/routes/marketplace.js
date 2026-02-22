@@ -1,72 +1,22 @@
 
 import express from 'express';
-import { marketplaceRepositorio } from '../GerenciadoresDeDados/marketplace.repositorio.js';
-import { LogDeOperacoes } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
+import marketplaceControle from '../controles/marketplaceControle.js';
 
 const router = express.Router();
 
 // Listar itens do marketplace com filtros
-router.get('/', async (req, res) => {
-    try {
-        const items = await marketplaceRepositorio.list(req.query);
-        res.json({ data: items });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
+router.get('/', marketplaceControle.listItems);
 
 // Buscar item específico
-router.get('/:id', async (req, res) => {
-    try {
-        const item = await marketplaceRepositorio.findById(req.params.id);
-        if (!item) return res.status(404).json({ error: 'Item não encontrado' });
-        res.json({ item });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
+router.get('/:id', marketplaceControle.getItemById);
 
 // Criar ou atualizar item
-router.post('/create', async (req, res) => {
-    const sellerId = req.userId;
-    LogDeOperacoes.log('TENTATIVA_CRIAR_ITEM_MARKETPLACE', { sellerId, body: req.body }, req.traceId);
-    try {
-        const item = await marketplaceRepositorio.create({ sellerId, ...req.body });
-        res.status(201).json(item);
-    } catch (e) {
-        LogDeOperacoes.error('FALHA_CRIAR_ITEM_MARKETPLACE', { sellerId, error: e }, req.traceId);
-        res.status(500).json({ error: e.message });
-    }
-});
+router.post('/create', marketplaceControle.createItem);
 
 // Endpoint de atualização parcial
-router.patch('/:id', async (req, res) => {
-    LogDeOperacoes.log('TENTATIVA_ATUALIZAR_ITEM_MARKETPLACE', { itemId: req.params.id, updates: req.body }, req.traceId);
-    try {
-        const updatedItem = await marketplaceRepositorio.update(req.params.id, req.body);
-        res.json(updatedItem);
-    } catch (e) {
-        LogDeOperacoes.error('FALHA_ATUALIZAR_ITEM_MARKETPLACE', { itemId: req.params.id, error: e }, req.traceId);
-        res.status(500).json({ error: e.message });
-    }
-});
+router.patch('/:id', marketplaceControle.updateItem);
 
 // Deletar item
-router.delete('/:id', async (req, res) => {
-    LogDeOperacoes.log('TENTATIVA_DELETAR_ITEM_MARKETPLACE', { itemId: req.params.id }, req.traceId);
-    try {
-        // Adicionar verificação de permissão (apenas o vendedor ou admin pode deletar)
-        const item = await marketplaceRepositorio.findById(req.params.id);
-        if (item && item.sellerId !== req.userId /* && !req.user.isAdmin */) {
-            return res.status(403).json({ error: 'Permissão negada.' });
-        }
-
-        await marketplaceRepositorio.delete(req.params.id);
-        res.status(204).send();
-    } catch (e) {
-        LogDeOperacoes.error('FALHA_DELETAR_ITEM_MARKETPLACE', { itemId: req.params.id, error: e }, req.traceId);
-        res.status(500).json({ error: e.message });
-    }
-});
+router.delete('/:id', marketplaceControle.deleteItem);
 
 export default router;

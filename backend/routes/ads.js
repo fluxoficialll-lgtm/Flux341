@@ -1,106 +1,31 @@
 
 import express from 'express';
-import { adCampaignRepositorio } from '../GerenciadoresDeDados/ad.campaign.repositorio.js';
-import { adAnalyticsRepositorio } from '../GerenciadoresDeDados/ad.analytics.repositorio.js';
-import { LogDeOperacoes } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
+import adsControle from '../controles/adsControle.js';
 
 const router = express.Router();
 
 // Criar nova campanha
-router.post('/create', async (req, res) => {
-    const ownerId = req.userId;
-    LogDeOperacoes.log('TENTATIVA_CRIAR_CAMPANHA', { ownerId, body: req.body }, req.traceId);
-    try {
-        const campaign = await adCampaignRepositorio.create({ ownerId, ...req.body });
-        res.status(201).json(campaign);
-    } catch (e) {
-        LogDeOperacoes.error('FALHA_CRIAR_CAMPANHA', { ownerId, error: e }, req.traceId);
-        res.status(500).json({ error: e.message });
-    }
-});
+router.post('/create', adsControle.createCampaign);
 
 // Obter todas as campanhas do usuário logado
-router.get('/', async (req, res) => {
-    const ownerId = req.userId;
-    try {
-        const campaigns = await adCampaignRepositorio.findByOwner(ownerId);
-        res.json(campaigns);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
+router.get('/', adsControle.getCampaigns);
 
 // Obter detalhes de uma campanha
-router.get('/:id', async (req, res) => {
-    try {
-        const campaign = await adCampaignRepositorio.findById(req.params.id);
-        if (!campaign) return res.status(404).json({ error: 'Campanha não encontrada.' });
-        res.json(campaign);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
+router.get('/:id', adsControle.getCampaignById);
 
 // Atualizar campanha
-router.put('/:id', async (req, res) => {
-    LogDeOperacoes.log('TENTATIVA_ATUALIZAR_CAMPANHA', { campaignId: req.params.id, updates: req.body }, req.traceId);
-    try {
-        const updatedCampaign = await adCampaignRepositorio.update(req.params.id, req.body);
-        res.json(updatedCampaign);
-    } catch (e) {
-        LogDeOperacoes.error('FALHA_ATUALIZAR_CAMPANHA', { campaignId: req.params.id, error: e }, req.traceId);
-        res.status(500).json({ error: e.message });
-    }
-});
+router.put('/:id', adsControle.updateCampaign);
 
 // Adicionar orçamento (top-up)
-router.post('/:id/top-up', async (req, res) => {
-    const { amount } = req.body;
-    if (!amount || amount <= 0) return res.status(400).json({ error: 'Valor inválido.' });
-    LogDeOperacoes.log('TENTATIVA_ADICIONAR_ORCAMENTO', { campaignId: req.params.id, amount }, req.traceId);
-
-    try {
-        await adCampaignRepositorio.addBudget(req.params.id, amount);
-        res.json({ success: true });
-    } catch (e) {
-        LogDeOperacoes.error('FALHA_ADICIONAR_ORCAMENTO', { campaignId: req.params.id, error: e }, req.traceId);
-        res.status(500).json({ error: e.message });
-    }
-});
+router.post('/:id/top-up', adsControle.addBudgetToCampaign);
 
 // Deletar campanha
-router.delete('/:id', async (req, res) => {
-    LogDeOperacoes.log('TENTATIVA_DELETAR_CAMPANHA', { campaignId: req.params.id }, req.traceId);
-    try {
-        await adCampaignRepositorio.delete(req.params.id);
-        res.status(204).send();
-    } catch (e) {
-        LogDeOperacoes.error('FALHA_DELETAR_CAMPANHA', { campaignId: req.params.id, error: e }, req.traceId);
-        res.status(500).json({ error: e.message });
-    }
-});
+router.delete('/:id', adsControle.deleteCampaign);
 
 // Endpoint de Performance
-router.get('/:id/performance', async (req, res) => {
-    try {
-        const metrics = await adAnalyticsRepositorio.getPerformanceMetrics(req.params.id);
-        res.json(metrics);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
+router.get('/:id/performance', adsControle.getCampaignPerformance);
 
 // Registrar evento (View/Click)
-router.post('/track', async (req, res) => {
-    const { campaignId, eventType, costInCents, metadata } = req.body;
-    const userId = req.userId; // pode ser nulo
-
-    try {
-        await adAnalyticsRepositorio.recordEvent(campaignId, userId, eventType, costInCents, metadata);
-        res.status(202).json({ success: true });
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-});
+router.post('/track', adsControle.trackAdEvent);
 
 export default router;
