@@ -1,7 +1,7 @@
 -- Tabela para armazenar logs de auditoria e operacionais estruturados
 CREATE TABLE IF NOT EXISTS audit_logs (
-    id TEXT PRIMARY KEY,
-    trace_id TEXT, -- Agrupa todos os logs de uma única requisição
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    trace_id UUID, -- Agrupa todos os logs de uma única requisição
     timestamp TIMESTAMPTZ NOT NULL,
     level VARCHAR(20) NOT NULL,       -- ex: info, warn, error
     service VARCHAR(50),      -- Nome do serviço que gerou o log

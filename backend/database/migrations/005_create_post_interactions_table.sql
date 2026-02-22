@@ -1,8 +1,8 @@
 -- 005_create_post_interactions_table.sql: Tabela para registrar interações (likes, views)
 
 CREATE TABLE IF NOT EXISTS post_interactions (
-    post_id TEXT NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
-    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     interaction_type VARCHAR(50) NOT NULL, -- Ex: 'like', 'view'
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     -- Garante que um usuário só possa ter uma interação de cada tipo por post

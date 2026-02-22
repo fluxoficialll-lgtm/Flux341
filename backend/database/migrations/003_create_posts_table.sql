@@ -1,9 +1,9 @@
 -- 003_create_posts_table.sql: Tabela para armazenar as publicações (posts)
 
 CREATE TABLE IF NOT EXISTS posts (
-    id TEXT PRIMARY KEY,
-    author_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    parent_post_id TEXT REFERENCES posts(id) ON DELETE CASCADE, -- Para respostas/threads
+    id UUID PRIMARY KEY,
+    author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    parent_post_id UUID REFERENCES posts(id) ON DELETE CASCADE, -- Para respostas/threads
     content TEXT NOT NULL,
     media_url VARCHAR(255), -- Para imagens ou vídeos
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

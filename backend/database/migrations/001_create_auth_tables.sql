@@ -1,7 +1,7 @@
 -- 001_create_auth_tables.sql: Tabela de usuários com campos essenciais para autenticação
 
 CREATE TABLE IF NOT EXISTS users (
-    id TEXT PRIMARY KEY,
+    id UUID PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     handle VARCHAR(255) UNIQUE,
     email VARCHAR(255) UNIQUE NOT NULL,

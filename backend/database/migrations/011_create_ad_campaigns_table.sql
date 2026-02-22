@@ -1,8 +1,8 @@
 -- 011_create_ad_campaigns_table.sql: Tabela para armazenar campanhas de anúncios
 
 CREATE TABLE IF NOT EXISTS ad_campaigns (
-    id TEXT PRIMARY KEY,
-    owner_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY,
+    owner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
     -- Ex: 'active', 'paused', 'ended', 'draft'
     status VARCHAR(50) NOT NULL DEFAULT 'draft',

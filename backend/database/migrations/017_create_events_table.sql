@@ -12,7 +12,7 @@ END$$;
 
 CREATE TABLE IF NOT EXISTS events (
     -- Usando o ID do evento fornecido pelo cliente para idempotência
-    id TEXT PRIMARY KEY,
+    id UUID PRIMARY KEY,
     
     -- Detalhes do Evento
     source event_source_type NOT NULL,

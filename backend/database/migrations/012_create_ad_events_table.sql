@@ -8,9 +8,9 @@ END$$;
 
 CREATE TABLE IF NOT EXISTS ad_events (
     id BIGSERIAL PRIMARY KEY,
-    campaign_id TEXT NOT NULL REFERENCES ad_campaigns(id) ON DELETE CASCADE,
+    campaign_id UUID NOT NULL REFERENCES ad_campaigns(id) ON DELETE CASCADE,
     -- Opcional, nem todos os eventos terão um usuário associado
-    user_id TEXT REFERENCES users(id) ON DELETE SET NULL,
+    user_id UUID REFERENCES users(id) ON DELETE SET NULL,
     event_type ad_event_type NOT NULL,
     event_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     -- Custo do evento em centavos (ex: custo por clique)

@@ -1,8 +1,8 @@
 -- 009_create_conversation_members_table.sql: Tabela para associar usuários a conversas
 
 CREATE TABLE IF NOT EXISTS conversation_members (
-    conversation_id TEXT NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
-    user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    conversation_id UUID NOT NULL REFERENCES conversations(id) ON DELETE CASCADE,
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     -- Data em que o usuário entrou na conversa
     joined_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     -- Data até a qual o usuário viu as mensagens. Útil para notificações de "não lidas".

@@ -12,9 +12,9 @@ END$$;
 CREATE TABLE IF NOT EXISTS reports (
     id BIGSERIAL PRIMARY KEY,
     -- Quem fez a denúncia
-    reporter_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    reporter_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     -- O que está sendo denunciado
-    target_id TEXT NOT NULL,
+    target_id UUID NOT NULL,
     -- O tipo de entidade sendo denunciada
     target_type report_target_type NOT NULL,
     -- A razão da denúncia

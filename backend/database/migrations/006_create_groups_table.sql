@@ -1,8 +1,8 @@
 -- 006_create_groups_table.sql: Tabela para armazenar informações sobre os grupos
 
 CREATE TABLE IF NOT EXISTS groups (
-    id TEXT PRIMARY KEY,
-    creator_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    id UUID PRIMARY KEY,
+    creator_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     group_type VARCHAR(50) DEFAULT 'public', -- Ex: 'public', 'private'
