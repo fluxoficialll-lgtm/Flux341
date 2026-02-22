@@ -122,12 +122,20 @@ export const useUserProfile = () => {
     }));
   };
 
+  const handleMessageClick = () => {
+    const currentUser = authService.getCurrentUser();
+    if (currentUser?.email && targetUserEmail) {
+      const chatId = chatService.getPrivateChatId(currentUser.email, targetUserEmail);
+      navigate(`/chat/${chatId}`);
+    }
+  };
+
   const canMessage = !isMe && (!isPrivate || relationStatus === 'following');
   const isContentVisible = isMe || !isPrivate || relationStatus === 'following';
 
   return {
     isLoading, isMe, isBlocked, isPrivate, isFollowLoading, userData, userPosts, userProducts,
     activeTab, setActiveTab, relationStatus, canMessage, isContentVisible, targetUserEmail,
-    handleFollowClick, handleToggleBlock, handleLike, handleVote, navigate
+    handleFollowClick, handleToggleBlock, handleLike, handleVote, navigate, handleMessageClick
   };
 };

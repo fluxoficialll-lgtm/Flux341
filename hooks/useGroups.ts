@@ -5,6 +5,7 @@ import { groupService } from '../ServiçosDoFrontend/groupService';
 import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
 import { Group } from '../types';
 import { db } from '@/database';
+import { chatService } from '../ServiçosDoFrontend/chatService';
 
 const LIMIT = 15;
 
@@ -126,8 +127,12 @@ export const useGroups = () => {
     setGroups(prev => prev.filter(g => g.id !== groupId));
   };
 
+  const getUnreadCount = (groupId: string) => {
+    return chatService.getGroupUnreadCount(groupId);
+  }
+
   return {
     groups, loading, observerRef, currentUserEmail, navigate,
-    navigateToGroup, joinGroupByCode, deleteGroup
+    navigateToGroup, joinGroupByCode, deleteGroup, getUnreadCount
   };
 };

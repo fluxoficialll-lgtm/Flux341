@@ -1,7 +1,6 @@
 
 import React, { useState, useRef } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
-import { chatService } from '../ServiçosDoFrontend/chatService';
 import { FeedItem } from '../Componentes/ComponentesDeFeed/FeedItem';
 import { AvatarPreviewModal } from '../Componentes/ui/AvatarPreviewModal';
 import { Footer } from '../Componentes/layout/Footer';
@@ -16,19 +15,11 @@ export const UserProfile: React.FC = () => {
   const {
     isLoading, isMe, isBlocked, isPrivate, isFollowLoading, userData, userPosts, userProducts,
     activeTab, setActiveTab, relationStatus, canMessage, isContentVisible, targetUserEmail,
-    handleFollowClick, handleToggleBlock, handleLike, handleVote, navigate
+    handleFollowClick, handleToggleBlock, handleLike, handleVote, navigate, handleMessageClick
   } = useUserProfile();
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  const handleMessageClick = () => {
-    const currentUserEmail = authService.getCurrentUserEmail();
-    if (currentUserEmail && targetUserEmail) {
-      const chatId = chatService.getPrivateChatId(currentUserEmail, targetUserEmail);
-      navigate(`/chat/${chatId}`);
-    }
-  };
 
   if (isLoading || !userData) {
     return <div className="min-h-screen bg-[#0c0f14] flex items-center justify-center text-white"><i className="fa-solid fa-circle-notch fa-spin text-2xl text-[#00c2ff]"></i></div>;

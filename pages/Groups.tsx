@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef, Suspense, lazy } from 'react';
 import { useGroups } from '../hooks/useGroups';
 import { useModal } from '../Componentes/ModalSystem';
-import { chatService } from '../ServiçosDoFrontend/chatService';
 import { Group } from '../types';
 import { Footer } from '../Componentes/layout/Footer';
 import { MainHeader } from '../Componentes/layout/MainHeader';
@@ -13,7 +12,7 @@ import { CreateGroupFAB } from '../Componentes/groups/list/CreateGroupFAB';
 const TrackingModal = lazy(() => import('../Componentes/groups/TrackingModal').then(m => ({ default: m.TrackingModal })));
 
 export const Groups: React.FC = () => {
-  const { groups, loading, observerRef, currentUserEmail, navigate, navigateToGroup, joinGroupByCode, deleteGroup } = useGroups();
+  const { groups, loading, observerRef, currentUserEmail, navigate, navigateToGroup, joinGroupByCode, deleteGroup, getUnreadCount } = useGroups();
   const { showAlert, showConfirm, showPrompt } = useModal();
 
   const [uiVisible, setUiVisible] = useState(true);
@@ -78,7 +77,7 @@ export const Groups: React.FC = () => {
               key={group.id}
               group={group}
               currentUserEmail={currentUserEmail}
-              unreadCount={chatService.getGroupUnreadCount(group.id)}
+              unreadCount={getUnreadCount(group.id)}
               isMenuActive={activeMenuId === group.id}
               onToggleMenu={(e) => { e.stopPropagation(); setActiveMenuId(activeMenuId === group.id ? null : group.id); }}
               onItemClick={() => navigateToGroup(group)}
