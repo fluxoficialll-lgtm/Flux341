@@ -1,10 +1,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { paypalService } from '../../../ServiçosDoFrontend/ServiçosDeProvedores/paypalService';
-import { authService } from '../../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { metaPixelService } from '../../../ServiçosDoFrontend/metaPixelService';
+import { paypalService } from '../../../ServiçosFrontend/ServiçosDeProvedores/paypalService';
+import { authService } from '../../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
+import { metaPixelService } from '../../../ServiçosFrontend/ServiçoDeMetaPixel/MetaPixelService.js';
 import { Group } from '../../../types';
-import { ConversionResult } from '../../../ServiçosDoFrontend/currencyService';
+import { ConversionResult } from '../../../ServiçosFrontend/currencyService';
 import { RedirectionBridgeCard } from './RedirectionBridgeCard';
 
 interface ModalOpcoesPagamentosPayPalProps {

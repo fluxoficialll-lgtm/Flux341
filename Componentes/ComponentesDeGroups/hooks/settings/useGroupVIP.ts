@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Group, VipMediaItem } from '../../../../types';
-import { postService } from '../../../../ServiçosDoFrontend/postService';
+import { postService } from '../../../../ServiçosFrontend/ServiçoDePosts/postService.js';
 
 export const useGroupVIP = (group: Group | null) => {
   const [vipPrice, setVipPrice] = useState('');

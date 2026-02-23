@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { ModalOpcoesPagamentosSyncPay } from './CardsOpcoesDePagamentos/ModalOpcoesPagamentosSyncPay';
 import { ModalOpcoesPagamentosPayPal } from './CardsOpcoesDePagamentos/ModalOpcoesPagamentosPayPal';
 import { ModalOpcoesPagamentosStripe } from './CardsOpcoesDePagamentos/ModalOpcoesPagamentosStripe';
-import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { GeoData } from '../../ServiçosDoFrontend/geoService';
-import { ConversionResult } from '../../ServiçosDoFrontend/currencyService';
+import { authService } from '../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
+import { GeoData } from '../../ServiçosFrontend/geoService';
+import { ConversionResult } from '../../ServiçosFrontend/currencyService';
 import { Group } from '../../types';
-import { PurchaseIntention } from '../../ServiçosDoFrontend/sync/PurchaseIntention';
+// import { PurchaseIntention } from '../../ServiçosFrontend/sync/PurchaseIntention';
 
 interface PaymentFlowModalProps {
     isOpen: boolean;
@@ -36,7 +36,7 @@ export const PaymentFlowModal: React.FC<PaymentFlowModalProps> = ({ isOpen, onCl
 
     const handleSuccess = () => {
         // Marca a intenção para o SuccessBridge consumir se houver desvios no fluxo
-        PurchaseIntention.set(group.id);
+        // PurchaseIntention.set(group.id);
         setStatus('success');
     };
 

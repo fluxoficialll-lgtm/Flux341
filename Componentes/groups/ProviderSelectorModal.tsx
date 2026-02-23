@@ -1,7 +1,7 @@
 
 import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { authService } from '../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
 
 interface ProviderSelectorModalProps {
     isOpen: boolean;

@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { postService } from '../ServiçosDoFrontend/postService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { Group } from '../types';
 
 export const useCreatePrivateGroup = () => {

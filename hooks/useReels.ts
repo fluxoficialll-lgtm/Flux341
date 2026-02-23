@@ -1,10 +1,10 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { reelsService } from '../ServiçosDoFrontend/reelsService';
-import { postService } from '../ServiçosDoFrontend/postService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { recommendationService } from '../ServiçosDoFrontend/recommendationService';
+import { reelsService } from '../ServiçosFrontend/ServiçoDeReels/reelsService.js';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { recommendationService } from '../ServiçosFrontend/ServiçoDeRecomendação/recommendationService.js';
 import { db } from '@/database';
 import { Post, Comment } from '../types';
 

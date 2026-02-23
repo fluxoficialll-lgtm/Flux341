@@ -1,6 +1,6 @@
 
 import { useNavigate } from 'react-router-dom';
-import { groupService } from '../../../ServiçosDoFrontend/groupService';
+import { groupService } from '../../../ServiçosFrontend/groupService';
 import { useModal } from '../../ModalSystem';
 import { Group } from '../../../types';
 

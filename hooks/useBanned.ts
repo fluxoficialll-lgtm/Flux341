@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 
 export const useBanned = () => {
     const navigate = useNavigate();

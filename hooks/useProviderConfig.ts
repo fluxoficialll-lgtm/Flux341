@@ -1,10 +1,10 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { paypalService } from '../ServiçosDoFrontend/ServiçosDeProvedores/paypalService';
-import { stripeService } from '../ServiçosDoFrontend/ServiçosDeProvedores/stripeService';
-import { syncPayService } from '../ServiçosDoFrontend/ServiçosDeProvedores/syncPayService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { paypalService } from '../ServiçosFrontend/ServiçosDeProvedores/paypalService';
+import { stripeService } from '../ServiçosFrontend/ServiçosDeProvedores/stripeService';
+import { syncPayService } from '../ServiçosFrontend/ServiçosDeProvedores/syncPayService';
 import { Group } from '../types';
 
 export const useProviderConfig = () => {

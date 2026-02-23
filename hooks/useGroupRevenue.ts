@@ -1,10 +1,10 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { syncPayService } from '../ServiçosDoFrontend/ServiçosDeProvedores/syncPayService';
-import { currencyService } from '../ServiçosDoFrontend/currencyService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { syncPayService } from '../ServiçosFrontend/ServiçosDeProvedores/syncPayService.js';
+import { currencyService } from '../ServiçosFrontend/ServiçoDeMoeda/currencyService.js';
 import { Group, CurrencyCode } from '../types';
 
 interface UnifiedMetric {

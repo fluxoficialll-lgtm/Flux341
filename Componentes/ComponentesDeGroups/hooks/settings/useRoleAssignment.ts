@@ -1,8 +1,8 @@
 
 import { useState } from 'react';
-import { groupService } from '../../../../ServiçosDoFrontend/groupService';
+import { groupService } from '../../../../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
 import { useModal } from '../../../../Componentes/ModalSystem';
-import { GroupAuditService } from '../../../../ServiçosDoFrontend/groups/GroupAuditService';
+import { ConfigControl } from '../../../../ServiçosFrontend/ServiçoDeGovernançaFlux/ConfigControl.js';
 
 export const useRoleAssignment = (groupId: string) => {
     const { showAlert } = useModal();
@@ -18,9 +18,7 @@ export const useRoleAssignment = (groupId: string) => {
         if (!selectedMember) return;
         
         try {
-            // Em uma implementação real, o groupService teria um método updateMemberRole
-            // Para este protótipo, simulamos a persistência e logamos a auditoria.
-            await GroupAuditService.logAction(
+            await ConfigControl.logAction(
                 groupId, 
                 'ALTERACAO_CARGO', 
                 `Cargo de ${selectedMember.name} alterado para ID: ${roleId}`

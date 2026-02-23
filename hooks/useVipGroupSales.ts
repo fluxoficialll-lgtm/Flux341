@@ -1,9 +1,9 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { vipSalesTracker } from '../ServiçosDoFrontend/pixel/trackers/VipSalesTracker';
-import { VipPlaybackController } from '../ServiçosDoFrontend/real/vip/VipPlaybackController';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
+// import { vipSalesTracker } from '../ServiçosFrontend/pixel/trackers/VipSalesTracker';
+// import { VipPlaybackController } from '../ServiçosFrontend/real/vip/VipPlaybackController';
 import { useVipPricing } from './useVipPricing';
 import { Group } from '../types';
 
@@ -40,7 +40,7 @@ export const useVipGroupSales = (groupId: string | undefined) => {
           const ownerFlag = !!user && (foundGroup.creatorId === user.id || foundGroup.creatorEmail === user.email);
           setIsCreator(ownerFlag);
 
-          vipSalesTracker.trackLanding(foundGroup);
+          // vipSalesTracker.trackLanding(foundGroup);
 
           setIsPurchaseEnabled(foundGroup.status === 'active' || foundGroup.status === undefined);
           setLoading(false);
@@ -59,16 +59,16 @@ export const useVipGroupSales = (groupId: string | undefined) => {
   useEffect(() => {
     if (group && !loading) {
       const timer = setTimeout(() => {
-        vipSalesTracker.trackTimeStay60s(group);
+        // vipSalesTracker.trackTimeStay60s(group);
       }, 60000);
       return () => clearTimeout(timer);
     }
   }, [group, loading]);
 
   const handleToggleVideo = useCallback((index: number) => {
-    setPlayingIndex(prev => VipPlaybackController.togglePlayback(prev, index));
+    setPlayingIndex(prev => (prev === index ? null : index));
     if (group) {
-        vipSalesTracker.trackGalleryInteraction(group);
+        // vipSalesTracker.trackGalleryInteraction(group);
     }
   }, [group]);
 
@@ -81,11 +81,9 @@ export const useVipGroupSales = (groupId: string | undefined) => {
       if (index !== currentSlide) {
         setCurrentSlide(index);
         if (group) {
-            vipSalesTracker.trackGalleryInteraction(group);
+            // vipSalesTracker.trackGalleryInteraction(group);
         }
-        if (VipPlaybackController.shouldStopOnScroll(index, playingIndex)) {
-            setPlayingIndex(null);
-        }
+        setPlayingIndex(null);
       }
     }
   };
@@ -96,7 +94,7 @@ export const useVipGroupSales = (groupId: string | undefined) => {
       return;
     }
     if (group) {
-        vipSalesTracker.trackCheckoutIntent(group);
+        // vipSalesTracker.trackCheckoutIntent(group);
     }
     setModals(prev => ({ ...prev, pix: true }));
   };
@@ -108,8 +106,8 @@ export const useVipGroupSales = (groupId: string | undefined) => {
   const onEmailSuccess = (email: string) => {
     setHasCapturedEmail(true);
     if (group) {
-      vipSalesTracker.trackLead(group, email);
-      vipSalesTracker.trackCheckoutIntent(group);
+      // vipSalesTracker.trackLead(group, email);
+      // vipSalesTracker.trackCheckoutIntent(group);
     }
     setModals(prev => ({ ...prev, email: false, pix: true }));
   };
@@ -119,7 +117,7 @@ export const useVipGroupSales = (groupId: string | undefined) => {
   const setZoom = (index: number) => {
     setModals(prev => ({ ...prev, zoomIndex: index }));
     if (group) {
-        vipSalesTracker.trackGalleryInteraction(group);
+        // vipSalesTracker.trackGalleryInteraction(group);
     }
   };
 

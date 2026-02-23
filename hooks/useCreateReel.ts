@@ -1,10 +1,10 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { reelsService } from '../ServiçosDoFrontend/reelsService';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { contentSafetyService } from '../ServiçosDoFrontend/contentSafetyService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { reelsService } from '../ServiçosFrontend/ServiçoDeReels/reelsService.js';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { contentSafetyService } from '../ServiçosFrontend/ServiçoDeSegurançaDeConteúdo/contentSafetyService.js';
 import { Group } from '../types';
 
 export const useCreateReel = () => {

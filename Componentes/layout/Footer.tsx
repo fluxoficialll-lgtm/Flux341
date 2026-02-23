@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { notificationService } from '../../ServiçosDoFrontend/notificationService';
-import { chatService } from '../../ServiçosDoFrontend/chatService';
+import { notificationService } from '../../ServiçosFrontend/ServiçoDeNotificação/notificationService.js';
+import { chatService } from '../../ServiçosFrontend/ServiçoDeChat/chatService.js';
 import { db } from '../../database';
 
 interface FooterProps {

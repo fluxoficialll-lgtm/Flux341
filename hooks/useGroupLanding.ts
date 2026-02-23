@@ -1,8 +1,8 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { Group } from '../types';
 import { db } from '@/database';
 import { CapacityValidator } from '../Componentes/ComponentesDeGroups/logic/CapacityValidator';

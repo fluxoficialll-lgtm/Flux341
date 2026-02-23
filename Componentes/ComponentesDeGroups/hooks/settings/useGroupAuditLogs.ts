@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { groupService } from '../../../../ServiçosDoFrontend/groupService';
+import { groupService } from '../../../../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
 import { AuditLog } from '../../../../types';
 
 export const useGroupAuditLogs = (groupId: string | undefined) => {

@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { App as CapacitorApp } from '@capacitor/app';
-import { trackingService } from '../../ServiçosDoFrontend/trackingService';
+import { rastreadorDeEventos } from '../../ServiçosFrontend/ServiçoDeTelemetria/RastreadorDeEventos.js';
 
 export const DeepLinkHandler = () => {
   const navigate = useNavigate();
@@ -16,7 +16,7 @@ export const DeepLinkHandler = () => {
         const search = url.search;
         
         // Garante captura de parâmetros vindos do link externo
-        trackingService.captureUrlParams();
+        rastreadorDeEventos.capturarParametrosDeURL();
 
         // Rotas permitidas para deep link direto
         const allowedDeepPaths = [

@@ -1,9 +1,9 @@
 
 import { useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { postService } from '../ServiçosDoFrontend/postService';
+import { marketplaceService } from '../ServiçosFrontend/ServiçoDeMarketplace/marketplaceService.js';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { MarketplaceItem } from '../types';
 
 export const useCreateMarketplaceItem = () => {

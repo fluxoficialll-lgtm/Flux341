@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { trackingService } from '../ServiçosDoFrontend/trackingService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { trackingService } from '../ServiçosFrontend/ServiçoDeRastreamento/ServiçoDeRastreamento.js';
 
 export const useLogin = () => {
     const navigate = useNavigate();

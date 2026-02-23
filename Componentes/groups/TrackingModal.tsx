@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Group } from '../../types';
-import { generateTrackingLinkModel } from '../../ServiçosDoFrontend/trackingService';
+// import { generateTrackingLinkModel } from '../../ServiçosFrontend/trackingService';
 
 interface TrackingModalProps {
     isOpen: boolean;
     onClose: () => void;
     group: Group;
 }
+
+const generateTrackingLinkModel = (options: any) => {
+    const baseUrl = `https://flux.plus/${options.groupId}`;
+    const params = new URLSearchParams();
+    if (options.params.utm_source) params.set('utm_source', options.params.utm_source);
+    if (options.params.utm_medium) params.set('utm_medium', options.params.utm_medium);
+    if (options.params.utm_campaign) params.set('utm_campaign', options.params.utm_campaign);
+    return { finalUrl: `${baseUrl}?${params.toString()}` };
+};
 
 export const TrackingModal: React.FC<TrackingModalProps> = ({ isOpen, onClose, group }) => {
     const [utmSource, setUtmSource] = useState('facebook');
@@ -19,7 +28,7 @@ export const TrackingModal: React.FC<TrackingModalProps> = ({ isOpen, onClose, g
         if (isOpen) {
             handleGenerate();
         }
-    }, [isOpen, utmSource, utmMedium, utmCampaign]);
+    }, [isOpen, utmSource, utmMedium, utmCampaign, group]);
 
     const handleGenerate = () => {
         const result = generateTrackingLinkModel({

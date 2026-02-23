@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
-import { GeoData } from '../../../ServiçosDoFrontend/geoService';
+import { GeoData } from '../../../ServiçosFrontend/geoService';
 
 interface StripeCardFormProps {
     group: any;

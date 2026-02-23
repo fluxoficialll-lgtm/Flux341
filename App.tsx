@@ -6,11 +6,11 @@ import { GlobalTracker } from './Componentes/layout/GlobalTracker';
 import { DeepLinkHandler } from './Componentes/layout/DeepLinkHandler';
 import AppRoutes from './routes/AppRoutes';
 import { useAuthSync } from './hooks/useAuthSync';
-import { USE_MOCKS } from './mocks';
+import { USE_MOCKS } from './ServiçosFrontend/ServiçoDeSimulação/ControleDeSimulacao.js';
 import { GlobalErrorBoundary } from './Componentes/layout/GlobalErrorBoundary';
-import { configControl } from './ServiçosDoFrontend/ServiçoDeAdmin/ConfigControl';
+import { ConfigControl } from './ServiçosFrontend/ServiçoDeGovernançaFlux/ConfigControl.js';
 import { Maintenance } from './pages/Maintenance';
-import { hydrationManager } from './ServiçosDoFrontend/sync/HydrationManager';
+import { hydrationManager } from './ServiçosFrontend/ServiçoDeSincronização/GerenciadorDeSincronizacao.js';
 
 const DemoModeBadge = () => {
     if (!USE_MOCKS) return null;
@@ -62,7 +62,7 @@ const App: React.FC = () => {
         const forceOpen = getParam('ignoreMaintenance') === 'true' || getParam('force') === 'true';
 
         // Consulta o Plano de Controle
-        const config = await configControl.boot();
+        const config = await ConfigControl.boot();
         
         // Só ativa manutenção se explicitamente configurado, sem bypass e fora de mock
         const shouldShowMaintenance = config.maintenanceMode === true && !USE_MOCKS && !forceOpen;

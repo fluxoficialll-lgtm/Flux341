@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { NotificationItem } from '../../types';
-import { postService } from '../../ServiçosDoFrontend/postService';
+import { postService } from '../../ServiçosFrontend/ServiçoDePosts/postService.js';
 
 interface NotificationCardProps {
     notif: NotificationItem & { displayName?: string };

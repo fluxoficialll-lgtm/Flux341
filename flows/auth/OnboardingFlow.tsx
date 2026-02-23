@@ -1,7 +1,7 @@
 
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../types';
-import { PurchaseIntention } from '../../ServiçosDoFrontend/sync/PurchaseIntention';
+// import { PurchaseIntention } from '../../ServiçosFrontend/sync/PurchaseIntention';
 
 /**
  * Flow: Onboarding
@@ -21,7 +21,7 @@ export const useOnboardingFlow = () => {
         // 2. Verificação de Intenção de Compra (Pós-Pagamento Resiliente)
         // Se houver um ID no PurchaseIntention, significa que o usuário pagou
         // e acabou de terminar o cadastro Google. Mandamos para a SuccessBridge.
-        const pendingPurchaseId = PurchaseIntention.get();
+        const pendingPurchaseId = null; //PurchaseIntention.get();
         if (pendingPurchaseId) {
             console.log("🎯 [Onboarding] Intenção de compra detectada:", pendingPurchaseId);
             navigate(`/payment-success-bridge/${pendingPurchaseId}`, { replace: true });

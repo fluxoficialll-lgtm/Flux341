@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NotificationItem } from '../../../types';
-import { postService } from '../../../ServiçosDoFrontend/postService';
+import { postService } from '../../../ServiçosFrontend/ServiçoDePosts/postService.js';
 
 interface ExpiringVipNotificationCardProps {
     notif: NotificationItem;

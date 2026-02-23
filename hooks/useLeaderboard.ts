@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
+import { relationshipService } from '../ServiçosFrontend/ServiçoDeRelacionamento/relationshipService.js';
 import { User } from '../types';
 
 // A interface pode ser movida para um arquivo de tipos se for usada em outro lugar.

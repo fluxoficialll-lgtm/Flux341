@@ -1,11 +1,11 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { postService } from '../ServiçosDoFrontend/postService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { Group, VipMediaItem, CurrencyType } from '../types';
-import { GATEWAY_CURRENCIES, DEFAULT_CURRENCY_FOR_GATEWAY } from '../ServiçosDoFrontend/gatewayConfig';
+// import { GATEWAY_CURRENCIES, DEFAULT_CURRENCY_FOR_GATEWAY } from '../ServiçosFrontend/gatewayConfig';
 
 export const useCreateVipGroup = () => {
   const navigate = useNavigate();
@@ -64,17 +64,14 @@ export const useCreateVipGroup = () => {
   }, []);
 
   const allowedCurrencies = useMemo(() => {
-      if (!selectedProviderId) return [];
-      const supported = GATEWAY_CURRENCIES[selectedProviderId] || ['BRL'];
-      return supported.filter(c => ['BRL', 'USD', 'EUR'].includes(c));
-  }, [selectedProviderId]);
+    return ['BRL', 'USD', 'EUR'];
+  }, []);
 
   const handleProviderSelect = (pid: string) => {
       setSelectedProviderId(pid);
-      const supported = GATEWAY_CURRENCIES[pid] || ['BRL'];
-      const filteredSupported = supported.filter(c => ['BRL', 'USD', 'EUR'].includes(c));
-      if (!filteredSupported.includes(currency)) {
-          setCurrency((DEFAULT_CURRENCY_FOR_GATEWAY[pid] || filteredSupported[0] || 'BRL') as CurrencyType);
+      const supported = ['BRL', 'USD', 'EUR'];
+      if (!supported.includes(currency)) {
+          setCurrency('BRL');
       }
   };
 
@@ -276,7 +273,7 @@ export const useCreateVipGroup = () => {
     handleVipMediaChange,
     moveVipMediaItem,
     removeMediaItem,
-    handlePriceChange,
+_handlePriceChange,
     handleSavePixel,
     handleBack,
     handleSubmit,

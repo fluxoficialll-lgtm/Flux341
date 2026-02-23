@@ -1,8 +1,8 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { preferenceService } from '../ServiçosDoFrontend/real/preferenceService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { preferenceService } from '../ServiçosFrontend/ServiçoDePreferências/preferenceService.js';
 
 export const LANGUAGES = [
     { id: 'pt', label: 'Português', flag: '🇧🇷', nativeName: 'Brasil' },

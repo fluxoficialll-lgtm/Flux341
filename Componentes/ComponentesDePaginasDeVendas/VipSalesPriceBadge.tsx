@@ -1,5 +1,5 @@
 import React from 'react';
-import { GeoData } from '../../ServiçosDoFrontend/geoService';
+import { GeoData } from '../../ServiçosFrontend/geoService';
 
 interface VipSalesPriceBadgeProps {
     geoData: GeoData | null;

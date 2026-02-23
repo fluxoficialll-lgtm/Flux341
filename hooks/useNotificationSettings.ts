@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { NotificationSettings as INotificationSettings } from '../types';
 import { useModal } from '../Componentes/ModalSystem';
 

@@ -1,9 +1,9 @@
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { fileService } from '../ServiçosDoFrontend/fileService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { fileService } from '../ServiçosFrontend/ServiçoDeArquivos/fileService.js';
 
 export const useCreatePublicGroup = () => {
   const navigate = useNavigate();

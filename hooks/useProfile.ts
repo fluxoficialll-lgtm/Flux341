@@ -1,10 +1,10 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { postService } from '../ServiçosDoFrontend/postService';
-import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
-import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
+import { relationshipService } from '../ServiçosFrontend/ServiçoDeRelacionamento/relationshipService.js';
+import { marketplaceService } from '../ServiçosFrontend/ServiçoDeMarketplace/marketplaceService.js';
 import { Post, User, MarketplaceItem } from '../types';
 import { db } from '@/database';
 

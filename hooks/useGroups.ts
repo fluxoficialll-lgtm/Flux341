@@ -1,11 +1,11 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { Group } from '../types';
 import { db } from '@/database';
-import { chatService } from '../ServiçosDoFrontend/chatService';
+import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 
 const LIMIT = 15;
 

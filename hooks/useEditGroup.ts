@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { metaPixelService } from '../ServiçosDoFrontend/metaPixelService';
-import { postService } from '../ServiçosDoFrontend/postService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { metaPixelService } from '../ServiçosFrontend/metaPixelService';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { Group, VipMediaItem } from '../types';
 
 export const useEditGroup = () => {

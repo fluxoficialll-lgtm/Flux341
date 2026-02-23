@@ -1,10 +1,10 @@
 
 import { useEffect } from 'react';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { AccountSyncService } from '../ServiçosDoFrontend/sync/AccountSyncService';
-import { SyncState } from '../ServiçosDoFrontend/sync/SyncState';
-import { socketService } from '../ServiçosDoFrontend/socketService';
-import { RealtimePaymentHandler } from '../ServiçosDoFrontend/real/notifications/RealtimePaymentHandler';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
+import { ServicoDeSincronizacaoDeSessao } from '../ServiçosFrontend/ServiçoDeSincronização/ServicoDeSincronizacaoDeSessao.js';
+import { SyncState } from '../ServiçosFrontend/ServiçoDeSincronização/EstadoDeSincronizacao.js';
+import { socketService } from '../ServiçosFrontend/ServiçoDeSoquete/ServiçoDeSoquete.js';
+import { RealtimePaymentHandler } from '../ServiçosFrontend/ServiçoDeTempoReal/Notificações/ManipuladorDePagamentoEmTempoReal.js';
 
 export const useAuthSync = () => {
   useEffect(() => {
@@ -19,10 +19,11 @@ export const useAuthSync = () => {
     // 2. Sempre tenta a inicialização para liberar a hidratação (mesmo para guests)
     const initializeSync = async () => {
         if (email && SyncState.shouldDoFullSync()) {
-            await AccountSyncService.performFullSync();
+            await ServicoDeSincronizacaoDeSessao.performFullSync();
+            SyncState.recordFullSync(); // Marca que a sincronização foi feita
         } else {
             // performBackgroundSync disparará os workers que marcam como ready
-            await AccountSyncService.performBackgroundSync();
+            await ServicoDeSincronizacaoDeSessao.performBackgroundSync();
         }
     };
 
@@ -37,7 +38,7 @@ export const useAuthSync = () => {
 
     const backgroundSyncInterval = setInterval(() => {
       if (authService.getCurrentUserEmail()) {
-        AccountSyncService.performBackgroundSync();
+        ServicoDeSincronizacaoDeSessao.performBackgroundSync();
       }
     }, 300000);
 

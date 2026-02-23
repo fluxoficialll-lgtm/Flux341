@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Post, User } from '../../../types';
 import { FeedItem } from '../FeedItem';
-import { postService } from '../../../ServiçosDoFrontend/postService';
+import { postService } from '../../../ServiçosFrontend/ServiçoDePosts/postService.js';
 import { useModal } from '../../ModalSystem';
 import { SearchTab } from '../../../pages/FeedSearch';
 import { UserBadge } from '../../ui/user/UserBadge';

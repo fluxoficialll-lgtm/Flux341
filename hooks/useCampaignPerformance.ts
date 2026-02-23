@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { adService } from '../ServiçosDoFrontend/adService';
+import { adService } from '../ServiçosFrontend/ServiçoDeAnúncios/adService.js';
 import { AdCampaign } from '../types';
 
 export const useCampaignPerformance = () => {

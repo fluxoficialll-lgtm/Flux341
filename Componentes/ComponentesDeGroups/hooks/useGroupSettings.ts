@@ -1,12 +1,12 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../../../ServiçosDoFrontend/groupService';
-import { authService } from '../../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { groupService } from '../../../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
+import { authService } from '../../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
 import { db } from '../../../database';
 import { useModal } from '../../../Componentes/ModalSystem';
 import { Group, ScheduledMessage } from '../../../types';
-import { GroupLifeCycleService } from '../../../ServiçosDoFrontend/real/groups/GroupLifeCycleService';
+// import { GroupLifeCycleService } from '../../../ServiçosFrontend/real/groups/GroupLifeCycleService';
 
 // Sub-hooks modulares
 import { useGroupIdentity } from './settings/useGroupIdentity';
@@ -75,13 +75,11 @@ export const useGroupSettings = () => {
 
         const memberCount = group.memberIds?.length || 0;
 
-        // Caso 1: Usuário tentando sair
         if (type === 'leave') {
             let title = "Sair do Grupo";
             let message = "Deseja realmente sair desta comunidade?";
             let confirmText = "Sair";
 
-            // Se for o último membro
             if (memberCount === 1) {
                 title = "⚠️ Aviso Crítico";
                 message = "Você é o último membro. Se sair agora, o grupo e todo o histórico serão APAGADOS permanentemente. Confirmar?";
@@ -91,15 +89,16 @@ export const useGroupSettings = () => {
             }
 
             if (await showConfirm(title, message, confirmText, "Cancelar")) {
-                const result = await GroupLifeCycleService.processDeparture(id, currentUserId);
-                if (result.action === 'dissolved') {
+                if (memberCount === 1) {
+                    await groupService.deleteGroup(id);
                     await showAlert("Grupo Encerrado", "O grupo foi removido pois não restaram membros.");
+                } else {
+                    await groupService.removeMember(id, currentUserId);
                 }
                 navigate('/groups');
             }
         } 
         
-        // Caso 2: Dono querendo deletar manualmente
         else if (type === 'delete') {
             if (await showConfirm("EXCLUIR GRUPO", "Esta ação apagará o grupo para TODOS os membros imediatamente. Não há volta. Confirmar?", "Excluir Tudo", "Cancelar")) {
                 await groupService.deleteGroup(id);

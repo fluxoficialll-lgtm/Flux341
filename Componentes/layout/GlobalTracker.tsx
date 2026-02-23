@@ -1,8 +1,8 @@
 
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { trackingService } from '../../ServiçosDoFrontend/trackingService';
-import { metaPixelService } from '../../ServiçosDoFrontend/metaPixelService';
+import { trackingService } from '../../ServiçosFrontend/ServiçoDeRastreamento/ServiçoDeRastreamento.js';
+import { metaPixelService } from '../../ServiçosFrontend/ServiçoDeMetaPixel/MetaPixelService.js';
 
 export const GlobalTracker = () => {
   const location = useLocation();

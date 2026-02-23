@@ -1,12 +1,12 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { notificationService } from '../ServiçosDoFrontend/notificationService';
-import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { geoService, GeoData } from '../ServiçosDoFrontend/geoService';
-import { currencyService, ConversionResult } from '../ServiçosDoFrontend/currencyService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { notificationService } from '../ServiçosFrontend/ServiçoDeNotificação/notificationService.js';
+import { relationshipService } from '../ServiçosFrontend/ServiçoDeRelacionamento/relationshipService.js';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { geoService, GeoData } from '../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
+import { currencyService, ConversionResult } from '../ServiçosFrontend/ServiçoDeMoeda/currencyService.js';
 import { NotificationItem, Group, EnrichedNotificationItem } from '../types';
 import { db } from '@/database';
 

@@ -1,8 +1,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { postService } from '../ServiçosDoFrontend/postService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { Post, Comment } from '../types';
 import { db } from '@/database';
 

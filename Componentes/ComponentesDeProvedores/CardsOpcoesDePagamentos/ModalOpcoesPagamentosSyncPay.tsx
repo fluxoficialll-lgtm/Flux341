@@ -1,9 +1,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { syncPayService } from '../../../ServiçosDoFrontend/ServiçosDeProvedores/syncPayService';
-import { authService } from '../../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { currencyService } from '../../../ServiçosDoFrontend/currencyService';
-import { vipSalesTracker } from '../../../ServiçosDoFrontend/pixel/trackers/VipSalesTracker';
+import { syncPayService } from '../../../ServiçosFrontend/ServiçosDeProvedores/syncPayService';
+import { authService } from '../../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
+import { currencyService } from '../../../ServiçosFrontend/ServiçoDeMoeda/currencyService.js';
 import { Group, User } from '../../../types';
 import { SyncPayPixView } from '../CardsMétodosDePagamentos/SyncPayPixView';
 import { SyncPayBoletoView } from '../CardsMétodosDePagamentos/SyncPayBoletoView';
@@ -58,8 +57,6 @@ export const ModalOpcoesPagamentosSyncPay: React.FC<ModalOpcoesPagamentosSyncPay
             } else {
                 conversionResult = { amount: basePrice, currency: 'BRL', symbol: 'R$', formatted: `R$ ${basePrice.toFixed(2)}` };
             }
-
-            vipSalesTracker.trackAddPaymentInfo(group, selectedMethod, conversionResult);
 
             const creatorId = group.creatorEmail || group.creatorId;
             const syncGroup = { ...group, price: finalBrlAmount.toString(), currency: 'BRL' as const, creatorEmail: creatorId };

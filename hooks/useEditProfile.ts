@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { postService } from '../ServiçosDoFrontend/postService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { AuthError, UserProfile } from '../types';
 import { db } from '@/database';
 

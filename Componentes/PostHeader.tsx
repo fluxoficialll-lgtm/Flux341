@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
 import { AvatarPreviewModal } from './ui/AvatarPreviewModal';
 import { UserBadge } from './ui/user/UserBadge';
 

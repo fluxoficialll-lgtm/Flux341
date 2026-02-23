@@ -1,9 +1,9 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { postService } from '../ServiçosDoFrontend/postService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { Group, SalesFolder, Infoproduct } from '../types';
 
 export const useSalesFolderContent = () => {

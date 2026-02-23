@@ -9,7 +9,7 @@ export default {
     "./features/**/*.{js,ts,jsx,tsx}",
     "./hooks/**/*.{js,ts,jsx,tsx}",
     "./routes/**/*.{js,ts,jsx,tsx}",
-    "./ServiçosDoFrontend/**/*.{js,ts,jsx,tsx}",
+    "./ServiçosFrontend/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {

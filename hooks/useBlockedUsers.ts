@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { chatService } from '../ServiçosDoFrontend/chatService';
+import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 import { ChatData } from '../types';
 
 export const useBlockedUsers = () => {

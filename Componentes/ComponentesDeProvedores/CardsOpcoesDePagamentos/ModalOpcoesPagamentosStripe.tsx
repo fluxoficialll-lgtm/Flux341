@@ -1,12 +1,11 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { stripeService } from '../../../ServiçosDoFrontend/ServiçosDeProvedores/stripeService';
-import { authService } from '../../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { GeoData } from '../../../ServiçosDoFrontend/geoService';
-import { ConversionResult } from '../../../ServiçosDoFrontend/currencyService';
-import { vipSalesTracker } from '../../../ServiçosDoFrontend/pixel/trackers/VipSalesTracker';
+import { stripeService } from '../../../ServiçosFrontend/ServiçosDeProvedores/stripeService';
+import { authService } from '../../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
+import { GeoData } from '../../../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
+import { ConversionResult } from '../../../ServiçosFrontend/ServiçoDeMoeda/currencyService.js';
 import { Group } from '../../../types';
-import { USE_MOCKS } from '../../../mocks';
+import { ControleDeSimulacao } from '../../../ServiçosFrontend/ServiçoDeSimulação/ControleDeSimulacao.js';
 
 // Sub-views Internas
 import { StripePixView } from '../CardsMétodosDePagamentos/StripePixView';
@@ -110,7 +109,6 @@ const STRIPE_REGIONAL_MATRIX: Record<string, any> = {
         flag: '🇯🇵',
         methods: [
             { id: 'konbini', icon: 'fa-shop', title: 'Konbini', sub: 'Convenience store', primary: true },
-            // Comment: Fix: Removed duplicate 'icon' property to resolve object literal naming error.
             { id: 'card', title: 'Credit Card (JCB)', icon: 'fa-credit-card', color: '#00c2ff' },
             { id: 'link', icon: 'fa-link', title: 'Stripe Link', sub: 'Fast Pay' },
             { id: 'wallet', icon: 'fa-brands fa-apple-pay', title: 'Wallets', sub: 'Apple / Google Pay' }
@@ -146,6 +144,8 @@ const STRIPE_REGIONAL_MATRIX: Record<string, any> = {
     }
 };
 
+const USE_MOCKS = ControleDeSimulacao.isMockMode();
+
 export const ModalOpcoesPagamentosStripe: React.FC<ModalOpcoesPagamentosStripeProps> = ({ group, geo, onSuccess, onError, onTransactionId, convertedPriceInfo }) => {
     const [currentView, setCurrentView] = useState<StripeView>('selection');
     const [redirectTarget, setRedirectTarget] = useState<RedirectionProvider>('stripe');
@@ -173,9 +173,6 @@ export const ModalOpcoesPagamentosStripe: React.FC<ModalOpcoesPagamentosStripePr
     }, []);
 
     const startInternalPayment = async (method: StripeView) => {
-        // DISPARO DE ADD PAYMENT INFO
-        vipSalesTracker.trackAddPaymentInfo(group, method, convertedPriceInfo);
-
         const redirects = ['sofort', 'klarna', 'wallet', 'grabpay', 'afterpay', 'link', 'debit_card'];
         
         if (redirects.includes(method)) {
@@ -282,14 +279,13 @@ export const ModalOpcoesPagamentosStripe: React.FC<ModalOpcoesPagamentosStripePr
             {currentView === 'ach' && <StripeAchForm onBack={() => setCurrentView('selection')} onSuccess={onSuccess} />}
             {currentView === 'bacs' && <StripeBacsForm onBack={() => setCurrentView('selection')} onSuccess={onSuccess} />}
             {currentView === 'becs' && <StripeBecsForm onBack={() => setCurrentView('selection')} onSuccess={onSuccess} />}
-            {currentVeiw === 'pad' && <StripePadForm onBack={() => setCurrentView('selection')} onSuccess={onSuccess} />}
             
             {currentView === 'redirection' && (
                 <RedirectionBridgeCard 
                     provider={redirectTarget}
                     price={convertedPriceInfo?.formatted || '...'}
                     onConfirm={() => {
-                        onSuccess(); // Simulação
+                        onSuccess();
                     }}
                     onBack={() => setCurrentView('selection')}
                 />

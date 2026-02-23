@@ -1,8 +1,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { syncPayService } from '../ServiçosDoFrontend/ServiçosDeProvedores/syncPayService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { syncPayService } from '../ServiçosFrontend/ServiçosDeProvedores/syncPayService.js';
 import { AffiliateStats, CurrencyCode } from '../types';
 
 export const useFinancialPanel = () => {

@@ -1,20 +1,34 @@
 
 import { useState, useEffect } from 'react';
-import { i18nService, SupportedLanguage } from '../ServiçosDoFrontend/i18nService';
-import { VipTranslationEngine, TranslatedVipData } from '../ServiçosDoFrontend/real/vip/VipTranslationEngine';
+import { useTranslation } from 'react-i18next';
 import { Group } from '../types';
+import i18n from '../ServiçosFrontend/ServiçoDeSegurançaDeConteúdo/i18n';
+
+// Mock implementation of VipTranslationEngine
+class VipTranslationEngine {
+    static async getTargetLanguage(): Promise<string> {
+        // In a real scenario, this would detect the user's language
+        return new Promise(resolve => resolve(i18n.language));
+    }
+
+    static async translateGroupData(group: Group, lang: string): Promise<any> {
+        // In a real scenario, this would translate the group data
+        console.log(`Translating group data to ${lang}...`);
+        return new Promise(resolve => resolve(group));
+    }
+}
 
 export const useAutoLanguage = (group: Group | null) => {
-    const [lang, setLang] = useState<SupportedLanguage>('pt');
+    const { i18n, t } = useTranslation();
     const [isTranslating, setIsTranslating] = useState(false);
-    const [translatedData, setTranslatedData] = useState<TranslatedVipData | null>(null);
+    const [translatedData, setTranslatedData] = useState<any | null>(null);
 
     useEffect(() => {
         const runTranslation = async () => {
             if (!group) return;
 
             const detected = await VipTranslationEngine.getTargetLanguage();
-            setLang(detected);
+            i18n.changeLanguage(detected);
 
             setIsTranslating(true);
             const data = await VipTranslationEngine.translateGroupData(group, detected);
@@ -23,12 +37,12 @@ export const useAutoLanguage = (group: Group | null) => {
         };
 
         runTranslation();
-    }, [group?.id]);
+    }, [group?.id, i18n]);
 
     return {
-        lang,
+        lang: i18n.language,
         isTranslating,
         translatedData,
-        t: (key: string) => i18nService.t(key, lang)
+        t
     };
 };

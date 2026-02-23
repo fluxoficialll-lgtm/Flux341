@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { groupService } from '../ServiçosDoFrontend/groupService';
-import { syncPayService } from '../ServiçosDoFrontend/ServiçosDeProvedores/syncPayService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { syncPayService } from '../ServiçosFrontend/ServiçosDeProvedores/syncPayService.js';
 
 export const useVipSalesHistory = () => {
   const navigate = useNavigate();

@@ -1,8 +1,8 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postService } from '../ServiçosDoFrontend/postService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { Post, PollOption } from '../types';
 
 export const useCreatePoll = () => {

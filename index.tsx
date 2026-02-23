@@ -1,38 +1,38 @@
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
-import { validateEnvironment } from './ServiçosDoFrontend/environmentValidator';
-import { initNetworkInterceptor } from './ServiçosDoFrontend/telemetry/NetworkInterceptor';
-import { eventTracker } from './ServiçosDoFrontend/telemetry/EventTracker';
-import { TelemetryFilter } from './ServiçosDoFrontend/telemetry/TelemetryFilter';
+import './ServiçosFrontend/ServiçoDeSegurançaDeConteúdo/i18n.js';
+import { validateEnvironment } from './ServiçosFrontend/ValidaçãoDeAmbiente/environmentValidator.js';
+import { initAuditorDeRequisições } from './ServiçosFrontend/ServiçoDeTelemetria/AuditorDeRequisições.js';
+import { rastreadorDeEventos } from './ServiçosFrontend/ServiçoDeTelemetria/RastreadorDeEventos.js';
+import { FiltroDeTelemetria } from './ServiçosFrontend/ServiçoDeTelemetria/FiltroDeTelemetria.js';
 
 // 1. Validação de Infraestrutura antes do boot
 validateEnvironment();
 
 // 2. Inicialização de Telemetria e Observabilidade
-initNetworkInterceptor();
+initAuditorDeRequisições();
 
 // 3. Captura Global de Erros (Safety Net)
 if (typeof window !== 'undefined') {
   window.addEventListener('error', (e) => {
-    // Specifically catch and ignore ResizeObserver loop error at the source
-    // This is a common browser warning that doesn't affect functionality
     if (e.message && e.message.includes('ResizeObserver loop')) {
         e.stopImmediatePropagation();
         return;
     }
 
     const error = e.error || e.message;
-    if (TelemetryFilter.shouldTrack(error)) {
-        eventTracker.trackCriticalError(error, 'GLOBAL_WINDOW_ERROR');
+    if (FiltroDeTelemetria.shouldTrack(error)) {
+        rastreadorDeEventos.trackCriticalError(error, 'GLOBAL_WINDOW_ERROR');
     } else {
         e.stopImmediatePropagation();
     }
   });
 
   window.addEventListener('unhandledrejection', (e) => {
-    if (TelemetryFilter.shouldTrack(e.reason)) {
-        eventTracker.trackCriticalError(e.reason, 'UNHANDLED_PROMISE_REJECTION');
+    if (FiltroDeTelemetria.shouldTrack(e.reason)) {
+        rastreadorDeEventos.trackCriticalError(e.reason, 'UNHANDLED_PROMISE_REJECTION');
     }
   });
 }

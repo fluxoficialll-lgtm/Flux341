@@ -1,9 +1,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { chatService } from '../ServiçosDoFrontend/chatService';
-import { notificationService } from '../ServiçosDoFrontend/notificationService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
+import { notificationService } from '../ServiçosFrontend/ServiçoDeNotificação/notificationService.js';
 import { db } from '@/database';
 import { Contact } from '../types'; // Assuming Contact type is moved to types.ts
 

@@ -7,7 +7,7 @@ import { ImageCarousel } from '../ImageCarousel';
 import { GroupAttachmentCard } from '../groups/GroupAttachmentCard';
 import { PollPost } from './PollPost';
 import { PostActions } from './PostActions';
-import { postService } from '../../ServiçosDoFrontend/postService';
+import { postService } from '../../ServiçosFrontend/ServiçoDePosts/postService.js';
 
 interface FeedItemProps {
     post: Post;

@@ -1,9 +1,9 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { chatService } from '../ServiçosDoFrontend/chatService';
+import { relationshipService } from '../ServiçosFrontend/ServiçoDeRelacionamento/relationshipService.js';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 import { User } from '../types';
 import { db } from '@/database';
 

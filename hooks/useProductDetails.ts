@@ -1,9 +1,9 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { chatService } from '../ServiçosDoFrontend/chatService';
+import { marketplaceService } from '../ServiçosFrontend/ServiçoDeMarketplace/marketplaceService.js';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 import { db } from '@/database';
 import { MarketplaceItem, Comment as CommentType, ChatMessage } from '../types';
 

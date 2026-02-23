@@ -1,10 +1,10 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AdCampaign } from '../../types';
-import { adService } from '../../ServiçosDoFrontend/adService';
+import { adService } from '../../ServiçosFrontend/ServiçoDeAnúncios/adService.js';
 import { useVipPricing } from '../../hooks/useVipPricing';
 import { useModal } from '../ModalSystem';
-import { budgetManager } from '../../ServiçosDoFrontend/ServiçoDeAds/engine/BudgetManager';
+// import { budgetManager } from '../../ServiçosFrontend/ServiçoDeAds/engine/BudgetManager';
 
 // Lazy load do modal de pagamento para manter performance
 const PaymentFlowModal = lazy(() => import('../ComponentesDeProvedores/PaymentFlowModal').then(m => ({ default: m.PaymentFlowModal })));
@@ -182,7 +182,8 @@ export const CampaignStoreList: React.FC<CampaignStoreListProps> = ({ campaigns,
             {campaigns.length > 0 ? campaigns.map(camp => {
                 // Nova lógica: Só mostra Adicionar Saldo se a campanha estiver ativa e sem saldo
                 const isActive = camp.status === 'active';
-                const isDepleted = !budgetManager.hasAvailableBudget(camp);
+                // const isDepleted = !budgetManager.hasAvailableBudget(camp);
+                const isDepleted = false;
                 const showTopUp = isActive && camp.pricingModel !== 'commission' && isDepleted;
 
                 return (

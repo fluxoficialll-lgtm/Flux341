@@ -1,11 +1,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { postService } from '../ServiçosDoFrontend/postService';
-import { relationshipService } from '../ServiçosDoFrontend/relationshipService';
-import { chatService } from '../ServiçosDoFrontend/chatService';
-import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
+import { relationshipService } from '../ServiçosFrontend/ServiçoDeRelacionamento/relationshipService.js';
+import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
+import { marketplaceService } from '../ServiçosFrontend/ServiçoDeMarketplace/marketplaceService.js';
 import { db } from '@/database';
 import { Post, MarketplaceItem, UserProfileData, RelationshipStatus } from '../types';
 

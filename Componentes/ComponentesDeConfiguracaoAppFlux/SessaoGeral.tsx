@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ItemConfiguracao } from './ItemConfiguracao';
-import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { authService } from '../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
 import { ModalDeSelecaoDeIdioma, IDIOMAS } from './ModalDeSelecaoDeIdioma';
-import { preferenceService } from '../../ServiçosDoFrontend/real/preferenceService';
+import { preferenceService } from '../../ServiçosFrontend/ServiçoDePreferências/preferenceService.js';
 
 export const SessaoGeral: React.FC = () => {
     const navigate = useNavigate();

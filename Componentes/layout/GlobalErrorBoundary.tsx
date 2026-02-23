@@ -1,5 +1,5 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { eventTracker } from '../../ServiçosDoFrontend/telemetry/EventTracker';
+import { rastreadorDeEventos as eventTracker } from '../../ServiçosFrontend/ServiçoDeTelemetria/RastreadorDeEventos.js';
 
 interface Props {
   children?: ReactNode;

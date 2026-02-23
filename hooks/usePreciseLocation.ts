@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { LocationFilter, Coordinates, AddressProfile } from '../types/location.types';
-import { LocationIntelligence } from '../ServiçosDoFrontend/geo/LocationIntelligence';
+import { geoService } from '../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
 
 const STORAGE_KEY = 'flux_user_geo_filter';
 
@@ -20,8 +20,8 @@ export const usePreciseLocation = () => {
     const captureGps = async () => {
         setLoading(true);
         try {
-            const coords = await LocationIntelligence.getCurrentPosition();
-            const address = await LocationIntelligence.reverseGeocode(coords);
+            const coords = await geoService.getCurrentPosition();
+            const address = await geoService.reverseGeocode(coords);
             
             const newFilter: LocationFilter = {
                 type: 'radius',

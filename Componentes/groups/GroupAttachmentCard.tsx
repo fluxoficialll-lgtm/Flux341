@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { groupService } from '../../ServiçosDoFrontend/groupService';
+import { groupService } from '../../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
 import { Group } from '../../types';
 
 interface GroupAttachmentCardProps {

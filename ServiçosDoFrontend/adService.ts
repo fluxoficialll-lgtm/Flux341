@@ -1,6 +1,0 @@
-
-import { USE_MOCKS } from '../mocks';
-import { adService as RealAdService } from './ServiçoDeAds/adService';
-import { adService as MockAdService } from './mocks/adService';
-
-export const adService = USE_MOCKS ? MockAdService : RealAdService;

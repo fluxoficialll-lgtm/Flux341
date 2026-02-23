@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 
 export const useSettings = () => {
     const [isPrivate, setIsPrivate] = useState(false);

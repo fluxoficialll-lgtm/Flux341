@@ -1,10 +1,11 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { marketplaceService } from '../ServiçosDoFrontend/marketplaceService';
-import { adService } from '../ServiçosDoFrontend/adService';
-import { authService } from '../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
-import { screenService, BusinessDashboardData } from '../ServiçosDoFrontend/screenService';
+import { marketplaceService } from '../ServiçosFrontend/ServiçoDeMarketplace/marketplaceService.js';
+import { adService } from '../ServiçosFrontend/ServiçoDeAnúncios/adService.js';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { screenService } from '../ServiçosFrontend/ServiçoDeTelas/screenService.js';
+import { BusinessDashboardData } from '../types';
 
 export const useMyStore = () => {
     const navigate = useNavigate();

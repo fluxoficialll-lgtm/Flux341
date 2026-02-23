@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MarketplaceItem, Group } from '../../types';
-import { metaPixelService } from '../../ServiçosDoFrontend/metaPixelService';
-import { geoService } from '../../ServiçosDoFrontend/geoService';
-import { currencyService } from '../../ServiçosDoFrontend/currencyService';
-import { authService } from '../../ServiçosDoFrontend/ServiçosDeAutenticacao/authService';
+import { metaPixelService } from '../../ServiçosFrontend/metaPixelService';
+import { geoService } from '../../ServiçosFrontend/geoService';
+import { currencyService } from '../../ServiçosFrontend/currencyService';
+import { authService } from '../../ServiçosFrontend/ServiçosDeAutenticacao/authService';
 
 export const useCheckoutFlow = () => {
     const navigate = useNavigate();
