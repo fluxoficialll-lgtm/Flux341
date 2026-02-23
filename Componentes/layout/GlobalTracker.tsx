@@ -1,29 +1,41 @@
-
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { trackingService } from '../../ServiçosFrontend/ServiçoDeRastreamento/ServiçoDeRastreamento.js';
-import { metaPixelService } from '../../ServiçosFrontend/ServiçoDeMetaPixel/MetaPixelService.js';
+import { rastreadorDeEventos } from '../../ServiçosFrontend/ServiçoDeTelemetria/RastreadorDeEventos';
 
-export const GlobalTracker = () => {
+/**
+ * Componente de Ordem Superior para Rastreamento Global de Visualizações de Página.
+ * Otimizado para React Router v6.
+ */
+export const GlobalTracker: React.FC = () => {
   const location = useLocation();
-  
+
   useEffect(() => {
-    // Capturar UTMs e Ref da URL atual
-    trackingService.captureUrlParams();
+    // O evento é disparado toda vez que o objeto `location` muda.
+    rastreadorDeEventos.trackPageView(location.pathname + location.search);
 
-    // Rastreio de Afiliado (Se houver ?ref=...)
-    const ref = trackingService.getAffiliateRef();
-    if (ref) {
-      metaPixelService.trackRecruitmentAccess(ref);
-    }
-
-    // Track Page View Global (Pixel da Plataforma)
-    // @ts-ignore
-    const globalPixelId = process.env.VITE_PIXEL_ID || ""; 
-    if (globalPixelId) {
-      metaPixelService.trackPageView(globalPixelId);
-    }
+  // Adicionado `location` como dependência para rastrear cada mudança de rota.
   }, [location]);
 
-  return null;
+  // Correção: Vite utiliza `import.meta.env.MODE` em vez de `process.env.NODE_ENV`
+  // para acessar variáveis de ambiente no lado do cliente.
+  // A variável `NODE_ENV` não é exposta ao navegador por padrão no Vite para evitar vazamento de informações sensíveis.
+  const isDevelopmentMode = import.meta.env.MODE === 'development';
+
+  useEffect(() => {
+    const handleDevInfo = (event: KeyboardEvent) => {
+      if (isDevelopmentMode && event.ctrlKey && event.key === 'i') {
+        console.log("===== [DEV INFO] =====");
+        console.log("Current Route:", location.pathname);
+        console.log("Modo da Aplicação:", import.meta.env.MODE);
+        console.log("Configuração do Vite:", import.meta.env);
+        console.log("======================");
+      }
+    };
+
+    window.addEventListener('keydown', handleDevInfo);
+    return () => window.removeEventListener('keydown', handleDevInfo);
+  }, [location, isDevelopmentMode]);
+
+  // Este componente não renderiza nada na DOM.
+  return null; 
 };

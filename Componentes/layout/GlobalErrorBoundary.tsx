@@ -11,9 +11,8 @@ interface State {
 }
 
 /**
- * Global Error Boundary
+ * Global Error Boundary Aprimorado
  */
-// Comment: Fix: Directly importing and extending Component to resolve TypeScript errors where setState and props were not recognized.
 export class GlobalErrorBoundary extends Component<Props, State> {
   public state: State = {
     hasError: false,
@@ -25,16 +24,23 @@ export class GlobalErrorBoundary extends Component<Props, State> {
   }
 
   public static getDerivedStateFromError(error: Error): State {
+    // Atualiza o estado para que a próxima renderização mostre a UI de fallback.
     return { hasError: true, error };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error("🔴 [CRITICAL UI ERROR]:", error, errorInfo);
-    eventTracker.trackCriticalError(error, 'GLOBAL_BOUNDARY_CATCH');
+    // Log aprimorado para a consola
+    console.error("🔴 [CRITICAL UI ERROR]:", error);
+    if (errorInfo.componentStack) {
+      console.error("Stack do Componente React:", errorInfo.componentStack);
+    }
+    // Envia o erro para um serviço de telemetria
+    eventTracker.trackCriticalError(error, 'GLOBAL_BOUNDARY_CATCH', { 
+      componentStack: errorInfo.componentStack 
+    });
   }
 
   private handleReset = () => {
-    // Comment: Fix: Properly using setState inherited from the base Component class to reset the error boundary state.
     this.setState({ hasError: false, error: undefined });
     window.location.hash = '/';
     window.location.reload();
@@ -42,6 +48,10 @@ export class GlobalErrorBoundary extends Component<Props, State> {
 
   public render(): ReactNode {
     if (this.state.hasError) {
+      // Em ambiente de produção, podemos querer mostrar menos detalhes.
+      // Vite define `process.env.NODE_ENV` para 'development' ou 'production'.
+      const isDev = process.env.NODE_ENV === 'development';
+
       return (
         <div className="min-h-screen bg-[#0c0f14] flex flex-col items-center justify-center p-6 text-center font-['Inter']">
           <style>{`
@@ -55,7 +65,26 @@ export class GlobalErrorBoundary extends Component<Props, State> {
               box-shadow: 0 0 30px rgba(0, 194, 255, 0.2);
             }
             .error-title { font-size: 24px; font-weight: 800; color: #fff; margin-bottom: 8px; }
-            .error-msg { font-size: 14px; color: #666; max-width: 300px; margin-bottom: 32px; line-height: 1.6; }
+            .error-msg { font-size: 14px; color: #999; max-width: 320px; margin: 0 auto; line-height: 1.6; }
+            .error-details { 
+              margin-top: 24px;
+              padding: 16px; 
+              background: rgba(255, 82, 82, 0.05); 
+              border: 1px solid rgba(255, 82, 82, 0.1); 
+              border-radius: 12px; 
+              text-align: left; 
+              font-size: 12px; 
+              max-width: 700px; 
+              width: 100%;
+              max-height: 250px;
+              overflow-y: auto;
+              word-wrap: break-word;
+            }
+            .error-details pre {
+              white-space: pre-wrap;
+              color: #ff5252;
+              font-family: 'SF Mono', 'Menlo', 'monospace';
+            }
             .retry-btn {
               background: #00c2ff; color: #000;
               padding: 16px 40px; border-radius: 16px;
@@ -73,12 +102,24 @@ export class GlobalErrorBoundary extends Component<Props, State> {
           
           <h1 className="error-title">Ops! Algo falhou.</h1>
           <p className="error-msg">
-            Ocorreu um erro inesperado na interface. Mas não se preocupe, seus dados estão seguros.
+            A interface encontrou um erro crítico. Seus dados estão seguros.
           </p>
 
-          <button className="retry-btn" onClick={this.handleReset}>
-            Recuperar Sistema
-          </button>
+          {/* NOVO: Bloco para exibir detalhes do erro em modo de desenvolvimento */}
+          {isDev && this.state.error && (
+            <div className="error-details">
+              <pre>
+                <strong>{this.state.error.name}:</strong> {this.state.error.message}
+                {this.state.error.stack && `\n\n${this.state.error.stack}`}
+              </pre>
+            </div>
+          )}
+          
+          <div className="mt-8">
+            <button className="retry-btn" onClick={this.handleReset}>
+              Recuperar Sistema
+            </button>
+          </div>
 
           <div className="mt-12 opacity-20 text-[9px] font-black uppercase tracking-[4px]">
             Flux Recovery Engine
@@ -87,7 +128,6 @@ export class GlobalErrorBoundary extends Component<Props, State> {
       );
     }
 
-    // Comment: Fix: Correctly accessing children via this.props which is inherited from the base Component class.
     return this.props.children || null;
   }
 }
