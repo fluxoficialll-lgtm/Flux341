@@ -5,7 +5,7 @@ import { reelsService } from '../ServiçosFrontend/ServiçoDeReels/reelsService.
 import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { recommendationService } from '../ServiçosFrontend/ServiçoDeRecomendação/recommendationService.js';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { Post, Comment } from '../types';
 
 // O hook não importa mais 'useModal'.
@@ -66,11 +66,11 @@ export const useReels = () => {
         reelsService.fetchReels();
         loadReels();
 
-        const unsubscribe = db.subscribe('posts', () => {
+        const unsubscribe = servicoDeSimulacao.subscribe('posts', () => {
             setReels(currentReels => {
                 let changed = false;
                 const nextReels = currentReels.map(r => {
-                    const latest = db.posts.findById(r.id);
+                    const latest = servicoDeSimulacao.posts.findById(r.id);
                     if (latest && (latest.likes !== r.likes || latest.comments !== r.comments || latest.views !== r.views || latest.liked !== r.liked)) {
                         changed = true;
                         return { ...r, ...latest };

@@ -8,7 +8,7 @@ import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService
 import { geoService, GeoData } from '../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
 import { currencyService, ConversionResult } from '../ServiçosFrontend/ServiçoDeMoeda/currencyService.js';
 import { NotificationItem, Group, EnrichedNotificationItem } from '../types';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 
 export const useNotifications = () => {
     const navigate = useNavigate();
@@ -46,7 +46,7 @@ export const useNotifications = () => {
 
         loadNotifications();
         notificationService.markAllAsRead();
-        const unsubscribe = db.subscribe('notifications', loadNotifications);
+        const unsubscribe = servicoDeSimulacao.subscribe('notifications', loadNotifications);
         return () => unsubscribe();
     }, [navigate]);
 

@@ -1,9 +1,9 @@
 
-import { BaseManager } from './BaseManager';
-import { ChatData } from '../../types';
-import { sqlite } from '../engine';
+import { GestorBase } from './GestorBase';
+import { ChatData } from '../../../types';
+import { sqlite } from '../cache/engine';
 
-export class ChatManager extends BaseManager {
+export class GestorDeChats extends GestorBase {
     private table = 'chats';
 
     public getAll(): Record<string, ChatData> {
@@ -21,13 +21,11 @@ export class ChatManager extends BaseManager {
         this.upsert(this.table, chat.id, chat);
     }
 
-    // Comment: Added delete method to support chatService and resolve missing property errors.
     public delete(id: string): void {
         const items = this.queryAll<any>(this.table).filter(i => String(i.id) !== String(id));
         sqlite.saveTableData(this.table, items);
     }
 
-    // Comment: Added hardDelete method to support chatService global deletion logic.
     public async hardDelete(id: string): Promise<boolean> {
         this.delete(id);
         return true;

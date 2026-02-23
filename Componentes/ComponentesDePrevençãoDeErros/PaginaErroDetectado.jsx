@@ -1,7 +1,6 @@
 
 import React from 'react';
 
-// Ícone SVG embutido para robustez
 const IconeMicrochip = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00c2ff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
@@ -17,18 +16,31 @@ const IconeMicrochip = () => (
   </svg>
 );
 
-export function PaginaErroDetectado({ erro, resetErrorBoundary }) {
+export function PaginaErroDetectado({ error, resetErrorBoundary }) {
 
-  const handleReload = () => {
-    window.location.reload();
+  const handleRecovery = () => {
+    // A função resetErrorBoundary é a preferida, pois tenta uma recuperação "suave".
+    if (resetErrorBoundary) {
+      try {
+        resetErrorBoundary();
+        // Se a função for chamada mas não recarregar, o fallback abaixo não será acionado.
+        // Para garantir, poderíamos adicionar um timeout para forçar o reload se nada acontecer, 
+        // mas a solução mais simples é o utilizador poder clicar novamente.
+      } catch (e) {
+        console.error("Falha ao executar resetErrorBoundary. Forçando reload completo.", e);
+        window.location.reload();
+      }
+    } else {
+      // Fallback robusto: se a função não for fornecida, recarrega a página.
+      window.location.reload();
+    }
   };
   
-  // A propriedade isDev pode ser determinada pela existência da variável de ambiente do Vite
   const isDev = import.meta.env.DEV;
 
   return (
     <div className="min-h-screen bg-[#0c0f14] flex flex-col items-center justify-center p-6 text-center font-['Inter']">
-      <style>{`
+       <style>{`
         .error-circle {
           width: 80px; height: 80px;
           background: rgba(0, 194, 255, 0.1);
@@ -105,19 +117,19 @@ export function PaginaErroDetectado({ erro, resetErrorBoundary }) {
         A interface encontrou um erro crítico. Seus dados estão seguros.
       </p>
 
-      {isDev && erro && (
+      {isDev && error && (
         <div className="error-details">
           <pre>
-            <strong>{erro.name}:</strong> {erro.message}
-            {erro.stack && `
+            <strong>{error.name}:</strong> {error.message}
+            {error.stack && `
 
-${erro.stack}`}
+${error.stack}`}
           </pre>
         </div>
       )}
 
       <div className="mt-8">
-        <button className="retry-btn" onClick={resetErrorBoundary || handleReload}>
+        <button className="retry-btn" onClick={handleRecovery}>
           Recuperar Sistema
         </button>
       </div>

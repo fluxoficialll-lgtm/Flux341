@@ -5,7 +5,7 @@ import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
 import { ChatMessage, Group } from '../types';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { VirtuosoHandle } from 'react-virtuoso';
 import { socketService } from '../ServiçosFrontend/ServiçoDeSoquete/ServiçoDeSoquete.js';
 
@@ -66,7 +66,7 @@ export const useGroupChat = () => {
       const unsubDeleteMsgs = socketService.on('messages_deleted_globally', (data: any) => {
           if (data.chatId === chatId) loadChatData(true);
       });
-      const unsubDb = db.subscribe('chats', () => loadChatData(true));
+      const unsubDb = servicoDeSimulacao.subscribe('chats', () => loadChatData(true));
       
       return () => {
           unsubDeleteMsgs();

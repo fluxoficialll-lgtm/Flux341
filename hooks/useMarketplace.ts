@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { marketplaceService } from '../ServiçosFrontend/ServiçoDeMarketplace/marketplaceService.js';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { MarketplaceItem } from '../types';
 
 export const useMarketplace = () => {
@@ -27,7 +27,7 @@ export const useMarketplace = () => {
         setCurrentUserEmail(email);
         loadItems();
         marketplaceService.fetchItems().catch(err => console.warn("Marketplace sync failed", err));
-        const unsubscribe = db.subscribe('marketplace', () => { loadItems(); });
+        const unsubscribe = servicoDeSimulacao.subscribe('marketplace', () => { loadItems(); });
         return () => unsubscribe();
     }, [loadItems]);
 

@@ -5,7 +5,7 @@ import { relationshipService } from '../ServiçosFrontend/ServiçoDeRelacionamen
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 import { User } from '../types';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 
 export const useGlobalSearch = () => {
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ export const useGlobalSearch = () => {
   }, [searchTerm]);
 
   useEffect(() => {
-    const unsubRel = db.subscribe('relationships', () => {
+    const unsubRel = servicoDeSimulacao.subscribe('relationships', () => {
       setTick(prev => prev + 1);
     });
     return () => unsubRel();

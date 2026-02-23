@@ -6,7 +6,7 @@ import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { relationshipService } from '../ServiçosFrontend/ServiçoDeRelacionamento/relationshipService.js';
 import { marketplaceService } from '../ServiçosFrontend/ServiçoDeMarketplace/marketplaceService.js';
 import { Post, User, MarketplaceItem } from '../types';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 
 export const useProfile = () => {
     const navigate = useNavigate();
@@ -56,9 +56,9 @@ export const useProfile = () => {
         const userEmail = authService.getCurrentUserEmail();
         if (!userEmail) { navigate('/'); return; }
         loadProfileData();
-        const unsubPosts = db.subscribe('posts', loadProfileData);
-        const unsubRels = db.subscribe('relationships', loadProfileData);
-        const unsubUsers = db.subscribe('users', loadProfileData);
+        const unsubPosts = servicoDeSimulacao.subscribe('posts', loadProfileData);
+        const unsubRels = servicoDeSimulacao.subscribe('relationships', loadProfileData);
+        const unsubUsers = servicoDeSimulacao.subscribe('users', loadProfileData);
         return () => { unsubPosts(); unsubRels(); unsubUsers(); };
     }, [navigate, loadProfileData]);
 

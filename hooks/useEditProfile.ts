@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { AuthError, UserProfile } from '../types';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 
 export const useEditProfile = () => {
   const navigate = useNavigate();
@@ -120,7 +120,7 @@ export const useEditProfile = () => {
               await authService.completeProfile(email, updatedProfile);
               
               const newHandle = `@${formData.name}`;
-              const allPosts = db.posts.getAll();
+              const allPosts = servicoDeSimulacao.posts.getAll();
               
               allPosts.forEach(post => {
                   let postChanged = false;
@@ -134,7 +134,7 @@ export const useEditProfile = () => {
                           postChanged = true;
                       }
                   }
-                  if (postChanged) db.posts.update(post);
+                  if (postChanged) servicoDeSimulacao.posts.update(post);
               });
 
               alert('Perfil atualizado com sucesso!');

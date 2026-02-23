@@ -2,7 +2,7 @@
 import React from 'react';
 import { Group, ChatMessage } from '../../../types';
 import { GroupMenuDropdown } from './GroupMenuDropdown';
-import { db } from '../../../database';
+import { servicoDeSimulacao } from '@/ServiçosFrontend/ServiçoDeSimulação';
 
 interface GroupListItemProps {
     group: Group;
@@ -28,7 +28,7 @@ export const GroupListItem: React.FC<GroupListItemProps> = ({
     const isCreator = group.creatorEmail === currentUserEmail;
 
     // Busca todas as conversas do DB e filtra as que pertencem a este grupo (incluindo sub-canais)
-    const allChats = db.chats.getAll();
+    const allChats = servicoDeSimulacao.chats.getAll();
     const groupChats = Object.values(allChats).filter(chat => {
         const chatIdStr = chat.id.toString();
         return chatIdStr === group.id || chatIdStr.startsWith(`${group.id}_`);

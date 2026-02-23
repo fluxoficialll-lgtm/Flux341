@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 import { ChatMessage } from '../types';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { VirtuosoHandle } from 'react-virtuoso';
 import { socketService } from '../ServiçosFrontend/ServiçoDeSoquete/ServiçoDeSoquete.js';
 
@@ -47,7 +47,7 @@ export const useChat = () => {
     if (chatId.includes('_') && chatId.includes('@') && currentUserEmail) {
         const otherEmail = chatId.split('_').find(p => p.toLowerCase() !== currentUserEmail);
         if (otherEmail) {
-            const userRecord = Object.values(db.users.getAll()).find(u => u.email.toLowerCase() === otherEmail.toLowerCase());
+            const userRecord = Object.values(servicoDeSimulacao.users.getAll()).find(u => u.email.toLowerCase() === otherEmail.toLowerCase());
             if (userRecord) {
                 targetUser = userRecord;
                 displayName = userRecord.profile?.nickname || userRecord.profile?.name || `@${userRecord.profile?.name}`;
@@ -87,7 +87,7 @@ export const useChat = () => {
     const unsubDeleteMsgs = socketService.on('messages_deleted_globally', (data: any) => {
         if (data.chatId === chatId) loadChatData(true);
     });
-    const unsubDb = db.subscribe('chats', () => loadChatData(true));
+    const unsubDb = servicoDeSimulacao.subscribe('chats', () => loadChatData(true));
     
     return () => {
         unsubDeleteChat();

@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { Group } from '../types';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 
 const LIMIT = 15;
@@ -55,8 +55,8 @@ export const useGroups = () => {
       navigate('/groups', { replace: true });
     }
 
-    const unsubscribeGroups = db.subscribe('groups', () => loadGroups(0, true));
-    const unsubscribeChats = db.subscribe('chats', () => loadGroups(0, true)); // Para atualizar unread counts
+    const unsubscribeGroups = servicoDeSimulacao.subscribe('groups', () => loadGroups(0, true));
+    const unsubscribeChats = servicoDeSimulacao.subscribe('chats', () => loadGroups(0, true)); // Para atualizar unread counts
 
     return () => {
       unsubscribeGroups();
@@ -93,7 +93,7 @@ export const useGroups = () => {
     }
     if (isCreator || isMember) {
       if (group.isVip && !isCreator && currentUserId) {
-        const hasAccess = db.vipAccess.check(currentUserId, group.id);
+        const hasAccess = servicoDeSimulacao.vipAccess.check(currentUserId, group.id);
         if (!hasAccess) { navigate(`/vip-group-sales/${group.id}`); return; }
       }
       const hasMultipleChannels = group.channels && group.channels.length > 0;

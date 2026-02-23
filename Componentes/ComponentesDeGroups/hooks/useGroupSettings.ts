@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { groupService } from '../../../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
 import { authService } from '../../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
-import { db } from '../../../database';
+import { servicoDeSimulacao } from '@/ServiçosFrontend/ServiçoDeSimulação';
 import { useModal } from '../../../Componentes/ModalSystem';
 import { Group, ScheduledMessage } from '../../../types';
 // import { GroupLifeCycleService } from '../../../ServiçosFrontend/real/groups/GroupLifeCycleService';
@@ -132,7 +132,7 @@ export const useGroupSettings = () => {
         const targetUser = await authService.fetchUserByHandle(cleanHandle);
         
         if (targetUser) {
-            db.vipAccess.grant({
+            servicoDeSimulacao.vipAccess.grant({
                 userId: targetUser.id,
                 groupId: group.id,
                 status: 'active',

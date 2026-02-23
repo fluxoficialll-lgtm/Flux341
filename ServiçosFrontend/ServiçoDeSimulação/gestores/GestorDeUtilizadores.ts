@@ -1,8 +1,8 @@
 
-import { BaseManager } from './BaseManager';
-import { User } from '../../types';
+import { GestorBase } from './GestorBase';
+import { User } from '../../../types'; // O caminho para os tipos precisa de ser ajustado
 
-export class UserManager extends BaseManager {
+export class GestorDeUtilizadores extends GestorBase {
     private table = 'users';
 
     public getAll(): Record<string, User> {

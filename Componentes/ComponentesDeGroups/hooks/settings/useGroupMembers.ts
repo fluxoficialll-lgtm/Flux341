@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Group, User, GroupRole } from '../../../../types';
 import { groupService } from '../../../../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
 import { authService } from '../../../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
-import { db } from '../../../../database';
+import { servicoDeSimulacao } from '@/ServiçosFrontend/ServiçoDeSimulação';
 
 export const useGroupMembers = (group: Group | null) => {
   const [members, setMembers] = useState<User[]>([]);
@@ -29,7 +29,7 @@ export const useGroupMembers = (group: Group | null) => {
       setRoles(group.roles || []);
       refreshMembers(group.id);
 
-      const unsub = db.subscribe('groups', () => refreshMembers(group.id));
+      const unsub = servicoDeSimulacao.subscribe('groups', () => refreshMembers(group.id));
       return () => unsub();
     }
   }, [group, refreshMembers]);

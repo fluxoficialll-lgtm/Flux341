@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 import { notificationService } from '../ServiçosFrontend/ServiçoDeNotificação/notificationService.js';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { Contact } from '../types'; // Assuming Contact type is moved to types.ts
 
 const formatLastSeen = (timestamp?: number) => {
@@ -55,7 +55,7 @@ export const useMessages = () => {
             let targetUser = undefined;
 
             if (otherEmail) {
-                targetUser = Object.values(db.users.getAll()).find(u => u.email.toLowerCase() === otherEmail.toLowerCase());
+                targetUser = Object.values(servicoDeSimulacao.users.getAll()).find(u => u.email.toLowerCase() === otherEmail.toLowerCase());
                 if (targetUser) {
                     displayName = targetUser.profile?.nickname || targetUser.profile?.name || 'Usuário';
                     handle = targetUser.profile?.name || '';
@@ -82,8 +82,8 @@ export const useMessages = () => {
 
     useEffect(() => {
         loadChats();
-        const unsubscribeChats = db.subscribe('chats', loadChats);
-        const unsubscribeUsers = db.subscribe('users', loadChats);
+        const unsubscribeChats = servicoDeSimulacao.subscribe('chats', loadChats);
+        const unsubscribeUsers = servicoDeSimulacao.subscribe('users', loadChats);
         return () => { unsubscribeChats(); unsubscribeUsers(); };
     }, [loadChats]);
 
@@ -93,8 +93,8 @@ export const useMessages = () => {
             setUnreadMsgs(chatService.getUnreadCount());
         };
         updateCounts();
-        const unsubNotif = db.subscribe('notifications', updateCounts);
-        const unsubChat = db.subscribe('chats', updateCounts);
+        const unsubNotif = servicoDeSimulacao.subscribe('notifications', updateCounts);
+        const unsubChat = servicoDeSimulacao.subscribe('chats', updateCounts);
         return () => { unsubNotif(); unsubChat(); };
     }, []);
 

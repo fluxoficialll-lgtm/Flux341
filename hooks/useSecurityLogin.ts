@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { SecuritySettings as ISecuritySettings, UserSession } from '../types';
 
 export const useSecurityLogin = () => {
@@ -31,7 +31,7 @@ export const useSecurityLogin = () => {
     setSessions(authService.getUserSessions());
 
     // Subscribe to DB changes for real-time session updates
-    const unsubscribe = db.subscribe('users', () => {
+    const unsubscribe = servicoDeSimulacao.subscribe('users', () => {
         setSessions(authService.getUserSessions());
     });
 

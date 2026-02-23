@@ -5,7 +5,7 @@ import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authS
 import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { recommendationService } from '../ServiçosFrontend/ServiçoDeRecomendação/recommendationService.js';
 import { Post } from '../types';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 
 export const useFeed = () => {
     const navigate = useNavigate();
@@ -51,7 +51,8 @@ export const useFeed = () => {
             const storedFilter = localStorage.getItem('feed_location_filter');
             const filterValue = (storedFilter === 'Global' || !storedFilter) ? null : storedFilter;
             
-            const response = await postService.getFeedPaginated({ 
+            // CORREÇÃO: A função correta é `listPosts`, não `getFeedPaginated`.
+            const response = await postService.listPosts(authService.getToken(), { 
                 limit: PAGE_SIZE, 
                 cursor: cursor, 
                 locationFilter: filterValue, 
@@ -74,7 +75,7 @@ export const useFeed = () => {
     const loadInitialPosts = useCallback(async () => {
         if (hasLoadedInitialRef.current) return;
         hasLoadedInitialRef.current = true;
-        const local = db.posts.getCursorPaginated(PAGE_SIZE);
+        const local = servicoDeSimulacao.posts.getCursorPaginated(PAGE_SIZE);
         if (local && local.length > 0) {
             const validLocal = local.filter(p => p && (p.type !== 'video' || p.isAd));
             mergePosts(validLocal, true);
@@ -89,11 +90,11 @@ export const useFeed = () => {
         setActiveLocationFilter(filter);
         loadInitialPosts();
 
-        const unsubscribe = db.subscribe('posts', () => {
+        const unsubscribe = servicoDeSimulacao.subscribe('posts', () => {
             setPosts(currentPosts => {
                 let changed = false;
                 const nextPosts = currentPosts.map(p => {
-                    const latest = db.posts.findById(p.id);
+                    const latest = servicoDeSimulacao.posts.findById(p.id);
                     if (latest && (latest.likes !== p.likes || latest.comments !== p.comments || latest.views !== p.views || latest.liked !== p.liked)) {
                         changed = true;
                         return { ...p, ...latest };

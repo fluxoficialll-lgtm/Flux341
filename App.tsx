@@ -6,18 +6,17 @@ import { GlobalTracker } from './Componentes/layout/GlobalTracker';
 import { DeepLinkHandler } from './Componentes/layout/DeepLinkHandler';
 import AppRoutes from './routes/AppRoutes';
 import { useAuthSync } from './hooks/useAuthSync';
-import { USE_MOCKS } from './ServiçosFrontend/ServiçoDeSimulação/ControleDeSimulacao.js';
+import { ControleDeSimulacao } from './ServiçosFrontend/ServiçoDeSimulação/ControleDeSimulacao.js';
 import { ConfigControl } from './ServiçosFrontend/ServiçoDeGovernançaFlux/ConfigControl.js';
 import { Maintenance } from './pages/Maintenance';
-import { hydrationManager } from './ServiçosFrontend/ServiçoDeSincronização/GerenciadorDeSincronizacao.js';
 
 const DemoModeBadge = () => {
-    if (!USE_MOCKS) return null;
+    if (!ControleDeSimulacao.isMockMode()) return null;
     return (
         <div className="fixed bottom-24 left-4 z-[100] animate-fade-in pointer-events-none">
             <div className="flex items-center gap-2 bg-yellow-500/10 backdrop-blur-md border border-yellow-500/50 px-3 py-1.5 rounded-full shadow-lg">
                 <div className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse"></div>
-                <span className="text-[10px] font-black text-yellow-500 uppercase tracking-widest">Modo Visualização</span>
+                <span className="text-[10px] font-black text-yellow-500 uppercase tracking-widest">Modo Simulação</span>
             </div>
         </div>
     );
@@ -27,12 +26,15 @@ const App: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
   const [isMaintenance, setIsMaintenance] = useState(false);
 
-  // Inicializa sincronização de presença e batimento cardíaco
   useAuthSync();
 
   useEffect(() => {
+    // PONTO DE CONTROLO 2: Verifica se a simulação ainda está ativa no início do ciclo de vida do App.
+    if (import.meta.env.DEV) {
+        console.log('🔵 [DIAGNÓSTICO 2/3] window.fetch em App.tsx:', window.fetch.toString());
+    }
+
     const initializeApp = async () => {
-      // Timeout de segurança: Se em 5s o boot não responder, força isReady
       const bootTimeout = setTimeout(() => {
         if (!isReady) {
             console.warn("⏱️ [Boot] Timeout de segurança atingido. Forçando entrada...");
@@ -45,7 +47,6 @@ const App: React.FC = () => {
         const getParam = (key: string) => {
             const searchParams = new URLSearchParams(window.location.search);
             if (searchParams.has(key)) return searchParams.get(key);
-            
             const hashPart = window.location.hash.split('?')[1];
             if (hashPart) {
                 const hashParams = new URLSearchParams(hashPart);
@@ -56,14 +57,14 @@ const App: React.FC = () => {
 
         const forceOpen = getParam('ignoreMaintenance') === 'true' || getParam('force') === 'true';
 
-        const config = await ConfigControl.boot();
+        const config = await ConfigControl.boot(); 
         
-        const shouldShowMaintenance = config.maintenanceMode === true && !USE_MOCKS && !forceOpen;
+        const shouldShowMaintenance = config.maintenanceMode === true && !ControleDeSimulacao.isMockMode() && !forceOpen;
         
         setIsMaintenance(shouldShowMaintenance);
       } catch (e) {
-        console.error("Erro no boot do sistema:", e);
-        setIsMaintenance(false);
+        console.error("Erro crítico no boot do sistema:", e);
+        setIsMaintenance(false); 
       } finally {
         clearTimeout(bootTimeout);
         setIsReady(true);

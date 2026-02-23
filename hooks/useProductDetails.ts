@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { marketplaceService } from '../ServiçosFrontend/ServiçoDeMarketplace/marketplaceService.js';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { MarketplaceItem, Comment as CommentType, ChatMessage } from '../types';
 
 export const useProductDetails = () => {
@@ -36,7 +36,7 @@ export const useProductDetails = () => {
 
   useEffect(() => {
     loadData();
-    const unsub = db.subscribe('marketplace', loadData);
+    const unsub = servicoDeSimulacao.subscribe('marketplace', loadData);
     return () => unsub();
   }, [loadData]);
 

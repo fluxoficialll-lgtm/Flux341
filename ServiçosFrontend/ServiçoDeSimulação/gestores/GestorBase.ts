@@ -1,10 +1,11 @@
 
-import { sqlite } from '../engine';
+// CORREÇÃO: O caminho para o engine foi ajustado para a nova estrutura: ../cache/engine.ts
+import { sqlite } from '../cache/engine';
 
 /**
- * BaseManager refatorado para operar sobre o JSON Engine de forma síncrona.
+ * GestorBase (anteriormente BaseManager) refatorado para operar sobre o motor de cache JSON.
  */
-export class BaseManager {
+export class GestorBase {
     protected queryAll<T>(table: string): T[] {
         const data = sqlite.getTableData(table);
         return data.map(item => {

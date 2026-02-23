@@ -6,7 +6,7 @@ import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { relationshipService } from '../ServiçosFrontend/ServiçoDeRelacionamento/relationshipService.js';
 import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 import { marketplaceService } from '../ServiçosFrontend/ServiçoDeMarketplace/marketplaceService.js';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { Post, MarketplaceItem, UserProfileData, RelationshipStatus } from '../types';
 
 export const useUserProfile = () => {
@@ -76,7 +76,7 @@ export const useUserProfile = () => {
 
   useEffect(() => {
     loadProfile();
-    const subscriptions = ['users', 'relationships', 'posts', 'chats'].map(table => db.subscribe(table, loadProfile));
+    const subscriptions = ['users', 'relationships', 'posts', 'chats'].map(table => servicoDeSimulacao.subscribe(table, loadProfile));
     return () => subscriptions.forEach(unsub => unsub());
   }, [loadProfile]);
 

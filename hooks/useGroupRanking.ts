@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { Group } from '../types';
-import { db } from '../database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { RankingService } from '../ServiçosFrontend/ServiçoDeRanking/RankingService.js';
 
 /**
@@ -33,7 +33,7 @@ export const useGroupRanking = () => {
 
         // INSCRIÇÃO REAL-TIME: 
         // Se qualquer grupo mudar no DB (novo membro, etc), o ranking atualiza na hora.
-        const unsubscribe = db.subscribe('groups', () => {
+        const unsubscribe = servicoDeSimulacao.subscribe('groups', () => {
             refreshRanking(true);
         });
 

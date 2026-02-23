@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { notificationService } from '../../ServiçosFrontend/ServiçoDeNotificação/notificationService.js';
 import { chatService } from '../../ServiçosFrontend/ServiçoDeChat/chatService.js';
-import { db } from '../../database';
+import { servicoDeSimulacao } from '../../ServiçosFrontend/ServiçoDeSimulação';
 
 interface FooterProps {
     visible?: boolean;
@@ -22,8 +22,8 @@ export const Footer: React.FC<FooterProps> = ({ visible = true }) => {
         };
         updateCounts();
         
-        const unsubNotif = db.subscribe('notifications', updateCounts);
-        const unsubChat = db.subscribe('chats', updateCounts);
+        const unsubNotif = servicoDeSimulacao.subscribe('notifications', updateCounts);
+        const unsubChat = servicoDeSimulacao.subscribe('chats', updateCounts);
         
         return () => {
             unsubNotif();

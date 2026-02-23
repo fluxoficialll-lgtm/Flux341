@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { Group } from '../types';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { CapacityValidator } from '../Componentes/ComponentesDeGroups/logic/CapacityValidator';
 
 export const useGroupLanding = () => {
@@ -48,7 +48,7 @@ export const useGroupLanding = () => {
 
         // Busca informações do criador
         if (foundGroup.creatorEmail) {
-            const creator = Object.values(db.users.getAll()).find(u => u.email === foundGroup.creatorEmail);
+            const creator = Object.values(servicoDeSimulacao.users.getAll()).find(u => u.email === foundGroup.creatorEmail);
             if (creator) {
                 setCreatorName(creator.profile?.nickname || creator.profile?.name || 'Criador');
                 setCreatorAvatar(creator.profile?.photoUrl);
@@ -61,7 +61,7 @@ export const useGroupLanding = () => {
 
         // Calcula a contagem de membros online
         if (foundGroup.memberIds && foundGroup.memberIds.length > 0) {
-            const allUsers = Object.values(db.users.getAll());
+            const allUsers = Object.values(servicoDeSimulacao.users.getAll());
             const memberSet = new Set(foundGroup.memberIds);
             const count = allUsers.filter(u => memberSet.has(u.id) && u.lastSeen && (Date.now() - u.lastSeen < 900000)).length;
             setOnlineCount(count > 0 ? count : 1); // Garante pelo menos 1 online se houver membros

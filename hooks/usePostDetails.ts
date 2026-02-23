@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { Post, Comment } from '../types';
-import { db } from '@/database';
+import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 
 export const usePostDetails = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ export const usePostDetails = () => {
 
   useEffect(() => {
     loadData();
-    const unsub = db.subscribe('posts', (updatedPost) => {
+    const unsub = servicoDeSimulacao.subscribe('posts', (updatedPost) => {
         if (updatedPost.id === id) {
             loadData();
         }
@@ -94,7 +94,7 @@ export const usePostDetails = () => {
         updatedPost.pollOptions[optionIndex].votes++;
         updatedPost.votedOptionIndex = optionIndex;
         setPost(updatedPost);
-        db.posts.update(updatedPost);
+        servicoDeSimulacao.posts.update(updatedPost);
     }
   };
 

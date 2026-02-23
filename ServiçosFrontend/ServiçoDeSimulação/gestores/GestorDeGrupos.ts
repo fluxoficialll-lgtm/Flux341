@@ -1,9 +1,9 @@
 
-import { BaseManager } from './BaseManager';
-import { Group } from '../../types';
-import { sqlite } from '../engine';
+import { GestorBase } from './GestorBase';
+import { Group } from '../../../types';
+import { sqlite } from '../cache/engine';
 
-export class GroupManager extends BaseManager {
+export class GestorDeGrupos extends GestorBase {
     private table = 'groups';
 
     public getAll(): Group[] {
@@ -22,7 +22,6 @@ export class GroupManager extends BaseManager {
         this.add(group);
     }
 
-    // Fix: Replaced sqlite.run with local storage filtering since JSONEngine doesn't support run()
     public delete(id: string): void {
         const items = this.queryAll<any>(this.table).filter(i => String(i.id) !== String(id));
         sqlite.saveTableData(this.table, items);

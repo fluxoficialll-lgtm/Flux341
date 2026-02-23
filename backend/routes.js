@@ -31,6 +31,14 @@ router.get('/ping', (req, res) => {
     res.send('pong');
 });
 
+// Rota para configuração de boot da aplicação (Plano de Controle)
+router.get('/v1/config/boot', (req, res) => {
+    res.json({
+        maintenanceMode: false
+        // Futuras flags de configuração podem ser adicionadas aqui
+    });
+});
+
 // BFF / Screens Aggregator
 router.use('/screens', screensRoutes);
 

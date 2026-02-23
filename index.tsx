@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { GoogleOAuthProvider } from '@react-oauth/google';
@@ -6,10 +7,18 @@ import './ServiçosFrontend/ServiçoDeSegurançaDeConteúdo/i18n.js';
 import { initAuditorDeRequisições } from './ServiçosFrontend/ServiçoDeTelemetria/AuditorDeRequisições.js';
 import { loadEnvironment } from './ServiçosFrontend/ValidaçãoDeAmbiente/config.ts';
 import MonitorDeErrosDeInterface from './Componentes/ComponentesDePrevençãoDeErros/MonitorDeErrosDeInterface.jsx';
+import { ControleDeSimulacao } from './ServiçosFrontend/ServiçoDeSimulação/ControleDeSimulacao.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadEnvironment();
   initAuditorDeRequisições();
+
+  if (import.meta.env.DEV) {
+    ControleDeSimulacao.ativarSimulacao();
+    // PONTO DE CONTROLO 1: Confirma que a simulação foi ativada.
+    console.log('🔵 [DIAGNÓSTICO 1/3] window.fetch em index.tsx:', window.fetch.toString());
+  }
+
+  loadEnvironment();
 
   const rootElement = document.getElementById('root');
   if (!rootElement) {

@@ -1,9 +1,9 @@
 
-import { BaseManager } from './BaseManager';
-import { NotificationItem } from '../../types';
-import { sqlite } from '../engine';
+import { GestorBase } from './GestorBase';
+import { NotificationItem } from '../../../types';
+import { sqlite } from '../cache/engine';
 
-export class NotificationManager extends BaseManager {
+export class GestorDeNotificacoes extends GestorBase {
     private table = 'notifications';
 
     public getAll(): NotificationItem[] {
@@ -14,7 +14,6 @@ export class NotificationManager extends BaseManager {
         this.upsert(this.table, item.id, item, { timestamp: item.timestamp });
     }
 
-    // Fix: Replaced sqlite.run with local storage filtering since JSONEngine doesn't support run()
     public delete(id: number): void {
         const items = this.queryAll<any>(this.table).filter(i => String(i.id) !== String(id));
         sqlite.saveTableData(this.table, items);
