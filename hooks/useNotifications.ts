@@ -1,115 +1,92 @@
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
 import { notificationService } from '../ServiçosFrontend/ServiçoDeNotificação/notificationService.js';
-import { relationshipService } from '../ServiçosFrontend/ServiçoDeRelacionamento/relationshipService.js';
-import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
-import { geoService, GeoData } from '../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
-import { currencyService, ConversionResult } from '../ServiçosFrontend/ServiçoDeMoeda/currencyService.js';
-import { NotificationItem, Group, EnrichedNotificationItem } from '../types';
-import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
+import { geoService } from '../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
+import { NotificationItem, Group, GeoData, PriceInfo } from '../types';
 
 export const useNotifications = () => {
-    const navigate = useNavigate();
-    const [notifications, setNotifications] = useState<EnrichedNotificationItem[]>([]);
-    const [filter, setFilter] = useState<string>('all');
-
+    const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [filter, setFilter] = useState('all');
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
     const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
     const [geoData, setGeoData] = useState<GeoData | null>(null);
-    const [displayPriceInfo, setDisplayPriceInfo] = useState<ConversionResult | null>(null);
+    const [displayPriceInfo, setDisplayPriceInfo] = useState<PriceInfo | null>(null);
+    const navigate = useNavigate();
+
+    const fetchNotifications = useCallback(async () => {
+        setIsLoading(true);
+        try {
+            const fetchedNotifications = await notificationService.getNotifications();
+            const notificationsWithDisplayNames = await Promise.all(
+                fetchedNotifications.map(async (notif) => {
+                    const user = await authService.fetchUserByHandle(notif.username);
+                    return { ...notif, displayName: user?.profile?.nickname || user?.profile?.name || notif.username };
+                })
+            );
+            setNotifications(notificationsWithDisplayNames);
+        } catch (error) {
+            console.error("Erro ao buscar notificações:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
 
     useEffect(() => {
-        const userEmail = authService.getCurrentUserEmail();
-        if (!userEmail) {
-            navigate('/');
-            return;
-        }
-
-        const loadNotifications = () => {
-            const rawData = notificationService.getNotifications();
-            const enrichedData = rawData.map(n => {
-                const user = authService.getUserByHandle(n.username);
-                if (user) {
-                    return {
-                        ...n,
-                        displayName: user.profile?.nickname || user.profile?.name || n.username,
-                        username: n.username,
-                        avatar: user.profile?.photoUrl || n.avatar
-                    };
-                }
-                return { ...n, displayName: n.username };
-            });
-            setNotifications(enrichedData);
-        };
-
-        loadNotifications();
-        notificationService.markAllAsRead();
-        const unsubscribe = servicoDeSimulacao.subscribe('notifications', loadNotifications);
-        return () => unsubscribe();
-    }, [navigate]);
+        fetchNotifications();
+        geoService.getGeoInfo().then(setGeoData);
+    }, [fetchNotifications]);
 
     const handleFollowToggle = useCallback(async (id: number, username: string) => {
-        const isCurrentlyFollowing = relationshipService.isFollowing(username) === 'following';
-        if (isCurrentlyFollowing) {
-            await relationshipService.unfollowUser(username);
-        } else {
-            await relationshipService.followUser(username);
+        setNotifications(prev => prev.map(n => n.id === id ? { ...n, isFollowing: !n.isFollowing } : n));
+        try {
+            await notificationService.toggleFollow(username);
+        } catch (error) {
+            console.error("Erro ao seguir/deixar de seguir:", error);
+            setNotifications(prev => prev.map(n => n.id === id ? { ...n, isFollowing: !n.isFollowing } : n));
         }
-        // We can optionally update the state optimistically or wait for the next data load
     }, []);
 
-    const handlePendingAction = useCallback(async (action: 'accept' | 'reject', notification: EnrichedNotificationItem) => {
+    const handlePendingAction = useCallback(async (action: 'accept' | 'reject', notification: any) => {
         setNotifications(prev => prev.filter(n => n.id !== notification.id));
         try {
-            if (notification.subtype === 'friend') {
-                if (action === 'accept') {
-                    await relationshipService.acceptFollowRequest(notification.username);
-                } else {
-                    await relationshipService.rejectFollowRequest(notification.username);
-                }
-            }
-            notificationService.removeNotification(notification.id);
+            await notificationService.handlePendingAction(action, notification);
         } catch (error) {
-            console.error("Error handling notification action:", error);
-            // Maybe re-add the notification to the list if the action fails
+            console.error("Erro ao processar ação pendente:", error);
+            setNotifications(prev => [notification, ...prev]);
         }
     }, []);
 
-    const handleIgnoreExpiring = useCallback((id: number) => {
-        setNotifications(prev => prev.filter(n => n.id !== id));
-        notificationService.removeNotification(id);
+    const handleIgnoreExpiring = useCallback((groupId: string) => {
+        notificationService.ignoreExpiringVip(groupId);
+        setNotifications(prev => prev.filter(n => !(n.type === 'expiring_vip' && n.relatedGroupId === groupId)));
     }, []);
 
-    const handlePayClick = useCallback(async (groupId: string) => {
-        const foundGroup = groupService.getGroupById(groupId);
-        if (!foundGroup) return;
-
-        setSelectedGroup(foundGroup);
-
-        const detectedGeo = await geoService.detectCountry();
-        setGeoData(detectedGeo);
-
-        const baseCurrency = foundGroup.currency || 'BRL';
-        const basePrice = parseFloat(foundGroup.price || '0');
-        const targetCurrency = detectedGeo.currency || 'BRL';
-
-        const conversion = await currencyService.convert(basePrice, baseCurrency, targetCurrency);
-        setDisplayPriceInfo(conversion);
-
+    const handlePayClick = useCallback(async (group: Group) => {
+        setSelectedGroup(group);
+        // A lógica de preço foi simplificada, idealmente viria do backend
+        const price = group.prices?.monthly?.brl || 5;
+        const priceInfo: PriceInfo = { BRL: { monthly: price, annual: price * 10 }, USD: { monthly: 5, annual: 50 } };
+        setDisplayPriceInfo(priceInfo);
         setIsPaymentModalOpen(true);
     }, []);
 
-    const filteredNotifications = useMemo(() => notifications.filter(n => {
-        if (filter === 'all') return true;
-        if (filter === 'pending') {
-            return n.type === 'pending' || n.type === 'expiring_vip';
-        }
-        return n.type === filter;
-    }), [notifications, filter]);
+    const filteredNotifications = useMemo(() => {
+        return notifications.filter(notif => {
+            if (filter === 'all') return true;
+            if (filter === 'mentions') return notif.type === 'mention';
+            if (filter === 'follow') return notif.type === 'follow';
+            if (filter === 'likes') return notif.type === 'like';
+            return false;
+        });
+    }, [notifications, filter]);
 
     return {
+        notifications,
+        isLoading,
         filter,
         setFilter,
         filteredNotifications,
@@ -122,6 +99,6 @@ export const useNotifications = () => {
         handlePendingAction,
         handleIgnoreExpiring,
         handlePayClick,
-        navigate // Pass navigate for simple navigation actions
+        navigate,
     };
 };

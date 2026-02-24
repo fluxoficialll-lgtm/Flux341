@@ -1,11 +1,10 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authServiceFactory'; // Corrigido para usar a factory
 import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { recommendationService } from '../ServiçosFrontend/ServiçoDeRecomendação/recommendationService.js';
 import { Post } from '../types';
-import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 
 export const useFeed = () => {
     const navigate = useNavigate();
@@ -21,7 +20,6 @@ export const useFeed = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const isFetchingRef = useRef(false);
-    const hasLoadedInitialRef = useRef(false);
     const viewedPostsRef = useRef<Set<string>>(new Set());
     const lastScrollY = useRef(0);
     const PAGE_SIZE = 15;
@@ -43,15 +41,14 @@ export const useFeed = () => {
     }, [currentUser?.email]);
 
     const fetchPosts = useCallback(async (cursor?: number, reset = false) => {
-        if (isFetchingRef.current) return;
+        if (isFetchingRef.current && !reset) return;
         isFetchingRef.current = true;
-        if (!cursor) setLoading(true);
+        if (!cursor || reset) setLoading(true);
         
         try {
             const storedFilter = localStorage.getItem('feed_location_filter');
             const filterValue = (storedFilter === 'Global' || !storedFilter) ? null : storedFilter;
             
-            // CORREÇÃO: A função correta é `listPosts`, não `getFeedPaginated`.
             const response = await postService.listPosts(authService.getToken(), { 
                 limit: PAGE_SIZE, 
                 cursor: cursor, 
@@ -64,50 +61,30 @@ export const useFeed = () => {
             setNextCursor(response.nextCursor);
             setHasMore(!!response.nextCursor && fetched.length > 0);
         } catch (error) {
-            console.error("Feed sync error", error);
-            if (!cursor) setHasMore(false);
+            console.error("Erro ao buscar posts do feed:", error);
+            if (!cursor || reset) setHasMore(false);
         } finally {
             setLoading(false);
             isFetchingRef.current = false;
         }
     }, [isAdultContentAllowed, mergePosts]);
 
-    const loadInitialPosts = useCallback(async () => {
-        if (hasLoadedInitialRef.current) return;
-        hasLoadedInitialRef.current = true;
-        const local = servicoDeSimulacao.posts.getCursorPaginated(PAGE_SIZE);
-        if (local && local.length > 0) {
-            const validLocal = local.filter(p => p && (p.type !== 'video' || p.isAd));
-            mergePosts(validLocal, true);
-        }
-        await fetchPosts(undefined, local.length === 0);
-    }, [fetchPosts, mergePosts]);
-
+    // Efeito para carregar os posts iniciais e lidar com filtros
     useEffect(() => {
-        if (!authService.getCurrentUserEmail()) { navigate('/'); return; }
+        if (!authService.isAuthenticated()) {
+            navigate('/');
+            return;
+        }
         
         const filter = localStorage.getItem('feed_location_filter');
         setActiveLocationFilter(filter);
-        loadInitialPosts();
+        
+        // Sempre busca os posts da rede (que será interceptada pelo mock)
+        fetchPosts(undefined, true); 
 
-        const unsubscribe = servicoDeSimulacao.subscribe('posts', () => {
-            setPosts(currentPosts => {
-                let changed = false;
-                const nextPosts = currentPosts.map(p => {
-                    const latest = servicoDeSimulacao.posts.findById(p.id);
-                    if (latest && (latest.likes !== p.likes || latest.comments !== p.comments || latest.views !== p.views || latest.liked !== p.liked)) {
-                        changed = true;
-                        return { ...p, ...latest };
-                    }
-                    return p;
-                });
-                return changed ? nextPosts : currentPosts;
-            });
-        });
+    }, [navigate, fetchPosts]);
 
-        return () => unsubscribe();
-    }, [navigate, loadInitialPosts]);
-
+    // Efeito para observador de visualização (incrementar views)
     useEffect(() => {
         if (posts.length === 0) return;
         const observer = new IntersectionObserver((entries) => {
@@ -127,6 +104,7 @@ export const useFeed = () => {
         return () => observer.disconnect();
     }, [posts]);
 
+    // Efeito para scroll infinito
     useEffect(() => {
         const observer = new IntersectionObserver((entries) => {
             if (entries[0].isIntersecting && hasMore && !loading && !isFetchingRef.current && nextCursor) {
@@ -138,12 +116,15 @@ export const useFeed = () => {
         return () => observer.disconnect();
     }, [hasMore, nextCursor, fetchPosts, loading]);
 
+    // Efeito para controlar a visibilidade da UI no scroll
     const handleContainerScroll = () => {
         if (!scrollContainerRef.current) return;
         const currentScroll = scrollContainerRef.current.scrollTop;
         setUiVisible(currentScroll <= lastScrollY.current || currentScroll <= 100);
         lastScrollY.current = currentScroll;
     };
+
+    // --- Funções de Ação do Post ---
 
     const handlePostDelete = async (id: string) => {
         await postService.deletePost(id);
@@ -152,9 +133,13 @@ export const useFeed = () => {
 
     const handlePostLike = (id: string) => {
         postService.toggleLike(id);
+        // Opcional: Atualizar a UI imediatamente para melhor UX
+        setPosts(prev => prev.map(p => p.id === id ? { ...p, liked: !p.liked, likes: p.liked ? p.likes - 1 : p.likes + 1 } : p));
     };
     
     const handlePostVote = (postId: string, index: number) => {
+        // A lógica de votação pode precisar ser ajustada para o mock
+        postService.voteOnPoll(postId, index); 
         setPosts(prev => prev.map(p => {
             if (p.id === postId && p.pollOptions && p.votedOptionIndex == null) {
                 const newOptions = [...p.pollOptions];

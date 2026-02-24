@@ -27,7 +27,37 @@ const getAuthHeaders = (token) => ({
     'Content-Type': 'application/json',
 });
 
+/**
+ * [FUNÇÃO ADICIONADA] Formata um timestamp ISO para tempo relativo (ex: "5m", "2h", "3d").
+ * @param {string} isoString - A data em formato ISO.
+ * @returns {string} O tempo relativo formatado.
+ */
+const formatRelativeTime = (isoString) => {
+    if (!isoString) return '';
+    const now = new Date();
+    const then = new Date(isoString);
+    const diffInSeconds = Math.floor((now - then) / 1000);
+
+    if (diffInSeconds < 2) return 'agora';
+    if (diffInSeconds < 60) return `${diffInSeconds}s`;
+    
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) return `${diffInMinutes}m`;
+    
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours}h`;
+
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays < 7) return `${diffInDays}d`;
+
+    return then.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+};
+
+
 export const postService = {
+    // [FUNÇÃO ADICIONADA] Expondo o formatador de tempo para a UI.
+    formatRelativeTime,
+
     /**
      * Lista os posts do feed.
      * @param {string} token - O token de autenticação.
@@ -36,6 +66,7 @@ export const postService = {
      */
     async listPosts(token, { limit, cursor }) {
         const query = new URLSearchParams({ limit, cursor }).toString();
+        // A URL foi corrigida para usar a variável BASE_URL corretamente.
         const res = await fetch(`${BASE_URL}?${query}`, {
             headers: getAuthHeaders(token),
         });

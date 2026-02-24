@@ -7,13 +7,16 @@ import { ImageCarousel } from '../ImageCarousel';
 import { GroupAttachmentCard } from '../groups/GroupAttachmentCard';
 import { PollPost } from './PollPost';
 import { PostActions } from './PostActions';
-import { postService } from '../../ServiçosFrontend/ServiçoDePosts/postService.js';
+import { usePostActions } from '../../hooks/usePostActions';
+
+interface ImageObject {
+    url: string;
+    alt?: string;
+}
 
 interface FeedItemProps {
     post: Post;
     currentUserId?: string;
-    onLike: (id: string) => void;
-    onDelete: (e: React.MouseEvent, id: string) => void;
     onUserClick: (username: string) => void;
     onCommentClick: (id: string) => void;
     onShare: (post: Post) => void;
@@ -21,7 +24,6 @@ interface FeedItemProps {
     onCtaClick: (link?: string) => void;
 }
 
-// Mapeamento centralizado de ícones para os 8 botões
 const CTA_ICONS: Record<string, string> = {
     'conferir': 'fa-eye',
     'participar': 'fa-user-group',
@@ -36,8 +38,6 @@ const CTA_ICONS: Record<string, string> = {
 export const FeedItem: React.FC<FeedItemProps> = ({ 
     post, 
     currentUserId, 
-    onLike, 
-    onDelete, 
     onUserClick, 
     onCommentClick, 
     onShare, 
@@ -45,14 +45,24 @@ export const FeedItem: React.FC<FeedItemProps> = ({
     onCtaClick
 }) => {
     const [zoomedImage, setZoomedImage] = useState<string | null>(null);
+    const { 
+        isLiked, 
+        likesCount, 
+        handleLike, 
+        handleDelete, 
+        formatRelativeTime 
+    } = usePostActions(post);
 
     const getCtaIcon = (label: string = '') => {
         const key = label.toLowerCase();
         return CTA_ICONS[key] || 'fa-arrow-right';
     };
 
-    // Detecta se o post possui mídia visual para decidir o tamanho do card de anúncio
     const hasMedia = post.type === 'video' || (post.type === 'photo' && (!!post.image || (post.images && post.images.length > 0)));
+
+    const imageUrls = post.images && Array.isArray(post.images)
+        ? post.images.map((img: any) => typeof img === 'object' && img.url ? img.url : img as string)
+        : (post.image ? [post.image] : []);
 
     return (
         <div 
@@ -62,31 +72,29 @@ export const FeedItem: React.FC<FeedItemProps> = ({
             <PostHeader 
                 username={post.username} 
                 authorEmail={post.authorEmail}
-                time={postService.formatRelativeTime(post.timestamp)} 
+                time={formatRelativeTime(post.timestamp)} 
                 location={post.location}
                 isAdult={post.isAdultContent}
                 isAd={post.isAd}
                 onClick={() => onUserClick(post.username)}
                 isOwner={currentUserId ? post.authorId === currentUserId : false}
-                onDelete={(e) => onDelete(e, post.id)}
+                onDelete={handleDelete}
             />
 
-            <PostText text={post.text || ""} onUserClick={onUserClick} />
+            <PostText text={post.text as string || ""} onUserClick={onUserClick} />
 
-            {post.type === 'photo' && (
+            {post.type === 'photo' && imageUrls.length > 0 && (
                 <div className="w-full overflow-hidden bg-black mb-0">
-                    {post.images && post.images.length > 1 ? (
-                        <ImageCarousel images={post.images} onImageClick={setZoomedImage} />
+                    {imageUrls.length > 1 ? (
+                        <ImageCarousel images={imageUrls} onImageClick={setZoomedImage} />
                     ) : (
-                        post.image && (
-                            <img 
-                                src={post.image} 
-                                loading="lazy"
-                                alt="Post content" 
-                                className="w-full h-auto max-h-[600px] object-contain cursor-pointer" 
-                                onClick={() => setZoomedImage(post.image!)}
-                            />
-                        )
+                        <img 
+                            src={imageUrls[0]} 
+                            loading="lazy"
+                            alt="Post content" 
+                            className="w-full h-auto max-h-[600px] object-contain cursor-pointer" 
+                            onClick={() => setZoomedImage(imageUrls[0]!)}
+                        />
                     )}
                 </div>
             )}
@@ -101,7 +109,6 @@ export const FeedItem: React.FC<FeedItemProps> = ({
                 </div>
             )}
 
-            {/* Renderização Exclusiva de Anúncio: Adapta o tamanho se houver mídia ou não */}
             {post.isAd && post.ctaLink ? (
                 <div 
                     className={`bg-[#00c2ff]/10 p-4 px-5 flex justify-between items-center border-[#00c2ff]/20 transition-all ${
@@ -128,15 +135,23 @@ export const FeedItem: React.FC<FeedItemProps> = ({
                 </div>
             )}
 
-            {post.type === 'poll' && (
-                <PollPost post={post} onVote={onVote} />
+            {post.type === 'poll' && post.pollOptions && (
+                <PollPost 
+                    postId={post.id}
+                    pollOptions={post.pollOptions}
+                    votedOptionIndex={post.votedOptionIndex}
+                    onVote={onVote} 
+                />
             )}
 
             <PostActions 
-                post={post} 
-                onLike={onLike} 
-                onCommentClick={onCommentClick} 
-                onShare={onShare} 
+                likes={likesCount}
+                comments={Array.isArray(post.comments) ? post.comments.length : 0}
+                views={post.views}
+                liked={isLiked}
+                onLike={handleLike}
+                onCommentClick={() => onCommentClick(post.id)}
+                onShare={() => onShare(post)} 
             />
 
             {zoomedImage && (

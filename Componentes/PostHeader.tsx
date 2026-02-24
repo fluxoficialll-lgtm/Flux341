@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
 import { AvatarPreviewModal } from './ui/AvatarPreviewModal';
 import { UserBadge } from './ui/user/UserBadge';
+import { useUserProfile } from '../hooks/useUserProfile';
 
 interface PostHeaderProps {
     username: string;
@@ -29,22 +29,11 @@ export const PostHeader: React.FC<PostHeaderProps> = ({
     authorEmail
 }) => {
     const navigate = useNavigate();
-    const [userData, setUserData] = useState<any>(null);
     const [showMenu, setShowMenu] = useState(false);
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        if (!username) return;
-        const fetchUserData = async () => {
-            const user = await authService.fetchUserByHandle(username, authorEmail);
-            if (user) {
-                setUserData(user);
-            }
-            setIsLoading(false);
-        };
-        fetchUserData();
-    }, [username, authorEmail]);
+    // Lógica de busca de dados agora encapsulada no hook
+    const { profile: userData, isLoading } = useUserProfile(username, authorEmail);
 
     const handleProfileClick = (e: React.MouseEvent) => {
         e.stopPropagation();
@@ -70,7 +59,9 @@ export const PostHeader: React.FC<PostHeaderProps> = ({
                     avatarUrl={userData?.profile?.photoUrl}
                     nickname={displayName}
                     handle={username}
-                    isVip={false}
+                    isVetoed={userData?.flags?.isVetoed ?? false}
+                    isVip={userData?.flags?.isVip ?? false}
+                    isLoading={isLoading}
                     avatarSize="md"
                     showHandle={false}
                     onAvatarClick={handleAvatarClick}

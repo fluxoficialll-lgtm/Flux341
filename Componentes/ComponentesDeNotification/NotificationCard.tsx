@@ -1,25 +1,31 @@
 
 import React from 'react';
 import { NotificationItem } from '../../types';
-import { postService } from '../../ServiçosFrontend/ServiçoDePosts/postService.js';
+import { useNotificationHandler } from '../../hooks/useNotificationHandler';
 
 interface NotificationCardProps {
     notif: NotificationItem & { displayName?: string };
     onFollowToggle: (id: number, username: string) => void;
     onPendingAction: (action: 'accept' | 'reject', notification: any) => void;
-    onNavigate: (path: string) => void;
 }
 
 export const NotificationCard: React.FC<NotificationCardProps> = ({ 
     notif, 
     onFollowToggle, 
-    onPendingAction, 
-    onNavigate 
+    onPendingAction 
 }) => {
+    const { 
+        handleCardClick, 
+        handleFollow, 
+        handleAccept, 
+        handleReject, 
+        formattedTime 
+    } = useNotificationHandler({ notif, onFollowToggle, onPendingAction });
+
     return (
         <div 
             className={`notification-item ${notif.type === 'sale' ? 'notification-sale' : ''} ${notif.type === 'pending' ? 'notification-pending' : ''}`} 
-            onClick={() => notif.type !== 'pending' && onNavigate(`/user/${notif.username.replace('@','')}`)}
+            onClick={handleCardClick}
         >
             <style>{`
                 .notification-item { display: flex; align-items: center; padding: 12px 0; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); transition: background 0.2s; cursor: pointer; border-radius: 8px; }
@@ -49,14 +55,14 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
                     {notif.type === 'sale' && <><b className="font-bold">{notif.displayName}</b>: {notif.text}</>}
                     {notif.type === 'pending' && <><b className="font-bold">{notif.displayName}</b> {notif.text}</>}
                 </p>
-                <span className="notification-time">{postService.formatRelativeTime(notif.timestamp)}</span>
+                <span className="notification-time">{formattedTime}</span>
             </div>
 
             <div className="notification-action">
                 {notif.type === 'follow' && (
                     <button 
                         className={`action-button ${notif.isFollowing ? 'following' : ''}`} 
-                        onClick={(e) => { e.stopPropagation(); onFollowToggle(notif.id, notif.username); }}
+                        onClick={handleFollow}
                     >
                         {notif.isFollowing ? 'Seguindo' : 'Seguir'}
                     </button>
@@ -68,10 +74,10 @@ export const NotificationCard: React.FC<NotificationCardProps> = ({
                 
                 {notif.type === 'pending' && (
                     <>
-                        <button className="action-button primary" onClick={(e) => { e.stopPropagation(); onPendingAction('accept', notif); }}>
+                        <button className="action-button primary" onClick={handleAccept}>
                             {notif.subtype === 'group_join' ? 'Aprovar' : 'Aceitar'}
                         </button>
-                        <button className="action-button secondary" onClick={(e) => { e.stopPropagation(); onPendingAction('reject', notif); }}>
+                        <button className="action-button secondary" onClick={handleReject}>
                             {notif.subtype === 'group_join' ? 'Negar' : 'Recusar'}
                         </button>
                     </>
