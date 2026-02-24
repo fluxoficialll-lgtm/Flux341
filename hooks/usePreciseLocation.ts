@@ -1,55 +1,87 @@
-
 import { useState, useEffect, useCallback } from 'react';
 import { LocationFilter, Coordinates, AddressProfile } from '../types/location.types';
-import { geoService } from '../ServiçosFrontend/ServiçoDeGeolocalizacao/geoService.js';
 
-const STORAGE_KEY = 'flux_user_geo_filter';
+// Mock de um serviço de geolocalização reverso
+const reverseGeocode = async (coords: Coordinates): Promise<AddressProfile> => {
+  console.log(`Reverse geocoding for:`, coords);
+  // Simulação de chamada de API
+  await new Promise(resolve => setTimeout(resolve, 500));
+  
+  return {
+    city: 'Cidade Exemplo',
+    state: 'Estado Exemplo',
+    stateCode: 'EX',
+    country: 'País Exemplo',
+    countryCode: 'EX',
+    displayName: 'Cidade Exemplo, EX, País Exemplo'
+  };
+};
+
+
+const getInitialFilter = (): LocationFilter => {
+    try {
+        const storedFilter = localStorage.getItem('location_filter');
+        if (storedFilter) {
+            return JSON.parse(storedFilter);
+        }
+    } catch (error) {
+        console.error("Failed to parse location filter from localStorage", error);
+    }
+    return { type: 'global' };
+};
 
 export const usePreciseLocation = () => {
-    const [loading, setLoading] = useState(false);
-    const [currentFilter, setCurrentFilter] = useState<LocationFilter>(() => {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        return saved ? JSON.parse(saved) : { type: 'global' };
-    });
+  const [currentFilter, setCurrentFilter] = useState<LocationFilter>(getInitialFilter());
+  const [loading, setLoading] = useState<boolean>(false);
 
-    const updateFilter = useCallback((filter: LocationFilter) => {
-        setCurrentFilter(filter);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(filter));
-    }, []);
+  useEffect(() => {
+    try {
+        localStorage.setItem('location_filter', JSON.stringify(currentFilter));
+    } catch (error) {
+        console.error("Failed to save location filter to localStorage", error);
+    }
+  }, [currentFilter]);
 
-    const captureGps = async () => {
-        setLoading(true);
-        try {
-            const coords = await geoService.getCurrentPosition();
-            const address = await geoService.reverseGeocode(coords);
-            
-            const newFilter: LocationFilter = {
-                type: 'radius',
-                radius: 50, // default
-                coords,
-                targetAddress: address
-            };
-            
-            updateFilter(newFilter);
-            return newFilter;
-        } catch (e) {
-            console.error(e);
-            throw e;
-        } finally {
-            setLoading(false);
-        }
-    };
+  const captureGps = useCallback(async () => {
+    setLoading(true);
+    if (!navigator.geolocation) {
+        setLoading(false);
+        throw new Error('Geolocalização não é suportada por este navegador.');
+    }
 
-    const clearFilter = () => {
-        const filter: LocationFilter = { type: 'global' };
-        updateFilter(filter);
-    };
+    try {
+        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
 
-    return {
-        currentFilter,
-        loading,
-        captureGps,
-        updateFilter,
-        clearFilter
-    };
+        const coords: Coordinates = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+        };
+
+        const address = await reverseGeocode(coords);
+        
+        setCurrentFilter({
+            type: 'city', // Padrão para cidade após captura de GPS
+            coords,
+            targetAddress: address,
+        });
+
+    } catch (error) {
+        console.error("Erro ao capturar GPS:", error);
+        throw error; // Lança o erro para que o componente possa lidar com ele (e.g., mostrar um alerta)
+    } finally {
+        setLoading(false);
+    }
+  }, []);
+
+  const updateFilter = useCallback((newFilter: Partial<LocationFilter>) => {
+    setCurrentFilter(prevFilter => ({ ...prevFilter, ...newFilter }));
+  }, []);
+
+  const clearFilter = useCallback(() => {
+    setCurrentFilter({ type: 'global' });
+  }, []);
+
+  return { currentFilter, loading, captureGps, updateFilter, clearFilter };
 };
