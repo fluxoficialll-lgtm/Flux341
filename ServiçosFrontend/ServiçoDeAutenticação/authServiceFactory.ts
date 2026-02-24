@@ -1,6 +1,7 @@
 
 import { authService as productionAuthService } from './authService';
-import { ServicoAutenticacaoMock } from '../ServiçoDeSimulação/ServicoAutenticacaoMock';
+// Corrigido: Importa o mock do novo arquivo JS na pasta de simulações
+import { ServicoAutenticacaoMock } from '../ServiçoDeSimulação/simulacoes/SimulacaoDeAuth.js';
 
 // Decide qual serviço de autenticação usar com base na variável de ambiente.
 // Vite expõe variáveis de ambiente através de `import.meta.env`.

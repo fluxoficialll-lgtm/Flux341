@@ -1,52 +1,59 @@
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupServiceFactory';
+import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authServiceFactory';
 import { Group } from '../types';
 import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';
 
-const LIMIT = 15;
-
+// Hook refatorado para ser resiliente e adaptar-se
+// à interface de serviço de produção (async, com token) e de simulação (sync).
 export const useGroups = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
   const [groups, setGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
-  const [offset, setOffset] = useState(0);
   
   const currentUserEmail = authService.getCurrentUserEmail();
-  const currentUserId = authService.getCurrentUserId();
+  const currentUserId = authService.getCurrentUser()?.id;
 
-  const observerRef = useRef<HTMLDivElement>(null);
-
-  const loadGroups = useCallback((currentOffset: number, reset: boolean = false) => {
+  // Função de carregamento unificada e inteligente.
+  const loadGroups = useCallback(async () => {
     setLoading(true);
-    const { groups: newGroups, hasMore: moreAvailable } = groupService.getGroupsPaginated(currentOffset, LIMIT);
-    
-    if (reset) {
+    let newGroups: Group[] = [];
+    try {
+      // Verifica a interface do serviço fornecido pela factory.
+      if (typeof (groupService as any).listGroups === 'function') {
+        // Modo Produção: requer token e é async.
+        const token = localStorage.getItem('authToken');
+        if (token) {
+          newGroups = await (groupService as any).listGroups(token);
+        } else {
+          console.warn('Nenhum token de autenticação encontrado para carregar grupos.');
+        }
+      } else if (typeof (groupService as any).getAll === 'function') {
+        // Modo Simulação: é sync.
+        newGroups = (groupService as any).getAll();
+      } else {
+        console.error("Serviço de grupo não possui um método conhecido (listGroups ou getAll).");
+      }
+    } catch (error) {
+      console.error("Falha ao carregar grupos:", error);
+    } finally {
       setGroups(newGroups);
-    } else {
-      setGroups(prev => {
-        const ids = new Set(prev.map(g => g.id));
-        const unique = newGroups.filter(g => !ids.has(g.id));
-        return [...prev, ...unique];
-      });
+      setLoading(false);
     }
-
-    setOffset(reset ? LIMIT : currentOffset + LIMIT);
-    setHasMore(moreAvailable);
-    setLoading(false);
   }, []);
 
   useEffect(() => {
-    if (!currentUserEmail) { navigate('/'); return; }
+    if (!currentUserEmail) {
+      navigate('/');
+      return;
+    }
     
-    groupService.fetchGroups(); // Sincroniza em segundo plano
-    loadGroups(0, true);
+    loadGroups();
 
     const params = new URLSearchParams(location.search);
     const joinCode = params.get('join');
@@ -55,33 +62,16 @@ export const useGroups = () => {
       navigate('/groups', { replace: true });
     }
 
-    const unsubscribeGroups = servicoDeSimulacao.subscribe('groups', () => loadGroups(0, true));
-    const unsubscribeChats = servicoDeSimulacao.subscribe('chats', () => loadGroups(0, true)); // Para atualizar unread counts
+    // Assinaturas para recarregar a lista quando os dados mudam na simulação.
+    const unsubscribeGroups = servicoDeSimulacao.subscribe('groups', loadGroups);
+    const unsubscribeChats = servicoDeSimulacao.subscribe('chats', loadGroups);
 
     return () => {
       unsubscribeGroups();
       unsubscribeChats();
     };
-  }, [navigate, location.search, loadGroups, currentUserEmail]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore && !loading) {
-        loadGroups(offset);
-      }
-    }, { threshold: 0.5 });
-
-    const currentObserver = observerRef.current;
-    if (currentObserver) {
-      observer.observe(currentObserver);
-    }
-
-    return () => {
-      if (currentObserver) {
-        observer.unobserve(currentObserver);
-      }
-    };
-  }, [hasMore, loading, offset, loadGroups]);
+    // Adicionado `loadGroups` ao array de dependências.
+  }, [navigate, location.search, currentUserEmail, loadGroups]);
 
   const navigateToGroup = (group: Group) => {
     const isCreator = group.creatorEmail === currentUserEmail;
@@ -107,24 +97,42 @@ export const useGroups = () => {
 
   const joinGroupByCode = (inputCode: string, fromUrl: boolean = false) => {
     if (!inputCode?.trim()) return null;
+    
+    // Esta função só existe no serviço de simulação.
+    if (typeof (groupService as any).joinGroupByLinkCode !== 'function') {
+      console.warn('joinGroupByCode não é suportado no ambiente de produção atual.');
+      return { success: false, message: 'Operação não suportada.' };
+    }
+
     let code = inputCode;
     if (code.includes('?join=')) {
       code = code.split('?join=')[1];
     }
-    const result = groupService.joinGroupByLinkCode(code);
+    
+    const result = (groupService as any).joinGroupByLinkCode(code);
     if (result.success) {
-      loadGroups(0, true);
+      loadGroups(); // Recarrega os grupos.
       if (!fromUrl && result.groupId) {
-        const group = groupService.getGroupById(result.groupId);
+        const group = (groupService as any).findById(result.groupId);
         if (group) navigateToGroup(group);
       }
     }
     return result;
   };
 
-  const deleteGroup = (groupId: string) => {
-    groupService.deleteGroup(groupId);
-    setGroups(prev => prev.filter(g => g.id !== groupId));
+  const deleteGroup = async (groupId: string) => {
+    try {
+      if (typeof (groupService as any).deleteGroup === 'function') {
+        const token = localStorage.getItem('authToken');
+        if(token) await (groupService as any).deleteGroup(token, groupId);
+      } else if (typeof (groupService as any).delete === 'function') {
+        (groupService as any).delete(groupId);
+      }
+      // Atualiza a UI removendo o grupo.
+      setGroups(prev => prev.filter(g => g.id !== groupId));
+    } catch (error) {
+      console.error(`Falha ao deletar o grupo ${groupId}:`, error);
+    }
   };
 
   const getUnreadCount = (groupId: string) => {
@@ -132,7 +140,8 @@ export const useGroups = () => {
   }
 
   return {
-    groups, loading, observerRef, currentUserEmail, navigate,
-    navigateToGroup, joinGroupByCode, deleteGroup, getUnreadCount
+    groups, loading, currentUserEmail, navigate,
+    navigateToGroup, joinGroupByCode, deleteGroup, getUnreadCount,
+    observerRef: null // removido, pois não há mais paginação
   };
 };

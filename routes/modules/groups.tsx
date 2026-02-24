@@ -28,7 +28,7 @@ const SalesFolderContentPage = lazy(() => import('../../pages/groups/SalesFolder
 const GroupRolesPage = lazy(() => import('../../pages/groups/settings/GroupRolesPage').then(m => ({ default: m.GroupRolesPage })));
 const GroupChannelsList = lazy(() => import('../../pages/groups/GroupChannelsList').then(m => ({ default: m.GroupChannelsList })));
 const GroupCheckoutConfigPage = lazy(() => import('../../pages/groups/settings/GroupCheckoutConfigPage').then(m => ({ default: m.GroupCheckoutConfigPage })));
-const GroupLimits = lazy(() => import('../../pages/LimitAndControl').then(m => ({ default: m.LimitAndControl })));
+const GroupLimits = lazy(() => import('../../pages/LimitAndControl').then(m => ({ default: m.GroupLimits })));
 const ManageGroupLinks = lazy(() => import('../../pages/ManageGroupLinks').then(m => ({ default: m.ManageGroupLinks })));
 const GroupRevenue = lazy(() => import('../../pages/GroupRevenue').then(m => ({ default: m.GroupRevenue })));
 const VipSalesHistory = lazy(() => import('../../pages/VipSalesHistory').then(m => ({ default: m.VipSalesHistory })));
@@ -66,4 +66,3 @@ export const groupRoutes = [
     { path: '/group-revenue/:id', element: <ProtectedRoute><GroupRevenue /></ProtectedRoute> },
     { path: '/vip-sales-history/:id', element: <ProtectedRoute><VipSalesHistory /></ProtectedRoute> }
   ];
-  

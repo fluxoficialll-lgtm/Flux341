@@ -1,9 +1,8 @@
 
-// Fix: Added React import to resolve namespace errors for ChangeEvent
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { authService } from '../../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
-import { groupService } from '../../../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
+import { groupService } from '../../../ServiçosFrontend/ServiçoDeGrupos/groupServiceFactory.js'; // Corrigido para usar a factory
 import { adService } from '../../../ServiçosFrontend/ServiçoDeAnúncios/adService.js';
 import { AdCampaign, Group, Post } from '../../../types';
 import { useModal } from '../../../Componentes/ModalSystem';
@@ -44,34 +43,49 @@ export const useAdCampaignFlow = () => {
         targetGroupId: ''
     });
 
+    // Correção Definitiva: Usa o `groupService` adaptado e unificado.
     useEffect(() => {
-        const state = location.state as { boostedContent?: Post } | null;
-        if (state?.boostedContent) {
-            const post = state.boostedContent;
-            setSelectedContent(post);
-            const type = post.type === 'video' ? 'video' : 'image';
-            const url = post.video || post.image;
-            
-            const forcedPlacement = post.type === 'video' ? ['reels'] : ['feed'];
-            setPreviewTab(post.type === 'video' ? 'reels' : 'feed');
+        const initializeFlow = async () => {
+            // 1. Configurar conteúdo turbinado, se houver.
+            const state = location.state as { boostedContent?: Post } | null;
+            if (state?.boostedContent) {
+                const post = state.boostedContent;
+                setSelectedContent(post);
+                const type = post.type === 'video' ? 'video' : 'image';
+                const url = post.video || post.image;
+                
+                const forcedPlacement = post.type === 'video' ? ['reels'] : ['feed'];
+                setPreviewTab(post.type === 'video' ? 'reels' : 'feed');
 
-            setCampaign(prev => ({
-                ...prev,
-                name: `Turbinar: ${post.text.substring(0, 20)}...`,
-                placements: forcedPlacement as any,
-                creative: { text: post.text, mediaUrl: url, mediaType: type as any },
-                placementCreatives: {
-                    feed: post.type !== 'video' ? { mediaUrl: url, mediaType: 'image' } : {},
-                    reels: post.type === 'video' ? { mediaUrl: url, mediaType: 'video' } : {},
-                    marketplace: {}
+                setCampaign(prev => ({
+                    ...prev,
+                    name: `Turbinar: ${post.text.substring(0, 20)}...`,
+                    placements: forcedPlacement as any,
+                    creative: { text: post.text, mediaUrl: url, mediaType: type as any },
+                    placementCreatives: {
+                        feed: post.type !== 'video' ? { mediaUrl: url, mediaType: 'image' } : {},
+                        reels: post.type === 'video' ? { mediaUrl: url, mediaType: 'video' } : {},
+                        marketplace: {}
+                    }
+                }));
+            }
+
+            // 2. Buscar os grupos do usuário de forma assíncrona e segura.
+            const user = authService.getCurrentUser();
+            if (user?.email) {
+                try {
+                    // A chamada agora é para o método `getGroups` do adaptador.
+                    const allGroups = await groupService.getGroups();
+                    const ownedGroups = allGroups.filter((g: Group) => g.creatorEmail === user.email);
+                    setMyGroups(ownedGroups);
+                } catch (error) {
+                    console.error("Falha ao buscar grupos:", error);
+                    setMyGroups([]);
                 }
-            }));
-        }
+            }
+        };
 
-        const email = authService.getCurrentUserEmail();
-        if (email) {
-            setMyGroups(groupService.getGroupsSync().filter(g => g.creatorEmail === email));
-        }
+        initializeFlow();
     }, [location.state]);
 
     const isPlacementLocked = useCallback((p: string): boolean => {

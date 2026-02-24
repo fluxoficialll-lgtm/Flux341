@@ -2,47 +2,54 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// Tipos para os dados do hook
+// A interface original estava incompleta, faltando `referredSellers`.
+interface AffiliateStats {
+  totalCommissions: number;
+  pendingCommissions: number;
+  paidCommissions: number;
+  conversionRate: number;
+  referredSellers: any[]; // Adicionando a propriedade que faltava.
+}
+
 interface CurrencyStats {
   balance: number;
   revenue: number;
   sales: number;
 }
 
-interface AffiliateStats {
-  totalCommissions: number;
-  pendingCommissions: number;
-  paidCommissions: number;
-  conversionRate: number;
-}
 
 /**
  * Hook (placeholder) para gerenciar a lógica do Painel Financeiro.
  * Este hook fornece dados e funções mockadas para permitir que o componente
- * FinancialPanel seja renderizado sem erros, evitando o crash da aplicação
- * devido à ausência do arquivo original.
+ * FinancialPanel seja renderizado sem erros.
  */
 export const useFinancialPanel = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
   
-  // Estado para os filtros
   const [selectedFilter, setSelectedFilter] = useState<string>('7d');
 
-  // Estado para os campos de marketing
-  const [pixelId, setPixelId] = useState<string>('');
-  const [pixelToken, setPixelToken] = useState<string>('');
+  const [pixelId, setPixelId] = useState<string>(' '); // Inicializado com espaço para teste
+  const [pixelToken, setPixelToken] = useState<string>(' '); // Inicializado com espaço para teste
 
-  // Dados mockados
-  const currencyStats = { brl: { balance: 0, revenue: 0, sales: 0 }, usd: { balance: 0, revenue: 0, sales: 0 } };
-  const affiliateStats = { totalCommissions: 0, pendingCommissions: 0, paidCommissions: 0, conversionRate: 0 };
+  // Dados mockados, agora com a estrutura correta para affiliateStats.
+  const currencyStats = { brl: { balance: 1234.56, revenue: 789.01, sales: 50 }, usd: { balance: 234.56, revenue: 123.45, sales: 10 } };
+  const affiliateStats: AffiliateStats = {
+      totalCommissions: 567.89,
+      pendingCommissions: 123.45,
+      paidCommissions: 444.44,
+      conversionRate: 0.05,
+      referredSellers: [ // Inicializando com um array vazio para evitar o erro.
+          // { id: '1', name: 'Vendedor 1', earnings: 100 },
+          // { id: '2', name: 'Vendedor 2', earnings: 150 },
+      ]
+  };
   const filters = [
     { label: 'Hoje', value: '1d' },
     { label: '7 dias', value: '7d' },
     { label: '30 dias', value: '30d' },
   ];
 
-  // Função mockada para carregar dados
   const loadData = useCallback(() => {
     setLoading(true);
     console.log('Buscando dados financeiros (mock)... com filtro:', selectedFilter);
@@ -51,7 +58,6 @@ export const useFinancialPanel = () => {
     }, 1000);
   }, [selectedFilter]);
 
-  // Carrega os dados na montagem e quando o filtro muda
   useEffect(() => {
     loadData();
   }, [loadData]);
@@ -61,17 +67,17 @@ export const useFinancialPanel = () => {
   return {
     selectedFilter,
     setSelectedFilter,
-    activeProviderName: 'syncpay', // Mocked
+    activeProviderName: 'syncpay', 
     loading,
-    preferredProvider: 'syncpay', // Mocked
+    preferredProvider: 'syncpay',
     currencyStats,
     affiliateStats,
     pixelId,
     setPixelId,
     pixelToken,
     setPixelToken,
-    isSavingMarketing: false, // Mocked
-    isCopyingLink: false, // Mocked
+    isSavingMarketing: false,
+    isCopyingLink: false,
     filters,
     loadData,
     handleBack,

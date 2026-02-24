@@ -22,6 +22,15 @@ class AdService {
         console.log(`[Ad Mock] Excluindo campanha ${campaignId}`);
         return Promise.resolve();
     }
+
+    /**
+     * Simula a contagem de notificações de anúncios não lidas.
+     * @returns {Promise<number>}
+     */
+    async getUnreadCount() {
+        console.log("[Ad Mock] Contando notificações de anúncios não lidas...");
+        return Promise.resolve(0);
+    }
 }
 
 class ReachEstimator {
@@ -85,4 +94,3 @@ export const adService = new AdService();
 export const reachEstimator = new ReachEstimator();
 export const aiInterestEngine = new AiInterestEngine();
 export const geoSearchService = new GeoSearchService();
-

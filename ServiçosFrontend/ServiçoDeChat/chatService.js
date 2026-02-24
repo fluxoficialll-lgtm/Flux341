@@ -85,4 +85,13 @@ export const chatService = {
         });
         return handleResponse(res);
     },
+    
+    /**
+     * Simula a contagem de mensagens não lidas.
+     * @returns {Promise<number>}
+     */
+    async getUnreadCount() {
+        console.log("[Chat Mock] Contando mensagens não lidas...");
+        return Promise.resolve(0);
+    }
 };

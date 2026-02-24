@@ -119,5 +119,23 @@ export const authService = {
             clearSession();
             return null;
         }
+    },
+    
+    /**
+     * Obtém o e-mail do usuário do armazenamento local.
+     * @returns {string|null} - O e-mail do usuário ou nulo.
+     */
+    getCurrentUserEmail() {
+        const user = this.getCurrentUser();
+        return user ? user.email : null;
+    },
+
+    /**
+     * Simula a contagem de notificações não lidas relacionadas à autenticação (ex: verificação de e-mail).
+     * @returns {Promise<number>}
+     */
+    async getUnreadCount() {
+        console.log("[Auth Mock] Contando notificações não lidas...");
+        return Promise.resolve(0);
     }
 };

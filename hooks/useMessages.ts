@@ -28,7 +28,7 @@ export const useMessages = () => {
         const rawUserEmail = authService.getCurrentUserEmail();
         if (!rawUserEmail) return;
         const currentUserEmail = rawUserEmail.toLowerCase();
-        const rawChats = chatService.getAllChats();
+        const rawChats = chatService.listConversations(); // CORREÇÃO APLICADA AQUI
 
         const formatted: Contact[] = Object.values(rawChats).map((chat): Contact | null => {
             const chatIdStr = chat.id.toString().toLowerCase();

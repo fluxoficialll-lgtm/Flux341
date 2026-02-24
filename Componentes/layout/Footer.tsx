@@ -1,8 +1,6 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { notificationService } from '../../ServiçosFrontend/ServiçoDeNotificação/notificationService.js';
-import { chatService } from '../../ServiçosFrontend/ServiçoDeChat/chatService.js';
 import { servicoDeSimulacao } from '../../ServiçosFrontend/ServiçoDeSimulação';
 
 interface FooterProps {
@@ -15,11 +13,27 @@ export const Footer: React.FC<FooterProps> = ({ visible = true }) => {
     const [unreadNotifs, setUnreadNotifs] = useState(0);
     const [unreadMsgs, setUnreadMsgs] = useState(0);
 
+    const updateCounts = useCallback(async () => {
+        const { notificationService } = await import('../../ServiçosFrontend/ServiçoDeNotificação/notificationService.js');
+        const { chatService } = await import('../../ServiçosFrontend/ServiçoDeChat/chatService.js');
+        const { authService } = await import('../../ServiçosFrontend/ServiçoDeAutenticação/authService.js');
+        const { groupService } = await import('../../ServiçosFrontend/ServiçoDeGrupos/groupService.js');
+
+        try {
+            const notifCount = await notificationService.getUnreadCount();
+            const msgCount = await chatService.getUnreadCount();
+            // Adicione chamadas para outros serviços se necessário, por exemplo:
+            // const authCount = await authService.getUnreadCount();
+            // const groupCount = await groupService.getUnreadCount();
+
+            setUnreadNotifs(notifCount);
+            setUnreadMsgs(msgCount);
+        } catch (error) {
+            console.error("Erro ao atualizar contagens:", error);
+        }
+    }, []);
+
     useEffect(() => {
-        const updateCounts = () => {
-            setUnreadNotifs(notificationService.getUnreadCount());
-            setUnreadMsgs(chatService.getUnreadCount());
-        };
         updateCounts();
         
         const unsubNotif = servicoDeSimulacao.subscribe('notifications', updateCounts);
@@ -29,7 +43,7 @@ export const Footer: React.FC<FooterProps> = ({ visible = true }) => {
             unsubNotif();
             unsubChat();
         };
-    }, []);
+    }, [updateCounts]);
 
     const isActive = (path: string) => {
         return location.pathname === path;

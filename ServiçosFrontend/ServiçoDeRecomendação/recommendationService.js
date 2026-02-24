@@ -17,6 +17,27 @@ class RecommendationService {
         });
         return Promise.resolve();
     }
+
+    /**
+     * Simula a pontuação de um post para recomendação.
+     * @param {object} post - O post a ser pontuado.
+     * @param {string} userEmail - O email do usuário.
+     * @returns {number} - A pontuação do post.
+     */
+    scorePost(post, userEmail) {
+        console.log(`[Recommendation Mock] Pontuando post ${post.id} para ${userEmail}`);
+        // Mock simples: retorna um score aleatório
+        return Math.random();
+    }
+
+    /**
+     * Simula o rastreamento de uma impressão de post.
+     * @param {string} postId - O ID do post.
+     */
+    trackImpression(postId) {
+        console.log(`[Recommendation Mock] Impressão rastreada para o post ${postId}`);
+        return Promise.resolve();
+    }
 }
 
 export const recommendationService = new RecommendationService();

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { notificationService } from '../ServiçosFrontend/ServiçoDeNotificação/notificationService.js';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
 import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService.js';
-import { geoService } from '../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
+import { geoService } from '../ServiçosFrontend/ServiçoDeGeolocalizacao/geoService.js';
 import { NotificationItem, Group, GeoData, PriceInfo } from '../types';
 
 export const useNotifications = () => {
@@ -36,9 +36,26 @@ export const useNotifications = () => {
     }, []);
 
     useEffect(() => {
-        fetchNotifications();
-        geoService.getGeoInfo().then(setGeoData);
-    }, [fetchNotifications]);
+        const loadInitialData = async () => {
+            const token = authService.getToken();
+            if (!token) { 
+                navigate('/'); // Redireciona se não houver token
+                return; 
+            }
+            
+            await fetchNotifications();
+            
+            try {
+                // CORREÇÃO: Passar o token e usar await
+                const geoInfo = await geoService.getGeoInfo(token);
+                setGeoData(geoInfo);
+            } catch (error) {
+                console.error("Erro ao buscar informações de geolocalização:", error);
+            }
+        };
+
+        loadInitialData();
+    }, [fetchNotifications, navigate]);
 
     const handleFollowToggle = useCallback(async (id: number, username: string) => {
         setNotifications(prev => prev.map(n => n.id === id ? { ...n, isFollowing: !n.isFollowing } : n));
@@ -67,7 +84,6 @@ export const useNotifications = () => {
 
     const handlePayClick = useCallback(async (group: Group) => {
         setSelectedGroup(group);
-        // A lógica de preço foi simplificada, idealmente viria do backend
         const price = group.prices?.monthly?.brl || 5;
         const priceInfo: PriceInfo = { BRL: { monthly: price, annual: price * 10 }, USD: { monthly: 5, annual: 50 } };
         setDisplayPriceInfo(priceInfo);

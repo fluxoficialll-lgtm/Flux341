@@ -24,17 +24,29 @@ export const useProfile = () => {
     const [isPreviewOpen, setIsPreviewOpen] = useState(false);
     const scrollRef = useRef<HTMLDivElement>(null);
 
-    const loadProfileData = useCallback(() => {
+    // CORREÇÃO: A função agora é 'async' para lidar com a chamada de API.
+    const loadProfileData = useCallback(async () => {
         const currentUser = authService.getCurrentUser();
-        if (!currentUser) {
+        if (!currentUser || !currentUser.id) {
             navigate('/');
             return;
         }
         setUser(currentUser);
-        const storedPosts = postService.getUserPosts(currentUser.id) || [];
-        setMyPosts(storedPosts.sort((a, b) => b.timestamp - a.timestamp));
+
+        const token = authService.getToken();
+
+        // CORREÇÃO: 'await' para esperar a Promise e passar o token.
+        const storedPosts = await postService.getUserPosts(token, currentUser.id);
+        if (storedPosts && Array.isArray(storedPosts)) {
+            // CORREÇÃO: Ordenar por data, convertendo a string para um objeto Date.
+            setMyPosts(storedPosts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
+        } else {
+            setMyPosts([]);
+        }
+
         const storedProducts = marketplaceService.getItems().filter(i => i.sellerId === currentUser.email || i.sellerId === currentUser.id) || [];
-        setMyProducts(storedProducts.sort((a, b) => b.timestamp - a.timestamp));
+        // CORREÇÃO: Ordenar produtos também por data.
+        setMyProducts(storedProducts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
 
         if (currentUser.profile && currentUser.profile.name) {
             const followers = relationshipService.getFollowers(currentUser.profile.name);
@@ -64,11 +76,13 @@ export const useProfile = () => {
 
     const deletePost = useCallback(async (postId: string, confirmAction: () => Promise<boolean>) => {
         if (await confirmAction()) {
-            await postService.deletePost(postId);
+            const token = authService.getToken(); // CORREÇÃO: Obter token.
+            await postService.deletePost(token, postId); // CORREÇÃO: Passar token.
         }
     }, []);
 
     const handleLike = useCallback((id: string) => {
+        // NOTA: Este método também precisará de um token na implementação real.
         postService.toggleLike(id);
     }, []);
 
@@ -112,7 +126,8 @@ export const useProfile = () => {
     }, [navigate]);
 
     const handleVote = useCallback((postId: string, index: number) => {
-        postService.addVote(postId, index)
+        // NOTA: A função real aqui é `voteOnPoll` no mock.
+        postService.voteOnPoll(postId, index)
     }, []);
     
     const handleCtaClick = (link: string | undefined) => {

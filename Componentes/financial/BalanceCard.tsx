@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 
 export type CurrencyCode = 'BRL' | 'USD' | 'EUR';
 
+// A interface no hook `useFinancialPanel` está diferente desta.
+// Esta é a que o componente espera.
 interface CurrencyStats {
     total: number;
     own: number;
@@ -10,7 +12,8 @@ interface CurrencyStats {
 }
 
 interface BalanceCardProps {
-    stats: Record<CurrencyCode, CurrencyStats>;
+    // A prop pode chegar nula/indefinida ou incompleta durante o carregamento.
+    stats: Record<CurrencyCode, CurrencyStats> | null | undefined;
     selectedFilter: string;
     filters: string[];
     onFilterChange: (filter: string) => void;
@@ -25,6 +28,7 @@ const CURRENCY_CONFIG = {
     EUR: { symbol: '€', color: '#ffd700', label: 'Euro' }
 };
 
+// Componente tornado resiliente para lidar com `stats` nulo, indefinido ou incompleto.
 export const BalanceCard: React.FC<BalanceCardProps> = ({
     stats,
     selectedFilter,
@@ -36,7 +40,8 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
 }) => {
     const [selectedCurrency, setSelectedCurrency] = useState<CurrencyCode>('BRL');
     
-    const currentStats = stats[selectedCurrency];
+    // Lógica de segurança: verifica se `stats` existe e se a moeda selecionada está presente.
+    const currentStats = stats ? stats[selectedCurrency] : undefined;
     const config = CURRENCY_CONFIG[selectedCurrency];
 
     const formatValue = (val: number) => {
@@ -44,24 +49,40 @@ export const BalanceCard: React.FC<BalanceCardProps> = ({
         return val.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
+    // Se os dados estiverem carregando ou se forem inválidos, exibe um estado de carregamento.
+    if (loading || !currentStats) {
+        return (
+            <div className="flux-card bg-white/5 border border-white/10 rounded-[20px] p-6 mb-5 shadow-2xl relative animate-fade-in overflow-hidden">
+                 <div className="flex justify-between items-start mb-6">
+                    <div className="text-[11px] font-black text-gray-500 uppercase tracking-widest">Saldo em Conta</div>
+                    <button className="bg-gray-500/10 text-gray-500 rounded-full w-8 h-8 flex items-center justify-center" disabled>
+                        <i className="fa-solid fa-rotate-right fa-spin"></i>
+                    </button>
+                </div>
+                <div className="balance-label text-[13px] text-white/40 mb-1 uppercase tracking-widest">Carregando dados...</div>
+                <div className="balance-amount text-[42px] font-extrabold mb-2.5 flex items-baseline gap-2 text-gray-600">
+                    <span className="text-[20px] font-semibold">--</span>
+                    <span>--.--</span>
+                </div>
+                <div className="breakdown bg-black/30 rounded-2xl p-4 mb-5 flex flex-col gap-3 border border-white/5 opacity-50">
+                    <div className="breakdown-item flex justify-between text-[13px]">
+                        <span className="text-gray-500">Vendas Próprias</span>
+                        <span className="font-bold text-gray-600">--.--</span>
+                    </div>
+                    <div className="breakdown-item flex justify-between text-[13px]">
+                        <span className="text-gray-500">Comissões Afiliados</span>
+                        <span className="font-bold text-gray-600">--.--</span>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="flux-card bg-white/5 border border-white/10 rounded-[20px] p-6 mb-5 shadow-2xl relative animate-fade-in overflow-hidden">
             <style>{`
-                .currency-pill {
-                    padding: 6px 12px;
-                    border-radius: 10px;
-                    font-size: 11px;
-                    font-weight: 800;
-                    cursor: pointer;
-                    transition: 0.2s;
-                    border: 1px solid rgba(255,255,255,0.05);
-                    background: rgba(255,255,255,0.02);
-                    color: #555;
-                }
-                .currency-pill.active {
-                    color: #fff;
-                    background: rgba(255,255,255,0.1);
-                }
+                .currency-pill { padding: 6px 12px; border-radius: 10px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.02); color: #555; }
+                .currency-pill.active { color: #fff; background: rgba(255,255,255,0.1); }
             `}</style>
 
             <div className="flex justify-between items-start mb-6">

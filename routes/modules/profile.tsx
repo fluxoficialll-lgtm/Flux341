@@ -10,6 +10,6 @@ const CompleteProfile = lazy(() => import('../../pages/CompleteProfile').then(m 
 export const profileRoutes = [
   { path: '/profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
   { path: '/profile/edit', element: <ProtectedRoute><EditProfile /></ProtectedRoute> },
-  { path: '/profile/:id', element: <ProtectedRoute><UserProfile /></ProtectedRoute> },
+  { path: '/user/:username', element: <ProtectedRoute><UserProfile /></ProtectedRoute> },
   { path: '/complete-profile', element: <ProtectedRoute><CompleteProfile /></ProtectedRoute> }
 ];

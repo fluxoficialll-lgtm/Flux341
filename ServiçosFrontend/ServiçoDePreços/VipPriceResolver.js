@@ -1,4 +1,4 @@
-import { geoService } from '../ServiçoDeGeolocalização/geoService.js';
+import { geoService } from '../ServiçoDeGeolocalizacao/geoService.js';
 import { currencyService } from '../ServiçoDeMoeda/currencyService.js';
 
 export const VipPriceResolver = {

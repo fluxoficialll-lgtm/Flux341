@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { postService } from '../ServiçosFrontend/ServiçoDePosts/postService';
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
-import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupServiceFactory'; // Corrigido para usar a factory
 import { contentSafetyService } from '../ServiçosFrontend/ServiçoDeSegurançaDeConteúdo/contentSafetyService.js';
 import { adService } from '../ServiçosFrontend/ServiçoDeAnúncios/adService.js';
 import { Post, Group } from '../types';
@@ -80,13 +80,24 @@ export const useCreatePost = () => {
     setIsPublishDisabled(!(textLength > 0 || hasMedia || (selectedGroup && groupValid)) || !adValid || isProcessing);
   }, [text, mediaFiles, isProcessing, adBudget, isAd, selectedGroup]);
 
+  // Correção Definitiva: Usa o `groupService` adaptado e unificado.
   useEffect(() => {
-      const email = authService.getCurrentUserEmail();
-      if(email) {
-          const allGroups = groupService.getGroupsSync();
-          const ownedGroups = allGroups.filter(g => g.creatorEmail === email);
+    const fetchMyGroups = async () => {
+      const currentUser = authService.getCurrentUser();
+      if (currentUser?.email) {
+        try {
+          // A chamada agora é para o método `getGroups` do adaptador.
+          const allGroups = await groupService.getGroups();
+          const ownedGroups = allGroups.filter((g: Group) => g.creatorEmail === currentUser.email);
           setMyGroups(ownedGroups);
+        } catch (error) {
+          console.error("Erro ao buscar os grupos do usuário:", error);
+          setMyGroups([]);
+        }
       }
+    };
+
+    fetchMyGroups();
   }, []);
 
   const handleMediaChange = (event: React.ChangeEvent<HTMLInputElement>) => {

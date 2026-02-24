@@ -113,4 +113,13 @@ export const groupService = {
         });
         return handleResponse(res);
     },
+
+    /**
+     * Simula a contagem de notificações de grupos não lidas.
+     * @returns {Promise<number>}
+     */
+    async getUnreadCount() {
+        console.log("[Group Mock] Contando notificações de grupos não lidas...");
+        return Promise.resolve(0);
+    }
 };

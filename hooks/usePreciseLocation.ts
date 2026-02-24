@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { LocationFilter, Coordinates, AddressProfile } from '../types/location.types';
-import { geoService } from '../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
+import { geoService } from '../ServiçosFrontend/ServiçoDeGeolocalizacao/geoService.js';
 
 const STORAGE_KEY = 'flux_user_geo_filter';
 

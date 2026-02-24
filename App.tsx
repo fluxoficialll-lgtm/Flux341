@@ -9,6 +9,7 @@ import { useAuthSync } from './hooks/useAuthSync';
 import { ControleDeSimulacao } from './ServiçosFrontend/ServiçoDeSimulação/ControleDeSimulacao.js';
 import { ConfigControl } from './ServiçosFrontend/ServiçoDeGovernançaFlux/ConfigControl.js';
 import { Maintenance } from './pages/Maintenance';
+import MonitorDeErrosDeInterface from './Componentes/ComponentesDePrevençãoDeErros/MonitorDeErrosDeInterface.jsx';
 
 const DemoModeBadge = () => {
     if (!ControleDeSimulacao.isMockMode()) return null;
@@ -29,7 +30,6 @@ const App: React.FC = () => {
   useAuthSync();
 
   useEffect(() => {
-    // PONTO DE CONTROLO 2: Verifica se a simulação ainda está ativa no início do ciclo de vida do App.
     if (import.meta.env.DEV) {
         console.log('🔵 [DIAGNÓSTICO 2/3] window.fetch em App.tsx:', window.fetch.toString());
     }
@@ -90,14 +90,16 @@ const App: React.FC = () => {
   }
 
   return (
-    <ModalProvider>
-      <HashRouter>
-        <GlobalTracker />
-        <DeepLinkHandler />
-        <DemoModeBadge />
-        <AppRoutes />
-      </HashRouter>
-    </ModalProvider>
+    <MonitorDeErrosDeInterface>
+      <ModalProvider>
+        <HashRouter>
+          <GlobalTracker />
+          <DeepLinkHandler />
+          <DemoModeBadge />
+          <AppRoutes />
+        </HashRouter>
+      </ModalProvider>
+    </MonitorDeErrosDeInterface>
   );
 };
 

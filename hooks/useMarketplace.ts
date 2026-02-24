@@ -15,11 +15,18 @@ export const useMarketplace = () => {
     const [currentUserEmail, setCurrentUserEmail] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState(true);
 
-    const loadItems = useCallback(() => {
+    const loadItems = useCallback(async () => {
+        setIsLoading(true);
         const email = authService.getCurrentUserEmail() || undefined;
-        const items = marketplaceService.getRecommendedItems(email);
-        setAllItems(items || []);
-        setIsLoading(false);
+        try {
+            const items = await marketplaceService.getRecommendedItems(email);
+            setAllItems(items || []);
+        } catch (error) {
+            console.error("Erro ao carregar itens do marketplace:", error);
+            setAllItems([]);
+        } finally {
+            setIsLoading(false);
+        }
     }, []);
 
     useEffect(() => {
@@ -32,7 +39,7 @@ export const useMarketplace = () => {
     }, [loadItems]);
 
     const filteredProducts = useMemo(() => {
-        if (!allItems) return [];
+        if (!Array.isArray(allItems)) return [];
         let result = [...allItems];
         
         if (activeCategory !== 'Todos') {

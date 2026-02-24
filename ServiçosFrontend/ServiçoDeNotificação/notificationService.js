@@ -20,6 +20,16 @@ class NotificationService {
         console.log(`[Notification Mock] Marcando notificação ${notificationId} como lida.`);
         return Promise.resolve();
     }
+
+    /**
+     * Simula a contagem de notificações não lidas.
+     * @returns {Promise<number>}
+     */
+    async getUnreadCount() {
+        console.log("[Notification Mock] Contando notificações não lidas...");
+        const notifications = await this.getNotifications();
+        return notifications.length;
+    }
 }
 
 export const notificationService = new NotificationService();

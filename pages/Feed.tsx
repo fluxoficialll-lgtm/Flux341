@@ -50,7 +50,7 @@ export const Feed: React.FC = () => {
       <main ref={scrollContainerRef} onScroll={handleContainerScroll} className="flex-grow w-full overflow-y-auto overflow-x-hidden relative pt-[140px] no-scrollbar">
         <div className="w-full max-w-[500px] mx-auto pb-[100px] px-3">
             {posts.length > 0 ? (
-                posts.map((post) => (
+                posts.filter(Boolean).map((post) => (
                     <FeedItem 
                         key={post.id} 
                         post={post}
@@ -80,7 +80,7 @@ export const Feed: React.FC = () => {
         </div>
       </main>
 
-      {isMenuOpen && <div className="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm" onClick={() => setIsMenuMenuOpen(false)}></div>}
+      {isMenuOpen && <div className="fixed inset-0 bg-black/60 z-40 backdrop-blur-sm" onClick={() => setIsMenuOpen(false)}></div>}
       
       <div className={`fixed bottom-[180px] right-[27px] flex flex-col gap-4 z-50 items-end transition-all duration-300 ${isMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'}`}>
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/feed-search')}>

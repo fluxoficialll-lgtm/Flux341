@@ -66,11 +66,24 @@ export const postService = {
      */
     async listPosts(token, { limit, cursor }) {
         const query = new URLSearchParams({ limit, cursor }).toString();
-        // A URL foi corrigida para usar a variável BASE_URL corretamente.
         const res = await fetch(`${BASE_URL}?${query}`, {
             headers: getAuthHeaders(token),
         });
         return handleResponse(res);
+    },
+
+    /**
+     * [NOVO] Obtém os posts de um usuário específico.
+     * @param {string} token - O token de autenticação.
+     * @param {string} userId - O ID do usuário.
+     * @returns {Promise<Post[]>} A lista de posts do usuário.
+     */
+    async getUserPosts(token, userId) {
+        const res = await fetch(`/api/users/${userId}/posts`, { // Novo endpoint
+            headers: getAuthHeaders(token),
+        });
+        const data = await handleResponse(res);
+        return data.data; // A simulação e o hook esperam um array de posts
     },
 
     /**
