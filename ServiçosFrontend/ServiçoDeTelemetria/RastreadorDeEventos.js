@@ -11,6 +11,14 @@ class RastreadorDeEventos {
     }
 
     /**
+     * Rastreia uma visualização de página.
+     * @param {string} path - O caminho da página que foi visualizada.
+     */
+    trackPageView(path) {
+        this.trackEvent('Navigation', 'PageView', { path });
+    }
+
+    /**
      * Rastreia um evento genérico.
      * @param {string} category - A categoria do evento (ex: 'UI', 'Network').
      * @param {string} action - A ação que ocorreu (ex: 'button_click').
