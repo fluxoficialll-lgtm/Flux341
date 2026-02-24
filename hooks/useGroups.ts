@@ -1,8 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupServiceFactory';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authServiceFactory';
+import { groupService, authService } from '../ServiçosFrontend/ServiçoDeSimulação/serviceFactory';
 import { Group } from '../types';
 import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
 import { chatService } from '../ServiçosFrontend/ServiçoDeChat/chatService';

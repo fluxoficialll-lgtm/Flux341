@@ -1,8 +1,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { authService } from '../../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
-import { groupService } from '../../../ServiçosFrontend/ServiçoDeGrupos/groupServiceFactory.js'; // Corrigido para usar a factory
+import { authService, groupService } from '../../../ServiçosFrontend/ServiçoDeSimulação/serviceFactory';
 import { adService } from '../../../ServiçosFrontend/ServiçoDeAnúncios/adService.js';
 import { AdCampaign, Group, Post } from '../../../types';
 import { useModal } from '../../../Componentes/ModalSystem';

@@ -2,7 +2,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 // Alterado para usar a factory, que decide entre o serviço real e o mock
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authServiceFactory'; 
+import { authService } from '../ServiçosFrontend/ServiçoDeSimulação/serviceFactory'; 
 import { trackingService } from '../ServiçosFrontend/ServiçoDeRastreamento/ServiçoDeRastreamento.js';
 
 export const useLogin = () => {

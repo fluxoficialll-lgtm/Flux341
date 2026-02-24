@@ -2,7 +2,7 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 // Corrigido o caminho para importar o authService do factory, garantindo que o mock seja usado.
-import { authService } from '../../ServiçosFrontend/ServiçoDeAutenticação/authServiceFactory';
+import { authService } from '../../ServiçosFrontend/ServiçoDeSimulação/serviceFactory';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authServiceFactory'; // Corrigido para usar a factory
+import { authService } from '../ServiçosFrontend/ServiçoDeSimulação/serviceFactory';
 import { postService } from '../ServiçosFrontend/ServiçoDePosts/postServiceFactory';
 import { recommendationService } from '../ServiçosFrontend/ServiçoDeRecomendação/recommendationService.js';
 import { Post } from '../types';
