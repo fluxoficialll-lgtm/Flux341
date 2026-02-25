@@ -19,7 +19,7 @@ interface Props {
     onCtaClick?: (link?: string) => void;
 }
 
-export const FeedItem: React.FC<Props> = React.memo(({ 
+export const ContainerFeed: React.FC<Props> = React.memo(({ 
     post, currentUserId, onLike, onDelete, onUserClick, onCommentClick, onShare, onVote, onCtaClick 
 }) => {
     
@@ -70,7 +70,7 @@ export const FeedItem: React.FC<Props> = React.memo(({
                 onComment={() => onCommentClick(post.id)} 
                 onShare={() => onShare(post)}
                 onCtaClick={onCtaClick}
-                userHasLiked={post.likes.includes(currentUserId || '')}
+                userHasLiked={post.likes > 0}
             />
         </div>
     );

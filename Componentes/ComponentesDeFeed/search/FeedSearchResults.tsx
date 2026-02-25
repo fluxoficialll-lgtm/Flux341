@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Post, User } from '../../../types';
-import { FeedItem } from '../FeedItem';
+import { ContainerFeed } from '../Container.Feed';
 import { postService } from '../../../ServiçosFrontend/ServiçoDePosts/postService.js';
 import { useModal } from '../../ComponenteDeInterfaceDeUsuario/ModalSystem';
 import { SearchTab } from '../../../pages/FeedSearch';
@@ -43,12 +43,12 @@ export const FeedSearchResults: React.FC<FeedSearchResultsProps> = ({
         return (
             <div className="max-w-[500px] mx-auto w-full px-3 pb-32 animate-fade-in">
                 {postResults.map(post => (
-                    <FeedItem 
+                    <ContainerFeed 
                         key={post.id}
                         post={post}
                         currentUserId={currentUser?.id}
                         onLike={(id) => postService.toggleLike(id)}
-                        onDelete={async (e, id) => {
+                        onDelete={async (id, e) => {
                             e.stopPropagation();
                             if (await showConfirm("Excluir Post", "Deseja apagar permanentemente?", "Excluir", "Cancelar")) {
                                 await postService.deletePost(id);

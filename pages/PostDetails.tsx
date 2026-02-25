@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 import { useModal } from '../Componentes/ComponenteDeInterfaceDeUsuario/ModalSystem';
 import { usePostDetails } from '../hooks/usePostDetails';
-import { FeedItem } from '../Componentes/ComponentesDeFeed/FeedItem';
+import { ContainerFeed } from '../Componentes/ComponentesDeFeed/Container.Feed';
 import { CommentItem } from '../Componentes/ComponenteDeInterfaceDeUsuario/comments/CommentItem';
 
 export const PostDetails: React.FC = () => {
@@ -39,7 +39,7 @@ export const PostDetails: React.FC = () => {
       </header>
 
       <main className="pt-[75px] pb-[130px] w-full max-w-[500px] mx-auto flex-grow overflow-y-auto no-scrollbar px-3">
-        <FeedItem
+        <ContainerFeed
           post={post}
           currentUserId={currentUserId}
           onLike={() => handleLike()}

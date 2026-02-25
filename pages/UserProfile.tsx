@@ -1,7 +1,7 @@
 
 import React, { useState, useRef } from 'react';
 import { useUserProfile } from '../hooks/useUserProfile';
-import { FeedItem } from '../Componentes/ComponentesDeFeed/FeedItem';
+import { ContainerFeed } from '../Componentes/ComponentesDeFeed/Container.Feed';
 import { AvatarPreviewModal } from '../Componentes/ComponenteDeInterfaceDeUsuario/AvatarPreviewModal';
 import { Footer } from '../Componentes/layout/Footer';
 import { VisitorHeader } from '../Componentes/ComponentesDeUserProfile/Componentes/VisitorHeader';
@@ -77,7 +77,7 @@ export const UserProfile: React.FC = () => {
                         <div className="post-list px-3">
                             {userPosts.filter(p => p.type !== 'video' && p.type !== 'photo').length > 0 ? 
                                 userPosts.filter(p => p.type !== 'video' && p.type !== 'photo').map(post => (
-                                    <FeedItem key={post.id} post={post} onLike={handleLike} onDelete={()=>{}} onUserClick={() => {}} onCommentClick={(id)=>navigate(`/post/${id}`)} onShare={() => {}} onVote={handleVote} onCtaClick={(l) => l?.startsWith('http') ? window.open(l,'_blank') : navigate(l||'')} />
+                                    <ContainerFeed key={post.id} post={post} onLike={handleLike} onDelete={()=>{}} onUserClick={() => {}} onCommentClick={(id)=>navigate(`/post/${id}`)} onShare={() => {}} onVote={handleVote} onCtaClick={(l) => l?.startsWith('http') ? window.open(l,'_blank') : navigate(l||'')} />
                                 )) : <div className="no-content">Nenhum post.</div>}
                         </div>
                     )}
@@ -86,7 +86,7 @@ export const UserProfile: React.FC = () => {
                         <div className="post-list px-3">
                             {userPosts.filter(p => p.type === 'photo').length > 0 ? 
                                 userPosts.filter(p => p.type === 'photo').map(post => (
-                                    <FeedItem key={post.id} post={post} onLike={handleLike} onDelete={()=>{}} onUserClick={() => {}} onCommentClick={(id)=>navigate(`/post/${id}`)} onShare={() => {}} onVote={handleVote} onCtaClick={(l) => l?.startsWith('http') ? window.open(l,'_blank') : navigate(l||'')} />
+                                    <ContainerFeed key={post.id} post={post} onLike={handleLike} onDelete={()=>{}} onUserClick={() => {}} onCommentClick={(id)=>navigate(`/post/${id}`)} onShare={() => {}} onVote={handleVote} onCtaClick={(l) => l?.startsWith('http') ? window.open(l,'_blank') : navigate(l||'')} />
                                 )) : <div className="no-content">Nenhuma foto.</div>}
                         </div>
                     )}

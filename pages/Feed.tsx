@@ -2,7 +2,7 @@
 import React from 'react';
 import { useFeed } from '../hooks/useFeed';
 import { useModal } from '../Componentes/ComponenteDeInterfaceDeUsuario/ModalSystem';
-import { FeedItem } from '../Componentes/ComponentesDeFeed/FeedItem';
+import { ContainerFeed } from '../Componentes/ComponentesDeFeed/Container.Feed';
 import { Footer } from '../Componentes/layout/Footer';
 import { MainHeader } from '../Componentes/layout/MainHeader';
 
@@ -51,7 +51,7 @@ export const Feed: React.FC = () => {
         <div className="w-full max-w-[500px] mx-auto pb-[100px] px-3">
             {posts.length > 0 ? (
                 posts.filter(Boolean).map((post) => (
-                    <FeedItem 
+                    <ContainerFeed 
                         key={post.id} 
                         post={post}
                         currentUserId={currentUserId}

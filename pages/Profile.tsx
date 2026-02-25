@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useProfile } from '../hooks/useProfile';
 import { useModal } from '../Componentes/ComponenteDeInterfaceDeUsuario/ModalSystem';
 import { FollowListModal } from '../Componentes/ComponentesDeProfile/FollowListModal';
-import { FeedItem } from '../Componentes/ComponentesDeFeed/FeedItem';
+import { ContainerFeed } from '../Componentes/ComponentesDeFeed/Container.Feed';
 import { Footer } from '../Componentes/layout/Footer';
 import { AvatarPreviewModal } from '../Componentes/ComponenteDeInterfaceDeUsuario/AvatarPreviewModal';
 import { ProfileHeader } from '../Componentes/ComponentesDeProfile/Componentes/ProfileHeader';
@@ -103,12 +103,12 @@ export const Profile: React.FC = () => {
                                 <div className="post-list animate-fade-in px-3">
                                     {myPosts.filter(p => p.type === 'text' || p.type === 'poll').length > 0 ? 
                                         myPosts.filter(p => p.type === 'text' || p.type === 'poll').map(post => (
-                                            <FeedItem 
+                                            <ContainerFeed 
                                                 key={post.id} 
                                                 post={post} 
                                                 currentUserId={user?.id} 
                                                 onLike={handleLike} 
-                                                onDelete={(id, e) => onDeletePost(id, e)} 
+                                                onDelete={(e, id) => onDeletePost(id, e)} 
                                                 onUserClick={handleUserClick} 
                                                 onCommentClick={(id) => navigate(`/post/${id}`)} 
                                                 onShare={handleShare} 
@@ -130,12 +130,12 @@ export const Profile: React.FC = () => {
                                 <div className="post-list animate-fade-in px-3">
                                     {myPosts.filter(p => p.type === 'photo').length > 0 ? 
                                         myPosts.filter(p => p.type === 'photo').map(post => (
-                                            <FeedItem 
+                                            <ContainerFeed 
                                                 key={post.id} 
                                                 post={post} 
                                                 currentUserId={user?.id} 
                                                 onLike={handleLike} 
-                                                onDelete={(id, e) => onDeletePost(id, e)} 
+                                                onDelete={(e, id) => onDeletePost(id, e)} 
                                                 onUserClick={handleUserClick} 
                                                 onCommentClick={(id) => navigate(`/post/${id}`)} 
                                                 onShare={handleShare} 
