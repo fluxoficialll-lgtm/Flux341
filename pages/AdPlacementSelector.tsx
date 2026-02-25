@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useAdCampaignFlow } from '../Componentes/ads/hooks/useAdCampaignFlow';
+import { useAdCampaignFlow } from '../hooks/useAdCampaignFlow';
 import { CTA_OPTIONS_CONFIG } from '../Componentes/ads/constants/AdConstants';
 
 // Layout e Cabeçalho
