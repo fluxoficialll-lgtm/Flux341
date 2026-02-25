@@ -1,13 +1,13 @@
 
 import { pool } from './pool.js'; // Importa o pool centralizado
-import { LogDeOperacoes } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
+// import { LogDeOperacoes } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
 
 /**
  * Conta o número de bancos de dados não-template no cluster.
  * Reutiliza o pool de conexão principal para executar a consulta.
  */
 export const contarBancosDeDados = async () => {
-    LogDeOperacoes.log('DB_COUNT_START', { message: 'Iniciando contagem de bancos de dados...' });
+    console.log('Iniciando contagem de bancos de dados...');
 
     try {
         // Usa o pool existente para fazer a consulta.
@@ -19,23 +19,13 @@ export const contarBancosDeDados = async () => {
         
         const numeroDeBancos = res.rowCount;
         
-        LogDeOperacoes.info('DB_COUNT_SUCCESS', { 
-            count: numeroDeBancos,
-            message: `📊 Quantidade de bancos de dados identificados = ${numeroDeBancos}`
-        });
+        console.info(`📊 Quantidade de bancos de dados identificados = ${numeroDeBancos}`);
 
     } catch (error) {
         const errorMessage = `❌ Erro ao tentar contar os bancos de dados: ${error.message}`;
-        LogDeOperacoes.error('DB_COUNT_FAILURE', {
-            message: errorMessage,
-            errorDetails: {
-                name: error.name,
-                message: error.message,
-                stack: error.stack,
-            }
-        });
+        console.error(errorMessage, error);
     } finally {
-        LogDeOperacoes.log('DB_COUNT_END', { message: 'Contagem de bancos finalizada.' });
+        console.log('Contagem de bancos finalizada.');
         // Não precisamos mais de pool.end() aqui, pois o pool é gerenciado centralmente.
     }
 };

@@ -3,6 +3,7 @@
 
 import { metodoGoogle } from './metodoGoogle.js';
 import { metodoEmail } from './metodoEmail.js';
+import { SistemaCriaçãoContas } from './SistemaCriaçãoContas.js';
 
 const IS_BROWSER = typeof window !== 'undefined';
 
@@ -24,7 +25,6 @@ function storeSession(token, user) {
         dispatchAuthChange(); // Notifica a aplicação que o usuário logou.
     } catch (error) {
         console.error("Falha ao armazenar a sessão no localStorage:", error);
-        // Em um app de produção, você poderia logar este erro em um serviço de monitoramento.
     }
 }
 
@@ -59,6 +59,29 @@ export const authService = {
         const { token, user } = await metodoEmail.login(email, password);
         storeSession(token, user);
         return { token, user };
+    },
+    
+    /**
+     * Completa o perfil de um usuário recém-registrado, atualizando seus dados.
+     * O hook `useCompleteProfile` chama esta função.
+     * @param {string} email - O email do usuário (para consistência, mas o ID da sessão é usado).
+     * @param {object} profileData - Os dados do perfil a serem atualizados (nome, bio, etc.).
+     */
+    async completeProfile(email, profileData) {
+        const currentUser = this.getCurrentUser();
+        const token = this.getToken();
+
+        if (!currentUser || !currentUser.id || !token) {
+            throw new Error("Usuário não autenticado ou sessão inválida para completar o perfil.");
+        }
+
+        // Chama o serviço de conta para ATUALIZAR o usuário no backend
+        const updatedUserFromBackend = await SistemaCriaçãoContas.atualizarConta(currentUser.id, profileData);
+
+        // Atualiza a sessão local com os novos dados do usuário retornados pelo backend
+        storeSession(token, updatedUserFromBackend);
+
+        return updatedUserFromBackend;
     },
 
     /**

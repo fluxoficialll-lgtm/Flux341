@@ -1,7 +1,7 @@
 
 import pg from 'pg';
 import { pool } from '../pool.js'; // Importa o pool centralizado
-import { LogDeOperacoes } from '../../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
+// import { LogDeOperacoes } from '../../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
 import { backendConfig } from '../../config/ambiente.js';
 
 const { Client } = pg;
@@ -56,35 +56,34 @@ const checkDatabaseStatus = async (dbName) => {
  * Realiza uma auditoria em todos os bancos de dados PostgreSQL, verificando a conectividade e a presença de tabelas.
  */
 const inspectDatabases = async () => {
-    LogDeOperacoes.log('DB_AUDIT_START', { message: 'Iniciando auditoria de bancos de dados PostgreSQL.' });
+    console.log('Iniciando auditoria de bancos de dados PostgreSQL.');
 
     let databases = [];
     try {
         // 1. Obter a lista de bancos de dados usando o pool central
         const res = await pool.query("SELECT datname FROM pg_database WHERE datistemplate = false AND datname <> 'postgres';");
         databases = res.rows;
-        LogDeOperacoes.log('DB_AUDIT_DISCOVERY', { count: databases.length, message: `Encontrados ${databases.length} bancos de dados para análise.` });
+        console.log(`Encontrados ${databases.length} bancos de dados para análise.`);
 
         // 2. Auditar cada banco de dados em paralelo
         const auditPromises = databases.map(async (db) => {
             const dbName = db.datname;
             const status = await checkDatabaseStatus(dbName);
             if (status === '🚫 Inacessível') {
-                LogDeOperacoes.warn('DB_AUDIT_CONNECTION_FAILURE', { database: dbName, status });
+                console.warn({ database: dbName, status });
             } else {
-                LogDeOperacoes.log('DB_AUDIT_STATUS', { database: dbName, status });
+                console.log({ database: dbName, status });
             }
         });
 
         await Promise.all(auditPromises);
 
     } catch (error) {
-        LogDeOperacoes.error('DB_AUDIT_LIST_FAILURE', { 
-            message: 'Erro ao obter a lista de bancos de dados para auditoria.',
+        console.error('Erro ao obter a lista de bancos de dados para auditoria.', { 
             error: error.message 
         });
     } finally {
-        LogDeOperacoes.log('DB_AUDIT_COMPLETE', { message: 'Auditoria de bancos de dados concluída.' });
+        console.log('Auditoria de bancos de dados concluída.');
     }
 };
 

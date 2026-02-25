@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { HashRouter } from 'react-router-dom';
 import { ModalProvider } from './Componentes/ComponenteDeInterfaceDeUsuario/ModalSystem';
 import { GlobalTracker } from './Componentes/layout/GlobalTracker';
@@ -8,8 +8,9 @@ import AppRoutes from './routes/AppRoutes';
 import { useAuthSync } from './hooks/useAuthSync';
 import { ControleDeSimulacao } from './ServiçosFrontend/ServiçoDeSimulação/ControleDeSimulacao.js';
 import { ConfigControl } from './ServiçosFrontend/ServiçoDeGovernançaFlux/ConfigControl.js';
-import { Maintenance } from './pages/Maintenance';
 import MonitorDeErrosDeInterface from './Componentes/ComponentesDePrevençãoDeErros/MonitorDeErrosDeInterface.jsx';
+
+const Maintenance = lazy(() => import('./pages/Maintenance'));
 
 const DemoModeBadge = () => {
     if (!ControleDeSimulacao.isMockMode()) return null;
@@ -22,6 +23,15 @@ const DemoModeBadge = () => {
         </div>
     );
 };
+
+const LoadingFallback = () => (
+    <div className="h-screen w-full bg-[#0c0f14] flex flex-col items-center justify-center gap-4">
+        <i className="fa-solid fa-circle-notch fa-spin text-[#00c2ff] text-2xl"></i>
+        <span className="text-[10px] font-black text-gray-500 uppercase tracking-[3px]">
+            Iniciando Protocolos...
+        </span>
+    </div>
+);
 
 const App: React.FC = () => {
   const [isReady, setIsReady] = useState(false);
@@ -75,18 +85,15 @@ const App: React.FC = () => {
   }, []);
 
   if (!isReady) {
-    return (
-      <div className="h-screen w-full bg-[#0c0f14] flex flex-col items-center justify-center gap-4">
-        <i className="fa-solid fa-circle-notch fa-spin text-[#00c2ff] text-2xl"></i>
-        <span className="text-[10px] font-black text-gray-500 uppercase tracking-[3px]">
-            Iniciando Protocolos...
-        </span>
-      </div>
-    );
+    return <LoadingFallback />;
   }
 
   if (isMaintenance) {
-    return <Maintenance />;
+    return (
+        <Suspense fallback={<LoadingFallback />}>
+            <Maintenance />
+        </Suspense>
+    );
   }
 
   return (
@@ -96,7 +103,9 @@ const App: React.FC = () => {
           <GlobalTracker />
           <DeepLinkHandler />
           <DemoModeBadge />
-          <AppRoutes />
+          <Suspense fallback={<LoadingFallback />}>
+            <AppRoutes />
+          </Suspense>
         </HashRouter>
       </ModalProvider>
     </MonitorDeErrosDeInterface>

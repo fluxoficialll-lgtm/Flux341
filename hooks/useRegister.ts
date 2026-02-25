@@ -1,7 +1,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { SistemaCriaçãoContas } from '../ServiçosFrontend/ServiçoDeAutenticação/SistemaCriaçãoContas';
 import { AuthError } from '../types';
 
 export const useRegister = () => {
@@ -33,7 +33,8 @@ export const useRegister = () => {
 
         // --- Validation Logic ---
         const newErrors: any = {};
-        if (email && !authService.isValidEmail(email)) {
+        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if (email && !emailRegex.test(email)) {
             newErrors.email = AuthError.INVALID_FORMAT;
         }
         if (password && password.length < 6) {
@@ -59,8 +60,12 @@ export const useRegister = () => {
         setErrors({}); // Clear previous form-level errors
 
         try {
-            await authService.register(email, password, referredBy || undefined);
+            // CORREÇÃO: Chamar SistemaCriaçãoContas.criarConta com um objeto de dados do usuário
+            await SistemaCriaçãoContas.criarConta({ email, password, referredBy: referredBy || undefined });
+            
+            // Após o sucesso, o usuário geralmente é redirecionado para verificar o e-mail ou fazer login
             navigate('/verify-email');
+
         } catch (err: any) {
             setErrors(prev => ({ ...prev, form: err.message || 'Ocorreu um erro no cadastro.' }));
         } finally {

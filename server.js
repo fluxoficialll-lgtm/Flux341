@@ -81,8 +81,8 @@ import { upload } from './backend/config/storage.js';
 
 // Serviços, Rotas e Tarefas de Inicialização
 import { db } from './backend/database/InicializacaoDoPostgreSQL.js';
-import { IntegrityCheck } from './backend/jobs/IntegrityCheck.js';
-import apiRoutes from './backend/routes.js';
+// import { IntegrityCheck } from './backend/jobs/IntegrityCheck.js'; // Desativado temporariamente
+import apiRoutes from './backend/RotasBackend/Rotas.js';
 import { contarBancosDeDados } from './backend/database/ContagemDosTiposDeBancos.js';
 import { auditorDoPostgreSQL } from './backend/database/AuditoresDeBancos/index.js';
 
@@ -194,12 +194,12 @@ const startApp = async () => {
         setTimeout(() => {
             contarBancosDeDados();
             auditorDoPostgreSQL.inspectDatabases();
-            IntegrityCheck.fixGroupMemberCounts();
-            IntegrityCheck.cleanupExpiredVip();
+            // IntegrityCheck.fixGroupMemberCounts(); // Desativado temporariamente
+            // IntegrityCheck.cleanupExpiredVip(); // Desativado temporariamente
         }, 5000);
 
         setInterval(() => {
-            IntegrityCheck.fixGroupMemberCounts();
+            // IntegrityCheck.fixGroupMemberCounts(); // Desativado temporariamente
         }, 1000 * 60 * 60);
 
         // 4. Iniciar o servidor HTTP

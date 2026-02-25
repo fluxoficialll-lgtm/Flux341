@@ -4,7 +4,7 @@ import cors from 'cors';
 import compression from 'compression';
 import helmet from 'helmet';
 import crypto from 'crypto';
-import { LogDeOperacoes } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/LogDeOperacoes.js';
+// import { LogDeOperacoes } from '../ServicosBackEnd/ServicosDeLogsSofisticados/LogDeOperacoes.js';
 
 /**
  * Cria um "child logger" para uma requisição específica, com o traceId já embutido.
@@ -14,13 +14,21 @@ import { LogDeOperacoes } from '../ServiçosBackEnd/ServiçosDeLogsSofisticados/
  */
 const createRequestLogger = (traceId) => {
     const requestLogger = {};
-    for (const level in LogDeOperacoes) {
-        if (typeof LogDeOperacoes[level] === 'function') {
-            requestLogger[level] = (contexto, data = {}) => {
-                LogDeOperacoes[level](contexto, data, traceId);
-            };
-        }
-    }
+    // for (const level in LogDeOperacoes) {
+    //     if (typeof LogDeOperacoes[level] === 'function') {
+    //         requestLogger[level] = (contexto, data = {}) => {
+    //             LogDeOperacoes[level](contexto, data, traceId);
+    //         };
+    //     }
+    // }
+    // return requestLogger;
+    // Mock logger since the original is missing
+    const levels = ['log', 'error', 'warn', 'debug'];
+    levels.forEach(level => {
+        requestLogger[level] = (contexto, data) => {
+            console.log(`[${level.toUpperCase()}] (${traceId}) ${contexto}`, data);
+        };
+    });
     return requestLogger;
 };
 
