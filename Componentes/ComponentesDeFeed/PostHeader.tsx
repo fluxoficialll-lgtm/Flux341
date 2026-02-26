@@ -37,7 +37,7 @@ export const PostHeader: React.FC<PostHeaderProps> = ({
 
     const handleProfileClick = (e: React.MouseEvent) => {
         e.stopPropagation();
-        const cleanHandle = username.replace('@', '').toLowerCase().trim();
+        const cleanHandle = (username || '').replace('@', '').toLowerCase().trim();
         navigate(`/user/${cleanHandle}`, { state: { emailFallback: authorEmail } });
     };
 
@@ -50,7 +50,7 @@ export const PostHeader: React.FC<PostHeaderProps> = ({
         }
     };
 
-    const displayName = userData?.profile?.nickname || userData?.profile?.name || username.replace('@', '');
+    const displayName = userData?.profile?.nickname || userData?.profile?.name || (username || '').replace('@', '');
 
     return (
         <div className="flex items-center justify-between mb-3 relative px-4 pt-4">

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Post } from '../../types/Post';
 import { PostHeader } from './PostHeader';
@@ -33,7 +32,7 @@ export const ContainerFeed: React.FC<Props> = React.memo(({
     };
 
     return (
-        <div className="feed-item" id={`post-${post.id}`}>
+        <div className="feed-item bg-[#1a1e26] rounded-xl shadow-lg mb-4 overflow-hidden" id={`post-${post.id}`}>
             <PostHeader 
                 post={post} 
                 isOwner={isOwner} 
