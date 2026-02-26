@@ -1,8 +1,7 @@
 
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-// Corrigido o caminho para importar o authService do factory, garantindo que o mock seja usado.
-import { authService } from '../../ServiçosFrontend/ServiçoDeSimulação/serviceFactory';
+import { authService } from '../../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -15,10 +14,6 @@ interface ProtectedRouteProps {
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const location = useLocation();
 
-  // [CORREÇÃO]
-  // O método `getCurrentUser` não era ideal para o mock. 
-  // O método `isAuthenticated` é mais direto e compatível com ambos os serviços (real e mock),
-  // pois ele simplesmente verifica se existe um estado de autenticação válido (ex: no sessionStorage).
   const isUserAuthenticated = authService.isAuthenticated();
 
   if (!isUserAuthenticated) {

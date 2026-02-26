@@ -1,4 +1,3 @@
-
 import React, { lazy } from 'react';
 import { ProtectedRoute } from '../../Componentes/ComponentesDeAuth/ProtectedRoute';
 
@@ -8,8 +7,36 @@ const UserProfile = lazy(() => import('../../pages/UserProfile').then(m => ({ de
 const CompleteProfile = lazy(() => import('../../pages/CompleteProfile').then(m => ({ default: m.CompleteProfile })));
 
 export const profileRoutes = [
-  { path: '/profile', element: <ProtectedRoute><Profile /></ProtectedRoute> },
-  { path: '/profile/edit', element: <ProtectedRoute><EditProfile /></ProtectedRoute> },
-  { path: '/user/:username', element: <ProtectedRoute><UserProfile /></ProtectedRoute> },
-  { path: '/complete-profile', element: <ProtectedRoute><CompleteProfile /></ProtectedRoute> }
+  {
+    path: '/profile',
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/profile/edit',
+    element: (
+      <ProtectedRoute>
+        <EditProfile />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/user/:username',
+    element: (
+      <ProtectedRoute>
+        <UserProfile />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: '/complete-profile',
+    element: (
+      <ProtectedRoute>
+        <CompleteProfile />
+      </ProtectedRoute>
+    )
+  }
 ];
