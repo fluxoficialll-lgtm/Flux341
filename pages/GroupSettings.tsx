@@ -1,7 +1,7 @@
 
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGroupSettings } from '../Componentes/ComponentesDeGroups/hooks/useGroupSettings';
+import { useGroupSettings } from '../hooks/HooksComponentes/useGroupSettings';
 import { SessaoEstruturaEIdentidade } from '../Componentes/ComponentesDeGroups/SessaoEstruturaEIdentidade';
 import { SessaoSegurancaEModeracao } from '../Componentes/ComponentesDeGroups/SessaoSegurancaEModeracao';
 import { SessaoMonetizacaoEEscala } from '../Componentes/ComponentesDeGroups/SessaoMonetizacaoEEscala';

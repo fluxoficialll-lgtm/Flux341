@@ -2,7 +2,7 @@ import React, { useState, Suspense, lazy } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AdCampaign } from '../../types';
 import { adService } from '../../ServiçosFrontend/ServiçoDeAnúncios/adService.js';
-import { useVipPricing } from '../../hooks/useVipPricing';
+import { useVipPricing } from '../../hooks/HooksComponentes/useVipPricing';
 import { useModal } from '../ComponenteDeInterfaceDeUsuario/ModalSystem';
 // import { budgetManager } from '../../ServiçosFrontend/ServiçoDeAds/engine/BudgetManager';
 

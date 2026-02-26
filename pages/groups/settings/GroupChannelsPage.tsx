@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Channel, ChannelSection } from '../../../types';
 import { useModal } from '../../../Componentes/ComponenteDeInterfaceDeUsuario/ModalSystem';
-import { useGroupSettings } from '../../../Componentes/ComponentesDeGroups/hooks/useGroupSettings';
+import { useGroupSettings } from '../../../hooks/HooksComponentes/useGroupSettings';
 import { ChannelsSection as ChannelsEditor } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/ChannelsSection';
 import { CabecalhoDosCanais } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/ComponentesDeCanalDeGrupo/CabecalhoDosCanais';
 import { AvisoDosCanais } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/ComponentesDeCanalDeGrupo/AvisoDosCanais';

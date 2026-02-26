@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useGroupSalesPlatform } from '../../../hooks/useGroupSalesPlatform';
+import { useGroupSalesPlatform } from '../../../hooks/HooksComponentes/useGroupSalesPlatform';
 import { useModal } from '../../../Componentes/ComponenteDeInterfaceDeUsuario/ModalSystem';
 import { PlatformStatusCard } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/sales-platform/PlatformStatusCard';
 import { PlatformStructureEditor } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/sales-platform/PlatformStructureEditor';

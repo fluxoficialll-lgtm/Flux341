@@ -1,9 +1,9 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
-import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
-import { Group } from '../types';
+import { authService } from '../../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { groupService } from '../../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { Group } from '../../types';
 
 interface UserForAction {
     id: string;

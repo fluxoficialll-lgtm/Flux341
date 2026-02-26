@@ -4,7 +4,7 @@ import { MemberSearchBar } from './members/MemberSearchBar';
 import { MemberList } from './members/MemberList';
 import { MemberItem } from './members/MemberItem';
 import { RoleAssignmentModal } from './members/RoleAssignmentModal';
-import { useRoleAssignment } from '../../hooks/settings/useRoleAssignment';
+import { useRoleAssignment } from '../../../../hooks/HooksComponentes/useRoleAssignment';
 import { GroupRole } from '../../../../types';
 
 interface Member {

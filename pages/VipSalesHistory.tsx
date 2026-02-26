@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useVipSalesHistory } from '../hooks/useVipSalesHistory';
+import { useVipSalesHistory } from '../hooks/HooksComponentes/useVipSalesHistory';
 
 export const VipSalesHistory: React.FC = () => {
   const {

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGroupSettings } from '../../../Componentes/ComponentesDeGroups/hooks/useGroupSettings';
+import { useGroupSettings } from '../../../hooks/HooksComponentes/useGroupSettings';
 import { InfoSection } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/InfoSection';
 
 export const GroupInfoPage: React.FC = () => {

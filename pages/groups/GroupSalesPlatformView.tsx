@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useGroupSalesPlatformView } from '../../hooks/useGroupSalesPlatformView';
+import { useGroupSalesPlatformView } from '../../hooks/HooksComponentes/useGroupSalesPlatformView';
 import { OwnerControls } from '../../Componentes/ComponentesDeGroups/Componentes/ComponentesModoHub/OwnerControls';
 import { PlatformGroupCard } from '../../Componentes/ComponentesDeGroups/Componentes/ComponentesModoHub/PlatformGroupCard';
 import { LoadingScreen } from '../../Componentes/ComponenteDeInterfaceDeUsuario/LoadingScreen';

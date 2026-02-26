@@ -1,11 +1,11 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
-import { servicoDeSimulacao } from '../ServiçosFrontend/ServiçoDeSimulação';
-import { Group, User, GroupLink, VipMediaItem } from '../types';
-import { useModal } from '../Componentes/ComponenteDeInterfaceDeUsuario/ModalSystem';
+import { groupService } from '../../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { authService } from '../../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { servicoDeSimulacao } from '../../ServiçosFrontend/ServiçoDeSimulação';
+import { Group, User, GroupLink, VipMediaItem } from '../../types';
+import { useModal } from '../../Componentes/ComponenteDeInterfaceDeUsuario/ModalSystem';
 
 export const useGroupSettings = () => {
     const navigate = useNavigate();

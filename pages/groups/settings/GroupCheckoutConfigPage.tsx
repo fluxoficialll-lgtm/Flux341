@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useCheckoutConfig } from '../../../Componentes/ComponentesDeGroups/hooks/settings/useCheckoutConfig';
+import { useCheckoutConfig } from '../../../hooks/HooksComponentes/useCheckoutConfig';
 
 // Componentes Modulares
 import { CheckoutConfigHeader } from '../../../Componentes/ComponentesDeGroups/Componentes/ComponentesDeConfiguracoesDeGrupo/ComponentesDeConfiguracoesDeCheckout/CheckoutConfigHeader';

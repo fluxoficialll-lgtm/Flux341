@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from 'react';
-import { GeoData } from '../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
-import { ConversionResult } from '../ServiçosFrontend/ServiçoDeMoeda/currencyService.js';
-import { VipPriceResolver } from '../ServiçosFrontend/ServiçoDePreços/VipPriceResolver.js';
-import { Group } from '../types';
+import { GeoData } from '../../ServiçosFrontend/ServiçoDeGeolocalização/geoService.js';
+import { ConversionResult } from '../../ServiçosFrontend/ServiçoDeMoeda/currencyService.js';
+import { VipPriceResolver } from '../../ServiçosFrontend/ServiçoDePreços/VipPriceResolver.js';
+import { Group } from '../../types';
 
 export const useVipPricing = (group: Group | null) => {
     const [geoData, setGeoData] = useState<GeoData | null>(null);

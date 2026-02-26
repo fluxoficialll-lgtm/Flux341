@@ -1,5 +1,5 @@
 import React from 'react';
-import { useManageGroupLinks } from '../hooks/useManageGroupLinks';
+import { useManageGroupLinks } from '../hooks/HooksComponentes/useManageGroupLinks';
 
 export const ManageGroupLinks: React.FC = () => {
   const {

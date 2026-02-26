@@ -1,10 +1,10 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService';
-import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { authService } from '../../ServiçosFrontend/ServiçoDeAutenticação/authService';
+import { groupService } from '../../ServiçosFrontend/ServiçoDeGrupos/groupService';
 // --- Importando o novo serviço de transações ---
-import { ServicoDeTransacoes } from '../ServiçosFrontend/ServiçoDeTransacoes/ServiçoDeTransacoes.js';
+import { ServicoDeTransacoes } from '../../ServiçosFrontend/ServiçoDeTransacoes/ServiçoDeTransacoes.js';
 
 export const useVipSalesHistory = () => {
   const navigate = useNavigate();

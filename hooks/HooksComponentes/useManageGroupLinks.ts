@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService';
-import { Group, GroupLink } from '../types';
+import { groupService } from '../../ServiçosFrontend/ServiçoDeGrupos/groupService';
+import { Group, GroupLink } from '../../types';
 
 export const useManageGroupLinks = () => {
   const navigate = useNavigate();

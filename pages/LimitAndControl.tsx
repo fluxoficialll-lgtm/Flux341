@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { useLimitAndControl } from '../hooks/useLimitAndControl';
+import { useLimitAndControl } from '../hooks/HooksComponentes/useLimitAndControl';
 
 export const LimitAndControl: React.FC = () => {
     const {

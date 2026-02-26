@@ -4,7 +4,7 @@ import { groupService } from '../ServiçosFrontend/ServiçoDeGrupos/groupService
 import { authService } from '../ServiçosFrontend/ServiçoDeAutenticação/authService.js';
 // import { vipSalesTracker } from '../ServiçosFrontend/pixel/trackers/VipSalesTracker';
 // import { VipPlaybackController } from '../ServiçosFrontend/real/vip/VipPlaybackController';
-import { useVipPricing } from './useVipPricing';
+import { useVipPricing } from './HooksComponentes/useVipPricing';
 import { Group } from '../types';
 
 export const useVipGroupSales = (groupId: string | undefined) => {
